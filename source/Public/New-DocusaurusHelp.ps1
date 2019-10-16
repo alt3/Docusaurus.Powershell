@@ -52,11 +52,19 @@ function New-DocusaurusHelp() {
         [switch]$Monolithic # pass to edit a single pm file
     )
 
-    # import latest version of module to be documented
-    Import-Module -Name $Module -Force -Global
+    # make sure the passed module is valid
+    if (Test-Path($Module)) {
+        Import-Module $Module -Force -Global
+        $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
+    }
+
+    if (-Not(Get-Module -Name $Module)) {
+        $Module = $Module
+        throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
+    }
 
     # generate PlatyPs markdown files
-    $markdownFiles = New-MarkdownHelp -Module $Module -OutputFolder $OutputFolder -Force
+    $markdownFiles = New-MarkdownHelp -Module $Module -OutputFolder $OutputFolder
 
     # update generated markdown file(s) to make them Docusaurus compatible
     ForEach ($markdownFile in $markdownFiles) {
