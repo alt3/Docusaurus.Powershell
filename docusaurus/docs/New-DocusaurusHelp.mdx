@@ -5,7 +5,7 @@ custom_edit_url: https://github.com/alt3/Docusaurus.Powershell/edit/master/sourc
 ---
 
 ## SYNOPSIS
-Generates Get-Help documentation in Docusaurus compatible \`.mdx\` format.
+Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 
 ## SYNTAX
 
@@ -16,10 +16,10 @@ New-DocusaurusHelp [-Module] <String> [-OutputFolder] <String> [-EditUrl] <Strin
 
 ## DESCRIPTION
 The New-Docusaurus cmdlet generates Get-Help documentation in
-Docusaurus compatible format by creating \`.mdx\` files with command
-specific \`front matter\` variables for each command exported by the module.
+Docusaurus compatible format by creating `.mdx` files with command
+specific `front matter` variables for each command exported by the module.
 
-The cmdlet also produces a \`docusaurus.powershell.sidebar.js\` file
+The cmdlet also produces a `docusaurus.powershell.sidebar.js` file
 containing a list of all documented commands so they can be integrated
 into the Docusaurus website sidebar.
 
@@ -35,7 +35,7 @@ New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell -OutputFolder .\docusaurus
 ### -Module
 Specifies the module this cmdlet will generate Docusaurus documentation for.
 
-You may specify a module name, a \`.psd1\` file or a \`.psm1\` file.
+You may specify a module name, a `.psd1` file or a `.psm1` file.
 
 ```yaml
 Type: String
@@ -65,7 +65,7 @@ Accept wildcard characters: False
 ```
 
 ### -EditUrl
-Specifies the URL prefixed to all Docusaurus \`custom_edit_url\` front matter variables.
+Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
 
 ```yaml
 Type: String
@@ -82,7 +82,7 @@ Accept wildcard characters: False
 ### -Monolithic
 Use this optional argument if the Powershell module source is monolithic.
 
-Will point all \`custom_edit_url\` front matter variables to the \`.psm1\` file.
+Will point all `custom_edit_url` front matter variables to the `.psm1` file.
 
 ```yaml
 Type: SwitchParameter
@@ -113,5 +113,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 [https://docusaurus.io/](https://docusaurus.io/)
 
 [https://github.com/PowerShell/platyPS](https://github.com/PowerShell/platyPS)
+
 
 

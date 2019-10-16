@@ -72,6 +72,7 @@ function New-DocusaurusHelp() {
 
         replaceMarkdownHeader -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl
         setCodeBlockLanguage -MarkdownFile $markdownFile
+        replaceEscapedBackticks -MarkdownFile $markdownFile
 
         # rename to .mdx
         $mdxFilePath = getMdxFilePath -MarkdownFile $markdownFile

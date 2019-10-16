@@ -17,7 +17,7 @@ function setCodeBlockLanguage() {
     # regex replace all code blocks without a language (test on https://regex101.com using /$regex/g)
     $regex = '(```)\r((?:(?!```)[\s\S])+)(```)\r'
 
-    $content = [regex]::replace($content, $regex, '```powershell$2```');
+    $content = [regex]::replace($content, $regex, '```powershell$2```')
 
     # replace file content (UTF-8 without BOM)
     $fileEncoding = New-Object System.Text.UTF8Encoding $False
