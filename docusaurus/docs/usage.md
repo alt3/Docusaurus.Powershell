@@ -15,10 +15,10 @@ Add the Docusaurus skeleton by running the following
 command inside your project's root folder:
 
 ```
-npx @docusaurus/init@next init docs classic
+npx @docusaurus/init@next init docusaurus classic
 ```
 
-Modify `docs\sidebar.js`so it looks like:
+Modify new file `docusaurus/sidebar.js`so it looks like:
 
 ```js
 const powershellCommands = require('./docs/docusaurus.powershell.sidebar.js');
@@ -37,15 +37,15 @@ module.exports = {
 Generate Get-Help documentation for your Powershell Module by running:
 
 ```
-New-DocusaurusHelp -Module YourModule -OutputFolder "docs/docs" -EditUrl "http://dummy.for.now"
+New-DocusaurusHelp -Module YourModule -OutputFolder "docusaurus/docs" -EditUrl "http://dummy.for.now"
 ```
 
-> Inside the `docs/docs` folder, you should now see one `.mdx` file for each command
+> Inside the `docusaurus/docs` folder, you should now see one `.mdx` file for each command
 > exported by your Powershell Module.
 
 ## Starting the Website
 
-Start the website by running the following command inside the `docs\docs` folder:
+Start the website by running the following command inside the `docusaurus` folder:
 
 ```powershell
 yarn start
