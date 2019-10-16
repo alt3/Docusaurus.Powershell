@@ -11,5 +11,5 @@
     CopyDirectories = @(
         'en-US'
     )
-    Prefix = "Set-StrictMode -Version Latest"
+    Prefix = "Set-StrictMode -Version Latest`n`$PSDefaultParameterValues['*:ErrorAction'] = 'Stop' # full stop on first error"
 }
