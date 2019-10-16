@@ -1,0 +1,117 @@
+---
+id: New-DocusaurusHelp
+title: New-DocusaurusHelp
+custom_edit_url: https://github.com/alt3/Docusaurus.Powershell/edit/master/source/Public/New-DocusaurusHelp.ps1
+---
+
+## SYNOPSIS
+Generates Get-Help documentation in Docusaurus compatible \`.mdx\` format.
+
+## SYNTAX
+
+```powershell
+New-DocusaurusHelp [-Module] <String> [-OutputFolder] <String> [-EditUrl] <String> [-Monolithic]
+ [<CommonParameters>]
+```
+
+## DESCRIPTION
+The New-Docusaurus cmdlet generates Get-Help documentation in
+Docusaurus compatible format by creating \`.mdx\` files with command
+specific \`front matter\` variables for each command exported by the module.
+
+The cmdlet also produces a \`docusaurus.powershell.sidebar.js\` file
+containing a list of all documented commands so they can be integrated
+into the Docusaurus website sidebar.
+
+## EXAMPLES
+
+### EXAMPLE 1
+```powershell
+New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell -OutputFolder .\docusaurus\docs\ -EditUrl "https://github.com/alt3/Docusaurus.Powershell/edit/master/source/Public"
+```
+
+## PARAMETERS
+
+### -Module
+Specifies the module this cmdlet will generate Docusaurus documentation for.
+
+You may specify a module name, a \`.psd1\` file or a \`.psm1\` file.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OutputFolder
+Specifies the folder where the Docusaurus Get-Help documentation will be created.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EditUrl
+Specifies the URL prefixed to all Docusaurus \`custom_edit_url\` front matter variables.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Monolithic
+Use this optional argument if the Powershell module source is monolithic.
+
+Will point all \`custom_edit_url\` front matter variables to the \`.psm1\` file.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+### System.Object
+## NOTES
+- @todo: support all PlatyPS params
+- @todo: add -Verbose
+
+## RELATED LINKS
+
+[https://docusaurus.io/](https://docusaurus.io/)
+
+[https://github.com/PowerShell/platyPS](https://github.com/PowerShell/platyPS)
+
+

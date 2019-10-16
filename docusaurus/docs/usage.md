@@ -18,16 +18,16 @@ command inside your project's root folder:
 npx @docusaurus/init@next init docusaurus classic
 ```
 
-Modify new file `docusaurus/sidebar.js`so it looks like:
+Modify new file `docusaurus/sidebars.js`so it looks like:
 
 ```js
-const powershellCommands = require('./docs/docusaurus.powershell.sidebar.js');
+const cmdlets = require('./docs/docusaurus.powershell.sidebar.js');
 
 module.exports = {
   docs: {
     Docusaurus: ['doc1', 'doc2', 'doc3'],
     Features: ['mdx'],
-    CmdLets: powershellCommands
+    CmdLets: cmdlets
   },
 };
 ```
