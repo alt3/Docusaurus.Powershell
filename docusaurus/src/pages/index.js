@@ -33,11 +33,11 @@ const features = [
     ),
   },
   {
-    title: <>Sustainable Solution</>,
+    title: <>Durable Solution</>,
     imageUrl: 'img/undraw_docusaurus_react.svg',
     description: (
       <>
-        Cross-technology, separation of concern.
+        Modern, cross-technology, separation of concern.
       </>
     ),
   },
