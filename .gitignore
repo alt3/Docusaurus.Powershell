@@ -1,6 +1,6 @@
 # Ignore these folders
-Dev/
-Output/
+dev/
+output/
 
 # Editors
 .vscode/*
