@@ -21,7 +21,7 @@ module.exports = {
         src: 'img/logo.svg',
       },
       links: [
-        {to: 'docs/doc1', label: 'Docs', position: 'right'},
+        {to: 'docs/installation', label: 'Docs', position: 'right'},
         {
           href: 'https://github.com/alt3/Docusaurus.Powershell',
           label: 'GitHub',
@@ -36,8 +36,12 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Docs',
-              to: 'docs/doc1',
+              label: 'Installation',
+              to: 'docs/installation',
+            },
+            {
+              label: 'Usage',
+              to: 'docs/usage',
             },
           ],
         },
@@ -51,13 +55,8 @@ module.exports = {
           ],
         },
         {
-          title: 'Social',
-          items: [
-            {
-              label: 'Blog',
-              to: 'blog',
-            },
-          ],
+          title: 'More',
+          items: [],
         },
       ],
       logo: {
