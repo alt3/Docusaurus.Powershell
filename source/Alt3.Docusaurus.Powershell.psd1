@@ -96,8 +96,8 @@
             Tags = @(
                 'Documentation'
                 'Docusaurus'
+                'Help'
                 'Powershell'
-                'PSScriptModuleDesign'
             )
 
             # A URL to an icon representing this module.
