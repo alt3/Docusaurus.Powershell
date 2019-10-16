@@ -19,7 +19,7 @@
     Copyright = 'Copyright (c) 2019-present ALT3 B.V.'
 
     # Description of the functionality provided by this module
-    Description = 'Awesome documentation for your Powershell Modules.'
+    Description = 'Awesome documentation websites for Powershell Modules.'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
