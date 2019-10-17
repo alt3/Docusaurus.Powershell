@@ -1,0 +1,16 @@
+# -----------------------------------------------------------------------------
+# Creates debug information for this specific job/image.
+# -----------------------------------------------------------------------------
+
+steps:
+- powershell: |
+    Write-Host "Powershell Version:"
+    $PSVersionTable
+    Write-Host ""
+
+    Write-Host "Environment Variables:"
+     Get-ChildItem -Path Env:
+
+  displayName: 'Virtual Machine Information'
+
+

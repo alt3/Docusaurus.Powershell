@@ -37,11 +37,11 @@ module.exports = {
 Generate Get-Help documentation for your Powershell Module by running:
 
 ```
-New-DocusaurusHelp -Module YourModule -OutputFolder "docusaurus/docs" -EditUrl "http://dummy.for.now"
+New-DocusaurusHelp -Module Microsoft.PowerShell.Management -OutputFolder "docusaurus/docs" -EditUrl "http://dummy.for.now"
 ```
 
 > Inside the `docusaurus/docs` folder, you should now see one `.mdx` file for each command
-> exported by your Powershell Module.
+> exported by the Powershell Module.
 
 ## Starting the Website
 
