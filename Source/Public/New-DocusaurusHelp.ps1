@@ -4,9 +4,10 @@ function New-DocusaurusHelp() {
             Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 
         .DESCRIPTION
-            The New-Docusaurus cmdlet generates Get-Help documentation in
-            Docusaurus compatible format by creating `.mdx` files with command
-            specific `front matter` variables for each command exported by the module.
+            The `New-DocusaurusHelp` cmdlet generates Get-Help documentation in Docusaurus
+            compatible format by creating an `.mdx` file for each command exported by
+            the module, then enriching that file with command specific front matter
+            variables.
 
             The cmdlet also produces a `docusaurus.powershell.sidebar.js` file
             containing a list of all documented commands so they can be integrated
@@ -35,8 +36,7 @@ function New-DocusaurusHelp() {
             Will point all `custom_edit_url` front matter variables to the `.psm1` file.
 
         .NOTES
-            - @todo: support all PlatyPS params
-            - @todo: add -Verbose
+            Please note that Docusaurus v2 is an early and alpha version, just like this module.
 
         .LINK
             https://docusaurus.io/

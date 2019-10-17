@@ -1,0 +1,29 @@
+TOPIC
+    about_Alt3.Docusaurus.Powershell
+
+SHORT DESCRIPTION
+    Awesome Get-Help documentation for Powershell Modules.
+
+    Live demo at https://to.do
+
+LONG DESCRIPTION
+    The New-DocusaurusHelp cmdlet generates Get-Help documentation in Docusaurus
+    compatible format by creating an .mdx file for each command exported by
+    the module, then enriching that file with command specific front matter
+    variables.
+
+    The cmdlet also produces a docusaurus.powershell.sidebar.js file containing
+    a list of all documented commands so they can be integrated into the Docusaurus
+    website sidebar.
+
+EXAMPLES
+
+NOTE
+
+TROUBLESHOOTING NOTE
+
+SEE ALSO
+  - https://github.com/alt3/Docusaurus.Powershell
+
+KEYWORDS
+    Documentation, Docusaurus, Help, Powershell
