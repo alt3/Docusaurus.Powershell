@@ -13,13 +13,13 @@
     Author = 'Rob van Erkel'
 
     # Company or vendor of this module
-    CompanyName = 'ALT B.V.'
+    CompanyName = 'ALT3 B.V.'
 
     # Copyright statement for this module
     Copyright = 'Copyright (c) 2019-present ALT3 B.V.'
 
     # Description of the functionality provided by this module
-    Description = 'Awesome documentation websites for Powershell Modules.'
+    Description = 'Awesome Get-Help documentation for Powershell Modules.'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()

@@ -7,7 +7,7 @@
 
 module.exports = {
   title: 'Docusaurus.Powershell',
-  tagline: 'Awesome documentation websites for Powershell Modules',
+  tagline: 'Awesome Get-Help documentation for Powershell Modules',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
