@@ -1,4 +1,4 @@
-function replaceMarkdownHeader() {
+function UpdateContentFrontMatter() {
     <#
         .SYNOPSIS
             Replaces PlatyPS generated front matter, removes the H1-title.

@@ -1,4 +1,4 @@
-function setCodeBlockLanguage() {
+function UpdateContentPowershellCodeBlocks() {
     <#
         .SYNOPSIS
         Add `powershell` syntax highlighting to generated code blocks.

@@ -1,4 +1,4 @@
-function getCustomEditUrl() {
+function GetCustomEditUrl() {
     <#
         .SYNOPSIS
             Returns the `custom_edit_url` for the given .md file.

@@ -1,4 +1,4 @@
-function getMdxFilePath() {
+function GetMdxFilePath() {
     <#
         .SYNOPSIS
             Returns the .mdx file path for a given .md file.

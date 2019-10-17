@@ -1,4 +1,4 @@
-Describe "Private$([IO.Path]::DirectorySeparatorChar)getMdxFilePath" {
+Describe "Private$([IO.Path]::DirectorySeparatorChar)GetMdxFilePath" {
     Import-Module Alt3.Docusaurus.Powershell -DisableNameChecking -Verbose:$False
 
     # up
@@ -13,7 +13,7 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)getMdxFilePath" {
 
     # the actual tests
     $mdxFilePath = InModuleScope Alt3.Docusaurus.Powershell {
-        getMdxFilePath -MarkdownFile ${global:markdownFileItem}
+        GetMdxFilePath -MarkdownFile ${global:markdownFileItem}
     }
 
     It "does not change the filename" {

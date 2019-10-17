@@ -1,4 +1,4 @@
-function generateSidebarIncludeFile() {
+function NewSidebarIncludeFile() {
     <#
         .SYNOPSIS
             Generates a `.js` file holding an array with all .mdx 'ids` to be imported in Docusaurus `sidebar.js`.
