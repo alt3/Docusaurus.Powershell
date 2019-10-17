@@ -2,8 +2,3 @@
 # Set default behavior, in case users don't have core.autocrlf set.
 * text=auto
 * text eol=lf
-
-# Declare files that will always have CRLF line endings on checkout.
-*.ps1 eol=crlf
-*.psd1 eol=crlf
-*.psm1 eol=crlf
