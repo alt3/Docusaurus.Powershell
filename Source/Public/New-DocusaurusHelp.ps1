@@ -9,8 +9,8 @@ function New-DocusaurusHelp() {
             the module, then enriching that file with command specific front matter
             variables.
 
-            The cmdlet also produces a `docusaurus.powershell.sidebar.js` file
-            containing a list of all documented commands so they can be integrated
+            The cmdlet also creates a `docusaurus.powershell.sidebar.js` file
+            containing a list of all documented commands, for easy integration
             into the Docusaurus website sidebar.
 
         .OUTPUTS
