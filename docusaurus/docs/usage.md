@@ -8,7 +8,6 @@ Adding Docusaurus to a Powershell Module project requires two steps:
 1. Adding the Docusaurus website skeleton
 2. Generating Get-Help documentation in `.mdx` file format
 
-
 ## Adding Docusaurus
 
 Add the Docusaurus skeleton by running the following
@@ -37,7 +36,7 @@ module.exports = {
 Generate Get-Help documentation for your Powershell Module by running:
 
 ```
-New-DocusaurusHelp -Module Microsoft.PowerShell.Management -OutputFolder "docusaurus/docs" -EditUrl "http://dummy.for.now"
+New-DocusaurusHelp -Module YourModule -OutputFolder "docusaurus/docs" -EditUrl "http://github.com/your/repo/sources"
 ```
 
 > Inside the `docusaurus/docs` folder, you should now see one `.mdx` file for each command
