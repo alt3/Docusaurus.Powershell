@@ -9,7 +9,7 @@ const cmdlets = require('./docs/docusaurus.powershell.sidebar.js');
 module.exports = {
   docs: {
     'Docusaurus.Powershell': ['installation', 'usage'],
-    'FAQ': ['faq-monolithic', 'faq-edit-url'],
+    'FAQ': ['faq-monolithic'],
     CmdLets: cmdlets
   },
 };
