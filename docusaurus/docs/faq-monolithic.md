@@ -12,8 +12,8 @@ Powershell Modules come in two forms:
 assumes, by default, that you are following industry best practices and are thus using
 non-monolithic sources.
 
-> If you are documenting a monolithic module make sure to pass the `-Monolithic` parameter
-> so the correct Docusaurus `editUrl` will be generated.
+> **Note:** if you are documenting a monolithic module make sure to pass the `-Monolithic`
+> parameter so the correct Docusaurus `editUrl` will be generated.
 
 ## editUrl
 

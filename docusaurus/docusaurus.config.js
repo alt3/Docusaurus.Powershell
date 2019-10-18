@@ -21,7 +21,7 @@ module.exports = {
         src: 'img/logo.svg',
       },
       links: [
-        {to: 'docs/installation', label: 'Docs', position: 'right'},
+        {to: 'docs/introduction', label: 'Docs', position: 'right'},
         {
           href: 'https://github.com/alt3/Docusaurus.Powershell',
           label: 'GitHub',
@@ -51,6 +51,10 @@ module.exports = {
             {
               label: 'Discord',
               href: 'https://discordapp.com/invite/docusaurus',
+            },
+            {
+              label: 'Module Builder',
+              href: 'https://github.com/PoshCode/ModuleBuilder',
             },
           ],
         },

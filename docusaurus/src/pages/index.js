@@ -19,7 +19,7 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: (
       <>
-        Create websites like this one in just two steps.
+        Websites like this, in two steps.
       </>
     ),
   },
@@ -28,7 +28,7 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_tree.svg',
     description: (
       <>
-        Write good module documentation, nothing else.
+        Write module documentation, nothing else.
       </>
     ),
   },
@@ -60,7 +60,7 @@ function Home() {
                 'button button--outline button--secondary button--lg',
                 styles.getStarted,
               )}
-              to={withBaseUrl('docs/installation')}>
+              to={withBaseUrl('docs/introduction')}>
               Get Started
             </Link>
           </div>
