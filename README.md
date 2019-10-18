@@ -6,4 +6,10 @@
 
 Awesome documentation for Powershell Modules.
 
-[Live demo](https://docusaurus-powershell.netlify.com/)
+## Live Demo
+
+https://docusaurus-powershell.netlify.com
+
+## Screenshot
+
+![Screenshot](docusaurus/static/img/screenshot.png "Screenshot")
