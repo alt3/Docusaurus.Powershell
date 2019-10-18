@@ -2,7 +2,7 @@ TOPIC
     about_Alt3.Docusaurus.Powershell
 
 SHORT DESCRIPTION
-    Awesome Get-Help documentation for Powershell Modules.
+    Awesome documentation for Powershell Modules.
 
     Live demo at https://to.do
 
