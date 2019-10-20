@@ -21,3 +21,11 @@
   --ifm-color-primary-lighter: rgb(102, 212, 189);
   --ifm-color-primary-lightest: rgb(146, 224, 208);
 }
+
+/**
+ * Theme override for Docusaurus.Powershell as explained at
+ * https://v2.docusaurus.io/docs/styling-layout
+ */
+.hero .hero__title {
+  font-size: 2.4rem;
+}
