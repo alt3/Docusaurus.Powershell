@@ -19,7 +19,7 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: (
       <>
-        Websites like this, in two steps.
+        Websites like this one, in two steps.
       </>
     ),
   },
