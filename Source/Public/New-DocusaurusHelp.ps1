@@ -64,22 +64,23 @@ function New-DocusaurusHelp() {
     }
 
     # generate PlatyPs markdown files
-    $markdownFiles = New-MarkdownHelp -Module $Module -OutputFolder $OutputFolder
+    $markdownFiles = New-MarkdownHelp -Module $Module -OutputFolder $OutputFolder -Force
 
     # update generated markdown file(s) to make them Docusaurus compatible
     ForEach ($markdownFile in $markdownFiles) {
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $markdownFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
         UpdateContentFrontMatter -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl
+        RemoveContentHeader1 -MarkdownFile $markdownFile
         UpdateContentPowershellCodeBlocks -MarkdownFile $markdownFile
         UpdateContentBackticks -MarkdownFile $markdownFile
 
         # rename to .mdx
         $mdxFilePath = GetMdxFilePath -MarkdownFile $markdownFile
-        Move-Item -Path $markdownFile.FullName -Destination $mdxFilePath -Force | Out-Null
+       Move-Item -Path $markdownFile.FullName -Destination $mdxFilePath -Force | Out-Null
 
         # output .mdx item so end-user can post-process files as they see fit
-        Get-Item $mdxFilePath
+       Get-Item $mdxFilePath
     }
 
     # generate the `.js` file used for the docusaurus sidebar

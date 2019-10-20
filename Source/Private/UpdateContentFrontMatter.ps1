@@ -1,7 +1,7 @@
 function UpdateContentFrontMatter() {
     <#
         .SYNOPSIS
-            Replaces PlatyPS generated front matter, removes the H1-title.
+            Replaces the PlatyPS generated front matter with Docusaurus compatible front matter.
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile,
@@ -17,7 +17,6 @@ function UpdateContentFrontMatter() {
         "title: $powershellCommandName"
         "custom_edit_url: $customEditUrl"
         "---"
-        $null
     )
 
     # read markdown into memory
@@ -25,7 +24,7 @@ function UpdateContentFrontMatter() {
 
     # keep everything AFTER front matter
     $frontMatterBlock = @($content | Select-String "^---$" | Select-Object -First 2)
-    $content = $content[($frontMatterBlock[1].LineNumber + 3) .. ($content.Length -1 )]
+    $content = $content[($frontMatterBlock[1].LineNumber +1) .. ($content.Length -1 )]
 
     # add new front matter
     $content = $newFrontMatter + $content
