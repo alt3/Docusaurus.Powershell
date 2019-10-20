@@ -1,4 +1,4 @@
-function UpdateContentPowershellCodeBlocks() {
+function UpdateContentCodeBlocks() {
     <#
         .SYNOPSIS
         Add `powershell` syntax highlighting to generated code blocks.
@@ -11,15 +11,14 @@ function UpdateContentPowershellCodeBlocks() {
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
     )
 
-    # read file into a string, not an arry
-    $content = [System.IO.File]::ReadAllText($MarkdownFile)
+    $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
 
-    # regex replace all code blocks without a language (test on https://regex101.com using /$regex/g)
+    # this regex replaces all code blocks without a language (test on https://regex101.com using /$regex/g)
     $regex = '(```)\r((?:(?!```)[\s\S])+)(```)\r'
 
-    $content = [regex]::replace($content, $regex, '```powershell$2```')
+    $newContent = [regex]::replace($content, $regex, '```powershell$2```')
 
-    # replace file content (UTF-8 without BOM)
+    # replace file (UTF-8 without BOM)
     $fileEncoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($markdownFile.FullName, $content, $fileEncoding)
+    [System.IO.File]::WriteAllLines($markdownFile.FullName, $newContent, $fileEncoding)
 }

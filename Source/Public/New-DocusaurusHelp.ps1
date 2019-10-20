@@ -71,8 +71,8 @@ function New-DocusaurusHelp() {
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $markdownFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
         UpdateContentFrontMatter -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl
-        RemoveContentHeader1 -MarkdownFile $markdownFile
-        UpdateContentPowershellCodeBlocks -MarkdownFile $markdownFile
+        RemoveContentHeaderOne -MarkdownFile $markdownFile
+        UpdateContentCodeBlocks -MarkdownFile $markdownFile
         UpdateContentBackticks -MarkdownFile $markdownFile
 
         # rename to .mdx

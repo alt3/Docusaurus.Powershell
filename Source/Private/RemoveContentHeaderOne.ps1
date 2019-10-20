@@ -1,7 +1,7 @@
-function UpdateContentBackticks() {
+function RemoveContentHeaderOne() {
     <#
         .SYNOPSIS
-        Replaces platyPS-produced "escaped backticks" with normal backticks so markdown gets rendered as expected.
+        Removes the H1 element from the markdown content because Docusaurus already generates H1 using the `title` front matter.
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
@@ -9,9 +9,10 @@ function UpdateContentBackticks() {
 
     $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
 
-    $regex = '\\`'
+    #$regex = "(?sm)^(---)(.+)^(---).$\n"
+    $regex = '\n#{1}\s.+\n\r'
 
-    $newContent = [regex]::replace($content, $regex, '`')
+    $newContent = [regex]::replace($content, $regex, '')
 
     # replace file (UTF-8 without BOM)
     $fileEncoding = New-Object System.Text.UTF8Encoding $False

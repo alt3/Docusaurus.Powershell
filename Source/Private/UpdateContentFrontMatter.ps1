@@ -1,14 +1,17 @@
 function UpdateContentFrontMatter() {
     <#
         .SYNOPSIS
-            Replaces the PlatyPS generated front matter with Docusaurus compatible front matter.
+            Replaces PlatyPS generated front matter with Docusaurus compatible front matter.
+
+        .LINK
+            https://www.apharmony.com/software-sagacity/2014/08/multi-line-regular-expression-replace-in-powershell/
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile,
         [Parameter(Mandatory = $True)][string]$CustomEditUrl
     )
 
-    # convenience variables
+    # prepare front matter
     $powershellCommandName = [System.IO.Path]::GetFileNameWithoutExtension($markdownFile.Name)
 
     $newFrontMatter = @(
@@ -17,19 +20,16 @@ function UpdateContentFrontMatter() {
         "title: $powershellCommandName"
         "custom_edit_url: $customEditUrl"
         "---"
-    )
+    ) | Out-String
 
-    # read markdown into memory
-    $content = Get-Content $MarkdownFile.FullName
+    # replace front matter
+    $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
 
-    # keep everything AFTER front matter
-    $frontMatterBlock = @($content | Select-String "^---$" | Select-Object -First 2)
-    $content = $content[($frontMatterBlock[1].LineNumber +1) .. ($content.Length -1 )]
+    $regex = "(?sm)^(---)(.+)^(---).$\n"
 
-    # add new front matter
-    $content = $newFrontMatter + $content
+    $newContent = $content -replace $regex, $newFrontMatter
 
-    # replace file content (UTF-8 without BOM)
+    # replace file (UTF-8 without BOM)
     $fileEncoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($markdownFile.FullName, $content, $fileEncoding)
+    [System.IO.File]::WriteAllLines($markdownFile.FullName, $newContent, $fileEncoding)
 }
