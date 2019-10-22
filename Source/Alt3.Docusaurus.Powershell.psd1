@@ -4,7 +4,7 @@
     RootModule = 'Alt3.Docusaurus.Powershell.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.1.0'
+    ModuleVersion = '1.0.0'
 
     # ID used to uniquely identify this module
     GUID = '0a746d8a-f1f1-4064-967a-aad1877b2d63'
@@ -21,11 +21,14 @@
     # Description of the functionality provided by this module
     Description = 'Awesome documentation for Powershell Modules.'
 
-    # Supported PSEditions
-    # CompatiblePSEditions = @()
-
     # Minimum version of the Windows PowerShell engine required by this module
-    # PowerShellVersion = ''
+    PowerShellVersion = '5.1'
+
+    # Supported PSEditions
+    CompatiblePSEditions = @(
+        'Core'
+        'Desktop'
+    )
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
@@ -108,7 +111,7 @@
             ReleaseNotes = ''
 
             # As required by the ModuleBuilder Build-Module command
-            Prerelease = ""
+            Prerelease = ''
 
         } # End of PSData hashtable
 
