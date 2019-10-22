@@ -29,3 +29,13 @@
 .hero .hero__title {
   font-size: 2.5rem;
 }
+
+#hero-get-started {
+  margin-right: 24px;
+}
+
+@media only screen and (max-width: 768px) {
+  #hero-github-stars {
+    display: none;
+  }
+}

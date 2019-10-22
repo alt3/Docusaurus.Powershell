@@ -56,6 +56,7 @@ function Home() {
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
+              id="hero-get-started"
               className={classnames(
                 'button button--outline button--secondary button--lg',
                 styles.getStarted,
@@ -63,6 +64,18 @@ function Home() {
               to={withBaseUrl('docs/introduction')}>
               Get Started
             </Link>
+
+            <span id="hero-github-stars" className={styles.indexCtasGitHubButton}>
+              <iframe
+                src="https://ghbtns.com/github-btn.html?user=alt3&amp;repo=docusaurus.powershell&amp;type=star&amp;count=true&amp;size=large"
+                frameBorder={0}
+                scrolling={0}
+                width={160}
+                height={30}
+                title="GitHub Stars"
+              />
+            </span>
+
           </div>
         </div>
       </header>
