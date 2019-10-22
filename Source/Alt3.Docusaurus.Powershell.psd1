@@ -93,7 +93,7 @@
             ProjectUri = 'https://www.github.com/alt3/Docusaurus.Powershell'
 
             # A URL to the license for this module.
-            LicenseUri = 'https://www.github.com/alt3/Docusaurus.Powershell/LICENSE.txt'
+            LicenseUri = 'https://github.com/alt3/Docusaurus.Powershell/blob/master/LICENSE.txt'
 
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags = @(
