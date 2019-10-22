@@ -19,7 +19,11 @@
     Copyright = 'Copyright (c) 2019-present ALT3 B.V.'
 
     # Description of the functionality provided by this module
-    Description = 'Awesome documentation for Powershell Modules.'
+    Description = '
+Awesome documentation for Powershell Modules.
+
+Live demo at https://docusaurus-powershell.netlify.com/
+'
 
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion = '5.1'
