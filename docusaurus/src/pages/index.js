@@ -19,7 +19,7 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: (
       <>
-        Websites like this one, in two steps.
+        Websites like this, in two simple steps.
       </>
     ),
   },
@@ -28,16 +28,16 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_tree.svg',
     description: (
       <>
-        Write module documentation, nothing else.
+        Write Get-Help documentation, nothing else.
       </>
     ),
   },
   {
-    title: <>Durable Solution</>,
+    title: <>Cross-Technology</>,
     imageUrl: 'img/undraw_docusaurus_react.svg',
     description: (
       <>
-        Modern, cross-technology, separation of concern.
+        Durable solution, separation of concern.
       </>
     ),
   },

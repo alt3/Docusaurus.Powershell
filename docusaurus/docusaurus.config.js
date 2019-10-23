@@ -36,6 +36,10 @@ module.exports = {
           title: 'Docs',
           items: [
             {
+              label: 'Introduction',
+              to: 'docs/introduction',
+            },
+            {
               label: 'Installation',
               to: 'docs/installation',
             },
@@ -52,15 +56,16 @@ module.exports = {
               label: 'Discord',
               href: 'https://discordapp.com/invite/docusaurus',
             },
-            {
-              label: 'Module Builder',
-              href: 'https://github.com/PoshCode/ModuleBuilder',
-            },
           ],
         },
         {
           title: 'More',
-          items: [],
+          items: [
+            {
+              label: 'Github',
+              href: 'https://github.com/alt3/Docusaurus.Powershell',
+            },
+          ],
         },
       ],
       logo: {
