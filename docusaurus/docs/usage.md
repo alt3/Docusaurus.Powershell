@@ -3,25 +3,25 @@ id: usage
 title: Usage
 ---
 
-Adding Docusaurus to a Powershell Module project requires two steps:
+Adding Docusaurus to a Powershell Module project requires three steps:
 
 1. Adding the Docusaurus website skeleton
-2. Generating Get-Help documentation in `.mdx` file format
-
-> **Note**: a fully functioning demo website will be produced
-> by following the steps below. Simply create an empty project
-> folder and open a Powershell so you can copy-paste the commands.
+2. Generating Module documentation
+3. Starting the Website
 
 ## Adding Docusaurus
 
-Add the Docusaurus skeleton by running the following
-command inside your project's root folder:
+Open a Powershell (Core).
+
+Cd into your project's root folder.
+
+Add the Docusaurus website skeleton by running:
 
 ```
 npx @docusaurus/init@next init docusaurus classic
 ```
 
-Modify new file `docusaurus/sidebars.js`so it looks like:
+Modify newly created file `docusaurus/sidebars.js`so it looks like this:
 
 ```js
 const cmdlets = require('./docs/docusaurus.powershell.sidebar.js');
@@ -35,20 +35,20 @@ module.exports = {
 };
 ```
 
-## Generating Documentation
+## Generating Module Documentation
 
-Generate Get-Help documentation for your Powershell Module by running:
+Generate the documentation pages for your module by running:
 
 ```
-New-DocusaurusHelp -Module Microsoft.PowerShell.Management -OutputFolder "docusaurus/docs" -EditUrl "http://github.com/your/repo/sources"
+New-DocusaurusHelp -Module <your-module> -OutputFolder "docusaurus/docs" -EditUrl "http://github.com/your/repo/sources"
 ```
 
-> Inside the `docusaurus/docs` folder, you should now see an `.mdx` file for each command
-> exported by the Powershell Module.
+> **Note:** after the command has completed, the `docusaurus/docs` folder
+> should contain an `.mdx` file for each command exported by your Powershell module.
 
 ## Starting the Website
 
-Start the website by running the following command inside the `docusaurus` folder:
+To start your website, cd into the `docusaurus` folder and run:
 
 ```powershell
 yarn start
