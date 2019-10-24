@@ -17,7 +17,7 @@ Cd into your project's root folder.
 
 Add the Docusaurus website skeleton by running:
 
-```
+```powershell
 npx @docusaurus/init@next init docusaurus classic
 ```
 
@@ -39,8 +39,8 @@ module.exports = {
 
 Generate the documentation pages for your module by running:
 
-```
-New-DocusaurusHelp -Module <your-module> -OutputFolder "docusaurus/docs" -EditUrl "http://github.com/your/repo/sources"
+```powershell
+New-DocusaurusHelp -Module "YourModule" -OutputFolder "docusaurus/docs" -EditUrl "http://github.com/your/repo/sources"
 ```
 
 > **Note:** after the command has completed, the `docusaurus/docs` folder
