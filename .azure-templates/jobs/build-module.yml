@@ -28,8 +28,6 @@ jobs:
     steps:
     - template: ../steps/log-virtual-machine-information.yml
 
-
-
     # checkout files from large file system
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops#checkout-files-from-lfs
     - checkout: self

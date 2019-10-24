@@ -9,7 +9,7 @@ steps:
     Write-Host ""
 
     Write-Host "Environment Variables:"
-     Get-ChildItem -Path Env:
+    Get-ChildItem -Path Env:
 
   displayName: 'Virtual Machine Information'
 

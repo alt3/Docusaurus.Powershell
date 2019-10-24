@@ -42,11 +42,35 @@ stages:
       TestsDirectory: '$(Build.SourcesDirectory)/Tests' # Linux users: be aware of the upperase
       strategy:
         matrix:
-          Linux:
-            vmImage: 'ubuntu-16.04'
-          MacOS:
-            vmImage: 'macOS-10.14'
+          # Linux:
+          #   vmImage: 'ubuntu-16.04'
+          # MacOS:
+          #   vmImage: 'macOS-10.14'
           Windows:
             vmImage: 'windows-2019'
       pool:
         vmImage: $(vmImage)
+
+
+# ---------------------------------------------------------------------------
+# Publish module to PSGallery and create Github Release
+#
+# IMPORTANT: skipped if not on master AND/OR [no-release] in the commit.
+# ---------------------------------------------------------------------------
+- stage: Publish
+  dependsOn: Validate
+  #condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+
+  jobs:
+  - template: .azure-templates/jobs/psgallery-publish-module.yml
+    parameters:
+      dependsOn: []
+      artifactName: $(ArtifactName)
+
+  # job: commit new manifest als [no-release] chore
+
+  # https://developer.github.com/v3/repos/releases/#create-a-release
+  - template: .azure-templates/jobs/github-create-release.yml
+    parameters:
+      dependsOn: ['PSGallery']
+      artifactName: $(ArtifactName)

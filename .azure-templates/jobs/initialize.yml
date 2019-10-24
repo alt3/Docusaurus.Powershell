@@ -27,14 +27,21 @@ jobs:
     - checkout: self
       lfs: true
 
-    # run the Devops task
+    # export the original git commit message before gitversion changes it so we can add it to the
+    # variables artifact and use it as a condition during the Publish stage
+    - powershell: |
+        $commitMessage = git log -1 --pretty=%B
+        Write-Host "commit message = $commitMessage"
+      displayName: 'Export Commit Message'
+
+    # run the gitversion Devops task
     - task: gittools.gitversion.gitversion-task.GitVersion@5
       displayName: GitVersion
       inputs:
         updateAssemblyInfo: ${{ parameters.updateAssemblyInfo }}
         additionalArguments: ${{ parameters.additionalArguments }}
 
-    # export variables (what are these used for?)
+    # export variables so they can be used by jobs WITHIN the same stage
     - powershell: |
         @{
             Counter          = '$(GitVersion.MajorMinorPatch)'
@@ -47,4 +54,21 @@ jobs:
             Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0};isOutput=true]{1}" -f $_.Key, $_.Value)
         })
       name: Output
-      displayName: Export ?? Variables
+      displayName: Export ModuleBuilder Variables
+
+
+    # we also create a variables directory so we can use an artifact to share variables between stages
+    # see: https://medium.com/microsoftazure/how-to-pass-variables-in-azure-pipelines-yaml-tasks-5c81c5d31763
+    - powershell: |
+        $variableDir = Join-Path -Path $(Pipeline.Workspace) -ChildPath "moduleBuilderVariables"
+        New-Item -Path $variableDir -ItemType Directory -Verbose
+        Add-Content -Path (Join-Path -Path $variableDir -ChildPath "Counter") -Value '$(Output.Counter)'
+        Add-Content -Path (Join-Path -Path $variableDir -ChildPath "CommitMessage") -Value '$(COMMIT_MESSAGE)'
+      name: PrepareArtifact
+      displayName: Prepare Variables Artifact
+
+    # publish the variables artifact
+    - publish: $(Pipeline.Workspace)/moduleBuilderVariables
+      artifact: ModuleBuilderVariables
+      name: PublishArtifact
+      displayName: Publish Variables Artifact

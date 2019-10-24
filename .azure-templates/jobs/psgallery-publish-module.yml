@@ -1,0 +1,65 @@
+# -----------------------------------------------------------------------------
+# Job that publishes the new module to the PSGallery.
+#
+# - requires protected Azure Pipeline environment variable `PSGALLERY_API_KEY`
+# - will not publish the module if [no-release] is in the commit message
+# -----------------------------------------------------------------------------
+parameters:
+  artifactName: ''
+  artifactDownloadDirectory: $(Build.ArtifactStagingDirectory)
+
+jobs:
+  - job: PSGallery
+    dependsOn: ${{ parameters.dependsOn }}
+    pool:
+      vmImage: 'windows-2019'
+
+    steps:
+    # log virtual machine settings
+    - template: ../steps/log-virtual-machine-information.yml
+
+    # log template parameters
+    - powershell: |
+        Write-Host "jobName                  = ${{ parameters.jobName }}"
+        Write-Host "artifactName              = ${{ parameters.artifactName }}"
+        Write-Host "artifactDownloadDirectory = ${{ parameters.artifactDownloadDirectory }}"
+      displayName: 'Template Parameters'
+
+    # download moduleBuilderVariables artifact
+    - download: current
+      artifact: moduleBuilderVariables
+      displayName: Download Variables Artifact
+
+    # export artifact variables
+    - powershell: |
+        Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0}]{1}" -f "COUNTER", (Get-Content $(Pipeline.Workspace)/moduleBuilderVariables/Counter -First 1).Trim())
+        Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0}]{1}" -f "COMMIT_MESSAGE", (Get-Content $(Pipeline.Workspace)/moduleBuilderVariables/CommitMessage -First 1).Trim())
+      displayName: 'Export Artifact Variables'
+
+    # download the module
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Build Artifacts'
+      inputs:
+        artifactName: ${{ parameters.artifactName }}
+        downloadPath: ${{ parameters.artifactDownloadDirectory }}
+
+    # publish the new module to PSGALLERY
+    - powershell: |
+        if(-Not($env:MAPPED_PSGALLERY_API_KEY)) {
+          throw "Azure pipeline protected variable PSGALLERY_API_KEY does not exist. Are you sure you configured it using the Azure Devops web interface?"
+        }
+
+        # being lazy for now, single module only
+        $moduleName = Get-ChildItem -Path "${{ parameters.artifactDownloadDirectory }}" -Directory
+        $moduleVersion = Get-ChildItem -Path (Join-Path -Path "${{ parameters.artifactDownloadDirectory }}" -ChildPath $moduleName) -Directory
+        $moduleFolder = [IO.Path]::Combine("${{ parameters.artifactDownloadDirectory }}", $moduleName, $moduleVersion)
+        Write-Host "moduleName    = $moduleName"
+        Write-Host "moduleVersion = $moduleVersion"
+        Write-Host "moduleFolder = $moduleFolder"
+        Get-ChildItem -Path $moduleFolder
+
+        #Publish-Module -Path $publishFolder -NuGetApiKey $env:MAPPED_PSGALLERY_API_KEY -Verbose
+      displayName: 'Publish-Module'
+      condition: not(contains(variables['Build.SourceVersionMessage'], '[no-release]'))
+      env:
+        MAPPED_PSGALLERY_API_KEY: $(PSGALLERY_API_KEY)
