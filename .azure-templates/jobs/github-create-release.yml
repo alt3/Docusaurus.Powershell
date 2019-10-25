@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # Job that creates a Github release by creating a Git tag with markdown body.
 #
-# - requires protected Azure Pipeline environment variable `GITHUB_API_KEY`
+# - requires protected Azure Pipeline environment variable `GITHUB_USERNAME`
 # - will not create the release if [no-release] is in the commit message
 # -----------------------------------------------------------------------------
 parameters:
@@ -12,11 +12,14 @@ parameters:
 jobs:
   - job: Github
     dependsOn: ${{ parameters.dependsOn }}
+    pool:
+      vmImage: 'windows-2019'
     workspace:
       clean: outputs
 
-    pool:
-      vmImage: 'windows-2019'
+    variables:
+      github_repo_url: "$(Build.Repository.Uri)"
+      github_api_releases_url: "https://api.github.com/repos/$(Build.Repository.ID)/releases"
 
     steps:
     - template: ../steps/log-virtual-machine-information.yml
@@ -24,11 +27,27 @@ jobs:
 
     # log template parameters
     - powershell: |
-        Write-Host "jobName                  = ${{ parameters.jobName }}"
+        Write-Host "jobName                   = ${{ parameters.jobName }}"
         Write-Host "artifactName              = ${{ parameters.artifactName }}"
         Write-Host "artifactDownloadDirectory = ${{ parameters.artifactDownloadDirectory }}"
       displayName: 'Template Parameters'
       condition: not(contains(variables['Build.SourceVersionMessage'], '[no-release]'))
+
+    # make sure the required web interface secret API Key variable exists
+    - powershell: |
+        Write-Host "Making sure secret pipeline variable GITHUB_USERNAME is available"
+        if($env:MAPPED_GITHUB_USERNAME -match 'GITHUB_USERNAME') {
+          throw "Azure pipeline secret variable GITHUB_USERNAME does not exist. Are you sure that you have configured it using the Azure Devops web interface?"
+        }
+
+        Write-Host "Making sure secret pipeline variable GITHUB_PASSWORD is available"
+        if($env:MAPPED_GITHUB_USERNAME -match 'GITHUB_PASSWORD') {
+          throw "Azure pipeline secret variable GITHUB_PASSWORD does not exist. Are you sure that you have configured it using the Azure Devops web interface?"
+        }
+      displayName: 'Validate API Keys'
+      env:
+        MAPPED_GITHUB_USERNAME: $(GITHUB_USERNAME)
+        MAPPED_GITHUB_PASSWORD: $(GITHUB_PASSWORD)
 
     # download the module artifact
     - task: DownloadPipelineArtifact@2
@@ -38,36 +57,76 @@ jobs:
         artifactName: ${{ parameters.artifactName }}
         downloadPath: ${{ parameters.artifactDownloadDirectory }}
 
-    # todo: directly commit the .psd1
+    # commit new manifest directly to master (using [no-release] to prevent endless loop)
 
 
-    # create the Github Release using the Github API
+    # create new Github Release using the Github API
     - powershell: |
-        if(-Not($env:MAPPED_GITHUB_API_KEY)) {
-          throw "Azure pipeline protected variable GITHUB_API_KEY does not exist. Are you sure you configured it using the Azure Devops web interface?"
-        }
-
-        # being lazy for now, single module only
+        # being lazy here for now, single module only
+        Write-Host "Resolving module version:"
         $moduleName = Get-ChildItem -Path "${{ parameters.artifactDownloadDirectory }}" -Directory
         $moduleVersion = Get-ChildItem -Path (Join-Path -Path "${{ parameters.artifactDownloadDirectory }}" -ChildPath $moduleName) -Directory
         $moduleFolder = [IO.Path]::Combine("${{ parameters.artifactDownloadDirectory }}", $moduleName, $moduleVersion)
+        Write-Host "moduleFolder = $moduleFolder"
         Write-Host "moduleName    = $moduleName"
         Write-Host "moduleVersion = $moduleVersion"
-        Write-Host "moduleFolder = $moduleFolder"
-        Get-ChildItem -Path $moduleFolder
 
-        $jsonBody = @{
+        # generate the markdown release notes
+        Write-Host "Generating CHANGELOG:"
+        $latestTagVersion = git describe --tags --abbrev=0
+        $latestTagHash = git show-ref -s $latestTagVersion
+        Write-Host "Previous Tag Version = $latestTagVersion"
+        Write-Host "Previous Tag Hash    = $latestTagHash"
+
+        $logLines = git log "$($latestTagHash)...HEAD" --pretty=format:"%H%x09%h%x09%an%x09%s" --date=short
+
+        [string]$markdownChangeLog = "## CHANGELOG`n"
+
+        $logLines | ForEach-Object {
+            ($hash, $shortHash, $author, $message) = $_.Split("`t")
+
+            # exclude messages matching this regex
+            if ($message -match '^merge\s') {
+                Write-Host "=> excluding $message"
+                return
+            }
+
+            $hashLink = "[$shortHash]($env:GITHUB_REPO_URL/$hash)"
+            $authorLink = "[$author](https://github.com/$author)"
+
+            $markdownChangeLog += "`n- $message ($authorLink in $hashLink)"
+        }
+
+        Write-Host "Final CHANGELOG:"
+        $markdownChangeLog
+
+        # prepare Github API call
+        Write-Host "Preparing API call:"
+        $base64EncodedCredentials =  [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $env:MAPPED_GITHUB_USERNAME, $env:MAPPED_GITHUB_PASSWORD)))
+
+        $apiHeaders = @{
+            Authorization = "Basic $base64EncodedCredentials"
+        }
+
+        $apiBody = @{
           tag_name = "$moduleVersion"
           target_commitish = "master"
           name = "Release $moduleVersion"
-          body = "This must become markdown"
+          body = $markdownChangeLog
           draft = $False
           prerelease = $False
         } | ConvertTo-Json
 
-        Write-Host $jsonBody
+        # some logging
+        Write-Host "URL = $env:GITHUB_API_RELEASES_URL"
+        Write-Host "BODY = $apiBody"
 
-      displayName: 'Create Release'
+        # create the release
+        $apiResponse = Invoke-RestMethod -Method POST -Uri $env:GITHUB_API_RELEASES_URL -Headers $apiHeaders -Body "$apiBody" -ContentType "application/json;charset=utf-8"
+        $apiResponse | Out-Host
+
+      displayName: 'Github API New Release'
       condition: not(contains(variables['Build.SourceVersionMessage'], '[no-release]'))
       env:
-        MAPPED_GITHUB_API_KEY: $(GITHUB_API_KEY)
+        MAPPED_GITHUB_USERNAME: $(GITHUB_USERNAME)
+        MAPPED_GITHUB_PASSWORD: $(GITHUB_PASSWORD)

@@ -25,6 +25,16 @@ jobs:
         Write-Host "artifactDownloadDirectory = ${{ parameters.artifactDownloadDirectory }}"
       displayName: 'Template Parameters'
 
+    # make sure the required web interface secret API Key variable exists
+    - powershell: |
+        Write-Host "Making sure secret pipeline variable PSGALLERY_API_KEY is available"
+        if($env:MAPPED_PSGALLERY_API_KEY -match 'PSGALLERY_API_KEY') {
+          throw "Azure pipeline secret variable PSGALLERY_API_KEY does not exist. Are you sure that you have configured it using the Azure Devops web interface?"
+        }
+      displayName: 'Validate API Key'
+      env:
+        MAPPED_PSGALLERY_API_KEY: $(PSGALLERY_API_KEY)
+
     # download the module artifact
     - task: DownloadPipelineArtifact@2
       displayName: 'Download Build Artifacts'
@@ -35,11 +45,7 @@ jobs:
 
     # publish the new module to PSGALLERY
     - powershell: |
-        if(-Not($env:MAPPED_PSGALLERY_API_KEY)) {
-          throw "Azure pipeline protected variable PSGALLERY_API_KEY does not exist. Are you sure you configured it using the Azure Devops web interface?"
-        }
-
-        # being lazy for now, single module only
+        # being lazy here for now, single module only
         $moduleName = Get-ChildItem -Path "${{ parameters.artifactDownloadDirectory }}" -Directory
         $moduleVersion = Get-ChildItem -Path (Join-Path -Path "${{ parameters.artifactDownloadDirectory }}" -ChildPath $moduleName) -Directory
         $moduleFolder = [IO.Path]::Combine("${{ parameters.artifactDownloadDirectory }}", $moduleName, $moduleVersion)

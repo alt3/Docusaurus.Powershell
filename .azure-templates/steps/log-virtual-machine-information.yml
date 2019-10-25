@@ -12,5 +12,3 @@ steps:
     Get-ChildItem -Path Env:
 
   displayName: 'Virtual Machine Information'
-
-
