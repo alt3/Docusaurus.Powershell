@@ -15,8 +15,8 @@ jobs:
       vmImage: 'windows-2019'
 
     steps:
-    # log virtual machine settings
     - template: ../steps/log-virtual-machine-information.yml
+    - template: ../steps/set-skip-release-variable.yml
 
     # log template parameters
     - powershell: |
@@ -25,20 +25,10 @@ jobs:
         Write-Host "artifactDownloadDirectory = ${{ parameters.artifactDownloadDirectory }}"
       displayName: 'Template Parameters'
 
-    # download moduleBuilderVariables artifact
-    - download: current
-      artifact: moduleBuilderVariables
-      displayName: Download Variables Artifact
-
-    # export artifact variables
-    - powershell: |
-        Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0}]{1}" -f "COUNTER", (Get-Content $(Pipeline.Workspace)/moduleBuilderVariables/Counter -First 1).Trim())
-        Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0}]{1}" -f "COMMIT_MESSAGE", (Get-Content $(Pipeline.Workspace)/moduleBuilderVariables/CommitMessage -First 1).Trim())
-      displayName: 'Export Artifact Variables'
-
-    # download the module
+    # download the module artifact
     - task: DownloadPipelineArtifact@2
       displayName: 'Download Build Artifacts'
+      condition: ne(variables['SKIP_RELEASE'], 'True')
       inputs:
         artifactName: ${{ parameters.artifactName }}
         downloadPath: ${{ parameters.artifactDownloadDirectory }}
@@ -60,6 +50,6 @@ jobs:
 
         #Publish-Module -Path $publishFolder -NuGetApiKey $env:MAPPED_PSGALLERY_API_KEY -Verbose
       displayName: 'Publish-Module'
-      condition: not(contains(variables['Build.SourceVersionMessage'], '[no-release]'))
+      condition: ne(variables['SKIP_RELEASE'], 'True')
       env:
         MAPPED_PSGALLERY_API_KEY: $(PSGALLERY_API_KEY)

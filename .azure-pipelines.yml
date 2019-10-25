@@ -64,7 +64,6 @@ stages:
   jobs:
   - template: .azure-templates/jobs/psgallery-publish-module.yml
     parameters:
-      dependsOn: []
       artifactName: $(ArtifactName)
 
   # job: commit new manifest als [no-release] chore
@@ -74,3 +73,5 @@ stages:
     parameters:
       dependsOn: ['PSGallery']
       artifactName: $(ArtifactName)
+      githubName: 'alt3'
+      githubRepo: 'Docusaurus.Powershell'

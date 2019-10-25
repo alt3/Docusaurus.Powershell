@@ -6,6 +6,8 @@
 # -----------------------------------------------------------------------------
 parameters:
   dependsOn: []
+  artifactName: ''
+  artifactDownloadDirectory: $(Build.ArtifactStagingDirectory)
 
 jobs:
   - job: Github
@@ -17,8 +19,8 @@ jobs:
       vmImage: 'windows-2019'
 
     steps:
-    # log virtual machine settings
     - template: ../steps/log-virtual-machine-information.yml
+    - template: ../steps/set-skip-release-variable.yml
 
     # log template parameters
     - powershell: |
@@ -26,20 +28,20 @@ jobs:
         Write-Host "artifactName              = ${{ parameters.artifactName }}"
         Write-Host "artifactDownloadDirectory = ${{ parameters.artifactDownloadDirectory }}"
       displayName: 'Template Parameters'
+      condition: not(contains(variables['Build.SourceVersionMessage'], '[no-release]'))
 
-    # download moduleBuilderVariables artifact
-    - download: current
-      artifact: moduleBuilderVariables
-      displayName: Download Variables Artifact
-
-    # download the module
+    # download the module artifact
     - task: DownloadPipelineArtifact@2
       displayName: 'Download Build Artifacts'
+      condition: ne(variables['SKIP_RELEASE'], 'True')
       inputs:
         artifactName: ${{ parameters.artifactName }}
         downloadPath: ${{ parameters.artifactDownloadDirectory }}
 
-    # publish the new module to PSGALLERY
+    # todo: directly commit the .psd1
+
+
+    # create the Github Release using the Github API
     - powershell: |
         if(-Not($env:MAPPED_GITHUB_API_KEY)) {
           throw "Azure pipeline protected variable GITHUB_API_KEY does not exist. Are you sure you configured it using the Azure Devops web interface?"
@@ -54,8 +56,18 @@ jobs:
         Write-Host "moduleFolder = $moduleFolder"
         Get-ChildItem -Path $moduleFolder
 
-        Write-Host "Creating Release $moduleVersion"
-      displayName: CreateRelease
+        $jsonBody = @{
+          tag_name = "$moduleVersion"
+          target_commitish = "master"
+          name = "Release $moduleVersion"
+          body = "This must become markdown"
+          draft = $False
+          prerelease = $False
+        } | ConvertTo-Json
+
+        Write-Host $jsonBody
+
+      displayName: 'Create Release'
       condition: not(contains(variables['Build.SourceVersionMessage'], '[no-release]'))
       env:
         MAPPED_GITHUB_API_KEY: $(GITHUB_API_KEY)
