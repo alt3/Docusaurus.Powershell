@@ -14,7 +14,7 @@ jobs:
       vmImage: 'windows-2019'
 
     steps:
-    - template: ../steps/log-virtual-machine-information.yml
+    - template: ../../steps/log-virtual-machine-information.yml
 
     # log template parameters
     - powershell: |

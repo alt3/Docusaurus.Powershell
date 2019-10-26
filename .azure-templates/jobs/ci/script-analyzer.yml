@@ -20,7 +20,7 @@ jobs:
     pool: ${{ parameters.pool }}
 
     steps:
-    - template: ../steps/log-virtual-machine-information.yml
+    - template: ../../steps/log-virtual-machine-information.yml
 
     # log template parameters
     # todo
@@ -29,7 +29,7 @@ jobs:
       fetchDepth: 1  # we only need the current copy
       lfs: true      # this must always stay true or it will fail if it's ever true
 
-    - template: ../steps/install-required-modules.yml
+    - template: ../../steps/ci/install-required-modules.yml
       parameters:
         path: $(Build.SourcesDirectory)/${{ parameters.requiredModulesPath }}
 
@@ -115,7 +115,7 @@ jobs:
       displayName: 'Generate ScriptAnalyzer Test'
 
     # run pester to generate the code coverage
-    - template: ../steps/pester.yml
+    - template: ../../steps/ci/pester.yml
       parameters:
         testsDirectory: $(TestPath)
         additionalModulePaths: ${{ parameters.artifactDownloadDirectory }}
