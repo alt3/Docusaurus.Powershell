@@ -57,37 +57,36 @@ jobs:
         artifactName: ${{ parameters.artifactName }}
         downloadPath: ${{ parameters.artifactDownloadDirectory }}
 
-    # commit new manifest directly to master (using [no-release] to prevent endless loop)
-
-
-    # create new Github Release using the Github API
+    # create env vars using the artifact
     - powershell: |
         # being lazy here for now, single module only
         Write-Host "Resolving module version:"
         $moduleName = Get-ChildItem -Path "${{ parameters.artifactDownloadDirectory }}" -Directory
         $moduleVersion = Get-ChildItem -Path (Join-Path -Path "${{ parameters.artifactDownloadDirectory }}" -ChildPath $moduleName) -Directory
         $moduleFolder = [IO.Path]::Combine("${{ parameters.artifactDownloadDirectory }}", $moduleName, $moduleVersion)
-        Write-Host "moduleFolder = $moduleFolder"
-        Write-Host "moduleName    = $moduleName"
-        Write-Host "moduleVersion = $moduleVersion"
 
-        # generate the markdown release notes
+        Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0}]{1}" -f MODULE_NAME, $moduleName)
+        Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0}]{1}" -f MODULE_VERSION, $moduleVersion)
+        Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0}]{1}" -f MODULE_FOLDER, $moduleFolder)
+      displayName: 'Create Environment Variables'
+
+    # create new Github Release using the Github API, with markdown changelog
+    - powershell: |
         Write-Host "Generating CHANGELOG:"
         $latestTagVersion = git describe --tags --abbrev=0
         $latestTagHash = git show-ref -s $latestTagVersion
         Write-Host "Previous Tag Version = $latestTagVersion"
         Write-Host "Previous Tag Hash    = $latestTagHash"
 
-        $logLines = git log "$($latestTagHash)...HEAD" --pretty=format:"%H%x09%h%x09%an%x09%s" --date=short
-
         [string]$markdownChangeLog = "## CHANGELOG`n"
 
+        $logLines = git log "$($latestTagHash)...HEAD" --pretty=format:"%H%x09%h%x09%an%x09%s" --date=short
         $logLines | ForEach-Object {
             ($hash, $shortHash, $author, $message) = $_.Split("`t")
 
             # exclude messages matching this regex
             if ($message -match '^merge\s') {
-                Write-Host "=> excluding $message"
+                Write-Host "=> excluding commit message '$message'"
                 return
             }
 
@@ -96,8 +95,6 @@ jobs:
 
             $markdownChangeLog += "`n- $message ($authorLink in $hashLink)"
         }
-
-        Write-Host "Final CHANGELOG:"
         $markdownChangeLog
 
         # prepare Github API call
@@ -109,9 +106,9 @@ jobs:
         }
 
         $apiBody = @{
-          tag_name = "$moduleVersion"
+          tag_name = "$env:MODULE_VERSION"
           target_commitish = "master"
-          name = "Release $moduleVersion"
+          name = "Release $env:MODULE_VERSION"
           body = $markdownChangeLog
           draft = $False
           prerelease = $False
@@ -125,7 +122,7 @@ jobs:
         $apiResponse = Invoke-RestMethod -Method POST -Uri $env:GITHUB_API_RELEASES_URL -Headers $apiHeaders -Body "$apiBody" -ContentType "application/json;charset=utf-8"
         $apiResponse | Out-Host
 
-      displayName: 'Github API New Release'
+      displayName: 'Create Github Release'
       condition: not(contains(variables['Build.SourceVersionMessage'], '[no-release]'))
       env:
         MAPPED_GITHUB_USERNAME: $(GITHUB_USERNAME)
