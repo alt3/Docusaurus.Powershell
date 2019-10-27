@@ -26,9 +26,7 @@ jobs:
       SubModuleCount: $[dependencies.Initialize.outputs['Output.SubModuleCount']]
 
     steps:
-    - template: ../steps/log-virtual-machine-information.yml
-
-
+    - template: ../../steps/log-virtual-machine-information.yml
 
     # checkout files from large file system
     # https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/pipeline-options-for-git?view=azure-devops#checkout-files-from-lfs
@@ -46,7 +44,7 @@ jobs:
       condition: gt(variables['SubModuleCount'], 0)
       name: FetchSubmoduleLFS
     - ${{ if ne('', parameters.requiredModulesPath ) }}:
-      - template: ../steps/install-required-modules.yml
+      - template: ../../steps/ci/install-required-modules.yml
         parameters:
           path: $(Build.SourcesDirectory)/${{ parameters.requiredModulesPath }}
 
@@ -56,7 +54,7 @@ jobs:
         dotnet build -c Release -p:VersionPrefix=$VersionPrefix -p:VersionSuffix=$VersionSuffix
       displayName: Build Solution
       condition: eq(variables['DotNetBuild'],'True')
-    - template: ../steps/build-module.yml
+    - template: ../../steps/ci/build-module.yml
       parameters:
         sourcePath: $(Build.SourcesDirectory)/${{ parameters.buildSourcePath }}
         destination: $(Build.BinariesDirectory)

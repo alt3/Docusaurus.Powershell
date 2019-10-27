@@ -34,7 +34,7 @@ jobs:
       fetchDepth: 1  # we only need the current tests
       lfs: true
 
-    - template: ../steps/install-required-modules.yml
+    - template: ../../steps/ci/install-required-modules.yml
       parameters:
         path: $(Build.SourcesDirectory)/${{ parameters.requiredModulesPath }}
 
@@ -55,7 +55,7 @@ jobs:
         }
       displayName: 'Combine paths'
 
-    - template: ../steps/pester.yml
+    - template: ../../steps/ci/pester.yml
       parameters:
         pesterVersion: ${{ parameters.pesterVersion }}
         testsDirectory: ${{ parameters.testsDirectory }}

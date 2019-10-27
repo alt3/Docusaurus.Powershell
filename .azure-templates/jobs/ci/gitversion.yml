@@ -18,7 +18,7 @@ jobs:
       SAFEBRANCHNAME: $[dependencies.Initialize.outputs['Output.SafeBranchName']]
 
     steps:
-    - template: ../steps/log-virtual-machine-information.yml
+    - template: ../../steps/log-virtual-machine-information.yml
 
     # log template parameters
     - powershell: |

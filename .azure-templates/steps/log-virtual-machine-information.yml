@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Creates debug information for this specific job/image.
+# Generic step for logging debug information about this specific agent/image.
 # -----------------------------------------------------------------------------
 
 steps:
@@ -9,8 +9,6 @@ steps:
     Write-Host ""
 
     Write-Host "Environment Variables:"
-     Get-ChildItem -Path Env:
+    Get-ChildItem -Path Env:
 
-  displayName: 'Virtual Machine Information'
-
-
+  displayName: 'Log Virtual Machine Information'

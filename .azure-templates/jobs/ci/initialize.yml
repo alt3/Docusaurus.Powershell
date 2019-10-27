@@ -14,7 +14,7 @@ jobs:
       vmImage: 'windows-2019'
 
     steps:
-    - template: ../steps/log-virtual-machine-information.yml
+    - template: ../../steps/log-virtual-machine-information.yml
 
     # log template parameters
     - powershell: |
@@ -27,14 +27,14 @@ jobs:
     - checkout: self
       lfs: true
 
-    # run the Devops task
+    # run the gitversion Devops task
     - task: gittools.gitversion.gitversion-task.GitVersion@5
       displayName: GitVersion
       inputs:
         updateAssemblyInfo: ${{ parameters.updateAssemblyInfo }}
         additionalArguments: ${{ parameters.additionalArguments }}
 
-    # export variables (what are these used for?)
+    # export variables so they can be used by jobs WITHIN the same stage
     - powershell: |
         @{
             Counter          = '$(GitVersion.MajorMinorPatch)'
@@ -47,4 +47,4 @@ jobs:
             Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0};isOutput=true]{1}" -f $_.Key, $_.Value)
         })
       name: Output
-      displayName: Export ?? Variables
+      displayName: Export ModuleBuilder Variables
