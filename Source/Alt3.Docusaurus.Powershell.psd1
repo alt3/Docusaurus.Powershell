@@ -1,10 +1,10 @@
-@{
+﻿@{
 
     # Script module or binary module file associated with this manifest.
     RootModule = 'Alt3.Docusaurus.Powershell.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.0.0'
+    ModuleVersion = '1.0.1'
 
     # ID used to uniquely identify this module
     GUID = '0a746d8a-f1f1-4064-967a-aad1877b2d63'
@@ -68,7 +68,7 @@ Live demo at https://docusaurus-powershell.netlify.com/
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = @()
+    FunctionsToExport = 'New-DocusaurusHelp'
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport = @()
@@ -128,3 +128,6 @@ Live demo at https://docusaurus-powershell.netlify.com/
     # DefaultCommandPrefix = ''
 
 }
+
+
+
