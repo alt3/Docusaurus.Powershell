@@ -37,14 +37,16 @@ module.exports = {
 
 ## Generating Module Documentation
 
-Generate the documentation pages for your module by running:
+To generate Get-Help pages for any Powershell module run the following command.
 
 ```powershell
-New-DocusaurusHelp -Module "YourModule" -OutputFolder "docusaurus/docs" -EditUrl "http://github.com/your/repo/sources"
+New-DocusaurusHelp -Module "ModuleName" -OutputFolder "docusaurus/docs" -EditUrl "http://github.com/your/repo/sources"
 ```
 
-> **Note:** after the command has completed, the `docusaurus/docs` folder
-> should contain an `.mdx` file for each command exported by your Powershell module.
+> For demo data, replace `ModuleName` with `Microsoft.PowerShell.Management`
+
+> After the command has completed, the `docusaurus/docs` folder
+> will contain one `.mdx` file for each command exported by the Powershell module.
 
 ## Starting the Website
 
