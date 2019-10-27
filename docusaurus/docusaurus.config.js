@@ -68,10 +68,6 @@ module.exports = {
           ],
         },
       ],
-      logo: {
-        alt: 'Facebook Open Source Logo',
-        src: 'https://docusaurus.io/img/oss_logo.png',
-      },
       copyright: `Copyright ©${new Date().getFullYear()} ALT3 B.V.`,
     },
   },
