@@ -112,7 +112,7 @@ Live demo at https://docusaurus-powershell.netlify.com/
             IconUri = ''
 
             # ReleaseNotes of this module
-            ReleaseNotes = ''
+            ReleaseNotes = 'https://github.com/alt3/Docusaurus.Powershell/releases'
 
             # As required by the ModuleBuilder Build-Module command
             Prerelease = ''
