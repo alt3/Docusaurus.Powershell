@@ -150,6 +150,8 @@ jobs:
 
             $markdownChangeLog += "`n- $message ($authorLink in $hashLink)"
         }
+
+        $markdownChangeLog += "`n`n## UPDATING`n`nTo update to this version run:`n`n``````powershell`nUpdate-Module Alt3.Docusaurus.Powershell -Scope CurrentUser`n``````"
         $markdownChangeLog
 
         # prepare Github API call
@@ -163,7 +165,6 @@ jobs:
         $apiBody = @{
           tag_name = "$env:ARTIFACT_MODULE_VERSION"
           target_commitish = "master"
-          name = "Release $env:ARTIFACT_MODULE_VERSION"
           body = $markdownChangeLog
           draft = $False
           prerelease = $False
