@@ -24,7 +24,7 @@ npx @docusaurus/init@next init docusaurus classic
 Modify newly created file `docusaurus/sidebars.js`so it looks like this:
 
 ```js
-const cmdlets = require('./docs/docusaurus.powershell.sidebar.js');
+const cmdlets = require('./docs/CmdLets/docusaurus.sidebar.js');
 
 module.exports = {
   docs: {
@@ -40,13 +40,13 @@ module.exports = {
 To generate Get-Help pages for any Powershell module run the following command.
 
 ```powershell
-New-DocusaurusHelp -Module "ModuleName" -OutputFolder "docusaurus/docs" -EditUrl "http://github.com/your/repo/sources"
+New-DocusaurusHelp -Module "ModuleName" -EditUrl "http://github.com/your/repo/sources"
 ```
 
-> For demo data, replace `ModuleName` with `Microsoft.PowerShell.Management`
+> For demo data, replace `ModuleName` with e.g. `Microsoft.PowerShell.Management`
 
-> After the command has completed, the `docusaurus/docs` folder
-> will contain one `.mdx` file for each command exported by the Powershell module.
+> After the command has completed, the `docusaurus/docs/CmdLets` folder
+> should contain one `.mdx` file for each command exported by the Powershell module.
 
 ## Starting the Website
 
