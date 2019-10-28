@@ -5,13 +5,11 @@ title: Monolithic Modules
 
 Powershell Modules come in two forms:
 
-- **monolithic**, where one `.psm1` source file contains all functions
-- **non-monolithic**, where multiple `.ps1` source files are compiled into a single `.psm1`
+- **monolithic**, where a single `.psm1` source file contains all module functions
+- **non-monolithic**, where each module function is contained in a dedicated `.ps1` source file
 
-The `-Monolithic` switch is used to determine the URLs for the `Edit this page` links which:
+By default, Docusaurus.Powershell assumes that you are documenting a non-monolithic module and
+will therefore generate `Edit this page` URLs pointing to individual `.ps1` source files.
 
-- will always point to the same `.psm1` source file for monolithic modules
-- will point to the corresponding `.ps1` source file for non-monolithic modules
-
-> **Note:** Using this switch is only required if you are documenting a monolithic module.
-
+However, users documenting monolithic modules should use the `-Monolithic` parameter to ensure
+that all `Edit this page` URLs will point to the same `.psm1` source file.
