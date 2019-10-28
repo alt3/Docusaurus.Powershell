@@ -10,8 +10,8 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 ## SYNTAX
 
 ```powershell
-New-DocusaurusHelp [-Module] <String> [-OutputFolder] <String> [-EditUrl] <String> [-Monolithic]
- [<CommonParameters>]
+New-DocusaurusHelp [-Module] <String> [[-OutputFolder] <String>] [[-Sidebar] <String>] [-EditUrl] <String>
+ [-Monolithic] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -28,7 +28,7 @@ into the Docusaurus website sidebar.
 
 ### EXAMPLE 1
 ```powershell
-New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell -OutputFolder .\docusaurus\docs\ -EditUrl "https://github.com/alt3/Docusaurus.Powershell/edit/master/source/Public"
+New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell -EditUrl "https://github.com/alt3/Docusaurus.Powershell/edit/master/source/Public"
 ```
 
 ## PARAMETERS
@@ -51,16 +51,35 @@ Accept wildcard characters: False
 ```
 
 ### -OutputFolder
-Specifies the folder where the Docusaurus Get-Help documentation will be created.
+Specifies the folder where the Docusaurus sidebar subfolder will be created.
+
+Optional, defaults to `docusaurus/docs`, case sensitive.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 2
-Default value: None
+Default value: Docusaurus/docs
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Sidebar
+Specifies the subfolder where the Get-Help `.mdx` files for the module will be created.
+
+Optional, defaults to `CmdLets`, case sensitive.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: CmdLets
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -74,7 +93,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 3
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -110,6 +129,6 @@ Please note that Docusaurus v2 is an early and alpha version, just like this mod
 
 ## RELATED LINKS
 
-[https://docusaurus.io/](https://docusaurus.io/)
+[https://v2.docusaurus.io/](https://v2.docusaurus.io/)
 
 [https://github.com/PowerShell/platyPS](https://github.com/PowerShell/platyPS)
