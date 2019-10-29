@@ -6,12 +6,9 @@ function New-DocusaurusHelp() {
         .DESCRIPTION
             The `New-DocusaurusHelp` cmdlet generates Get-Help documentation in Docusaurus
             compatible format by creating an `.mdx` file for each command exported by
-            the module, then enriching that file with command specific front matter
-            variables.
+            the module, enriched with command-specific front matter variables.
 
-            The cmdlet also creates a `docusaurus.powershell.sidebar.js` file
-            containing a list of all documented commands, for easy integration
-            into the Docusaurus website sidebar.
+            Also creates a `sidebar.js` file for simplified integration into the Docusaurus sidebar menu.
 
         .OUTPUTS
             System.Object
