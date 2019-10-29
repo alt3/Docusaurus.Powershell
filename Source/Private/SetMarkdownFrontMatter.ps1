@@ -1,4 +1,4 @@
-function UpdateContentFrontMatter() {
+function SetMarkdownFrontMatter() {
     <#
         .SYNOPSIS
             Replaces PlatyPS generated front matter with Docusaurus compatible front matter.

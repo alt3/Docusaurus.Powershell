@@ -1,4 +1,4 @@
-function UpdateContentBackticks() {
+function UpdateMarkdownBackticks() {
     <#
         .SYNOPSIS
         Replaces platyPS-produced "escaped backticks" with normal backticks so markdown gets rendered as expected.

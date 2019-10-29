@@ -81,10 +81,10 @@ function New-DocusaurusHelp() {
     ForEach ($markdownFile in $markdownFiles) {
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $markdownFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
-        UpdateContentFrontMatter -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl
-        RemoveContentHeaderOne -MarkdownFile $markdownFile
-        UpdateContentCodeBlocks -MarkdownFile $markdownFile
-        UpdateContentBackticks -MarkdownFile $markdownFile
+        SetMarkdownFrontMatter -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl
+        RemoveMarkdownHeaderOne -MarkdownFile $markdownFile
+        UpdateMarkdownCodeBlocks -MarkdownFile $markdownFile
+        UpdateMarkdownBackticks -MarkdownFile $markdownFile
 
         # rename to .mdx
         $mdxFilePath = GetMdxFilePath -MarkdownFile $markdownFile

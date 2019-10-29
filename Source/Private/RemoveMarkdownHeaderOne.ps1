@@ -1,4 +1,4 @@
-function RemoveContentHeaderOne() {
+function RemoveMarkdownHeaderOne() {
     <#
         .SYNOPSIS
         Removes the H1 element from the markdown content because Docusaurus already generates H1 using the `title` front matter.

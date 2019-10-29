@@ -1,4 +1,4 @@
-function UpdateContentCodeBlocks() {
+function UpdateMarkdownCodeBlocks() {
     <#
         .SYNOPSIS
         Add `powershell` syntax highlighting to generated code blocks.
