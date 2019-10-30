@@ -26,16 +26,31 @@
  * Theme override for Docusaurus.Powershell as explained at
  * https://v2.docusaurus.io/docs/styling-layout
  */
-.hero .hero__title {
-  font-size: 2.5rem;
+#hero-get-started {
+  margin-top: 10px;
 }
 
-#hero-get-started {
-  margin-right: 24px;
+#hero-github-stars {
+  padding-top: 40px;
+  padding-left: 18px;
 }
+
+/**
+ * stack the github stars for mobiles
+ */
 
 @media only screen and (max-width: 768px) {
+  .hero .hero__title {
+    font-size: 2.5rem;
+  }
+
+  #hero-get-started {
+    margin-top: 0px !important;
+    margin-bottom: 20px !important;
+  }
+
   #hero-github-stars {
-    display: none;
+    padding-top: 6px !important;
+    padding-left: 11px !important;
   }
 }
