@@ -29,6 +29,11 @@ module.exports = {
         },
       ],
     },
+    algolia: {
+      apiKey: '5b40d1e4b3123f7f10ca9a61e3fe3da4',
+      indexName: 'docusaurus-powershell',
+      algoliaOptions: {}, // Optional, if provided by Algolia
+    },
     footer: {
       style: 'dark',
       links: [
