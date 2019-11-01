@@ -9,7 +9,6 @@ function RemoveMarkdownHeaderOne() {
 
     $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
 
-    #$regex = "(?sm)^(---)(.+)^(---).$\n"
     $regex = '\n#{1}\s.+\n\r'
 
     $newContent = [regex]::replace($content, $regex, '')
