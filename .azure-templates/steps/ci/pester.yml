@@ -62,6 +62,7 @@ steps:
     }
 
     Write-Host "##vso[task.setvariable variable=PSPlatform]PowerShell $($PSVersionTable['PSVersion', 'OS'] -join ' on ')"
+
     Invoke-Pester @Options
   displayName: Invoke-Pester
 

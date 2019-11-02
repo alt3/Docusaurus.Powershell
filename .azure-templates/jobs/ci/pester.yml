@@ -30,6 +30,8 @@ jobs:
       CodeCoverageDirectory: ${{ parameters.codeCoverageDirectory }}
 
     steps:
+    - template: ../../steps/log-virtual-machine-information.yml
+
     - checkout: self # re-checkout, because we don't package tests
       fetchDepth: 1  # we only need the current tests
       lfs: true

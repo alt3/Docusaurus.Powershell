@@ -13,6 +13,9 @@ trigger:
 
 variables:
   ArtifactName: Modules
+  enablePSGallery: true
+  enableGithubReleases: true
+  enableCodeCovIO: true
 
 stages:
 
@@ -43,7 +46,7 @@ stages:
     parameters:
       dependsOn: []
       artifactName: $(ArtifactName)
-      TestsDirectory: '$(Build.SourcesDirectory)/Tests' # Linux users: be aware of the upperase
+      TestsDirectory: '$(Build.SourcesDirectory)/Tests' # Linux users: be aware of the upperase T
       strategy:
         matrix:
           Linux:
@@ -54,6 +57,10 @@ stages:
             vmImage: 'windows-2019'
       pool:
         vmImage: $(vmImage)
+
+  - template: .azure-templates/jobs/ci/codecov.io.yml
+    parameters:
+      dependsOn: [Pester]
 
 # -----------------------------------------------------------------------------
 # Stage 3 - Continuous Deployment (CD)
