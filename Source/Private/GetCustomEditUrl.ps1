@@ -5,6 +5,10 @@ function GetCustomEditUrl() {
 
         .DESCRIPTION
             Generates a URL pointing to the Powershell source file that was used to generate the markdown file.
+
+        .NOTES
+            - URLs for non-monolithic modules point to a .ps1 file with same name as the markdown file
+            - URLs for monolithic modules will always point to a .psm1 with same name as passed module
     #>
     param(
         [Parameter(Mandatory = $True)][string]$Module,
@@ -13,20 +17,17 @@ function GetCustomEditUrl() {
         [switch]$Monolithic
     )
 
-    # monolithic
-    if ($Monolithic) {
-        if (Test-Path -Path $Module) {
-            $sourceFile = [System.IO.Path]::GetFileNameWithoutExtension($Module) + '.psm1'
-        } else {
-            $modulePath = (Get-Module $Module).path
-            $sourceFile = [System.IO.Path]::GetFileName($modulePath)
-        }
+    # use command for non-monlithics
+    if (-not($Monolithic)) {
+        $command = [System.IO.Path]::GetFileNameWithoutExtension($MarkdownFile)
 
-        return $EditUrl + '/' + $sourceFile
+        return $EditUrl + '/' + $command + ".ps1"
     }
 
-    # non-monolithic
-    $command = [System.IO.Path]::GetFileNameWithoutExtension($MarkdownFile)
+    # use module name for monolithics
+    if (Test-Path $Module) {
+        $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
+    }
 
-    return $EditUrl + '/' + $command + ".ps1"
+    return $EditUrl + '/' + $Module + ".psm1"
 }
