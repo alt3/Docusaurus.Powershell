@@ -58,10 +58,6 @@ stages:
       pool:
         vmImage: $(vmImage)
 
-  - template: .azure-templates/jobs/ci/codecov.io.yml
-    parameters:
-      dependsOn: [Pester]
-
 # -----------------------------------------------------------------------------
 # Stage 3 - Continuous Deployment (CD)
 # -----------------------------------------------------------------------------
