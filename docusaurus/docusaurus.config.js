@@ -28,6 +28,10 @@ module.exports = {
           position: 'right',
         },
       ],
+      prism: {
+        //defaultLanguage: 'js',
+        //theme: require('prism-react-renderer/themes/dracula'),
+      }
     },
     algolia: {
       apiKey: '5b40d1e4b3123f7f10ca9a61e3fe3da4',
