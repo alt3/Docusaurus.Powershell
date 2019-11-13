@@ -1,6 +1,6 @@
 steps:
 - powershell: |
-    $commitMessage = git log -1 --pretty=%B --no-merges
+    $commitMessage = git log -1 --pretty=%B
     Write-Host "Commit message = $commitMessage"
     if ($commitMessage -match '\[no-release\]') {
       Write-Host ("EXPORT {0} = {1}`n##vso[task.setvariable variable={0}]{1}" -f "SKIP_RELEASE", $True)
