@@ -85,7 +85,8 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          sidebarPath: require.resolve('./sidebars.js')
+          sidebarPath: require.resolve('./sidebars.js'),
+          editUrl: 'https://github.com/alt3/Docusaurus.Powershell/edit/master/docusaurus',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
