@@ -85,10 +85,10 @@ function New-DocusaurusHelp() {
 
         # rename to .mdx
         $mdxFilePath = GetMdxFilePath -MarkdownFile $markdownFile
-       Move-Item -Path $markdownFile.FullName -Destination $mdxFilePath -Force | Out-Null
+        Move-Item -Path $markdownFile.FullName -Destination $mdxFilePath -Force | Out-Null
 
         # output .mdx item so end-user can post-process files as they see fit
-       Get-Item $mdxFilePath
+        Get-Item $mdxFilePath
     }
 
     # generate the `.js` file used for the docusaurus sidebar
