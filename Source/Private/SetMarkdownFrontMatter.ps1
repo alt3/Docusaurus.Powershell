@@ -8,26 +8,27 @@ function SetMarkdownFrontMatter() {
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile,
-        [Parameter(Mandatory = $True)][string]$CustomEditUrl
+        [Parameter(Mandatory = $False)][string]$CustomEditUrl
     )
 
-    # prepare front matter
     $powershellCommandName = [System.IO.Path]::GetFileNameWithoutExtension($markdownFile.Name)
 
-    $newFrontMatter = @(
-        "---"
-        "id: $powershellCommandName"
-        "title: $powershellCommandName"
-        "custom_edit_url: $customEditUrl"
-        "---"
-    ) | Out-String
+    # prepare front matter
+    $newFrontMatter = [System.Collections.ArrayList]::new()
+    $newFrontMatter.Add("---") | Out-Null
+    $newFrontMatter.Add("id: $($powershellCommandName)") | Out-Null
+    $newFrontMatter.Add("title: $($powershellCommandName)") | Out-Null
+    if ($EditUrl) {
+        $newFrontMatter.Add("custom_edit_url: $($EditUrl)") | Out-Null
+    }
+    $newFrontMatter.Add("---") | Out-Null
 
     # replace front matter
     $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
 
     $regex = "(?sm)^(---)(.+)^(---).$\n"
 
-    $newContent = $content -replace $regex, $newFrontMatter
+    $newContent = $content -replace $regex, ($newFrontMatter | Out-String)
 
     # replace file (UTF-8 without BOM)
     $fileEncoding = New-Object System.Text.UTF8Encoding $False

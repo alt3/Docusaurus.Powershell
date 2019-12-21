@@ -1,7 +1,7 @@
 ---
 id: New-DocusaurusHelp
 title: New-DocusaurusHelp
-custom_edit_url: https://github.com/alt3/Docusaurus.Powershell/edit/master/Source/Public/New-DocusaurusHelp.ps1
+custom_edit_url: https://github.com/alt3/Docusaurus.Powershell/edit/master/Source/Public
 ---
 
 ## SYNOPSIS
@@ -10,7 +10,7 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 ## SYNTAX
 
 ```powershell
-New-DocusaurusHelp [-Module] <String> [[-OutputFolder] <String>] [[-Sidebar] <String>] [-EditUrl] <String>
+New-DocusaurusHelp [-Module] <String> [[-OutputFolder] <String>] [[-Sidebar] <String>] [[-EditUrl] <String>]
  [-Monolithic] [<CommonParameters>]
 ```
 
@@ -84,12 +84,14 @@ Accept wildcard characters: False
 ### -EditUrl
 Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
 
+Optional, defaults to `null`.
+
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: 4
 Default value: None
 Accept pipeline input: False
