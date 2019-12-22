@@ -8,7 +8,9 @@ function SetMarkdownFrontMatter() {
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile,
-        [Parameter(Mandatory = $False)][string]$CustomEditUrl
+        [Parameter(Mandatory = $False)][string]$CustomEditUrl,
+        [Parameter(Mandatory = $False)][string]$MetaDescription,
+        [Parameter(Mandatory = $False)][array]$MetaKeywords
     )
 
     $powershellCommandName = [System.IO.Path]::GetFileNameWithoutExtension($markdownFile.Name)
@@ -18,9 +20,23 @@ function SetMarkdownFrontMatter() {
     $newFrontMatter.Add("---") | Out-Null
     $newFrontMatter.Add("id: $($powershellCommandName)") | Out-Null
     $newFrontMatter.Add("title: $($powershellCommandName)") | Out-Null
+
+    if ($MetaDescription) {
+        $description = [regex]::replace($MetaDescription, '%1', $powershellCommandName)
+        $newFrontMatter.Add("description: $($description)") | Out-Null
+    }
+
+    if ($MetaKeywords) {
+        $newFrontMatter.Add("keywords:") | Out-Null
+        $MetaKeywords | ForEach-Object {
+            $newFrontMatter.Add("  - $($_)") | Out-Null
+        }
+    }
+
     if ($EditUrl) {
         $newFrontMatter.Add("custom_edit_url: $($EditUrl)") | Out-Null
     }
+
     $newFrontMatter.Add("---") | Out-Null
 
     # replace front matter

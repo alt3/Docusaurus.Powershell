@@ -36,6 +36,17 @@ function New-DocusaurusHelp() {
 
             Optional, defaults to `null`.
 
+        .PARAMETER Exclude
+            Optional array with command names to exclude.
+
+        .PARAMETER MetaDescription
+            Optional string that will be inserted into Docusaurus front matter to be used as html meta tag 'description'.
+
+            If placeholder `%1` is detected in the string, it will be replaced by the command name.
+
+        .PARAMETER MetaKeywords
+            Optional array of keywords inserted into Docusaurus front matter to be used as html meta tag `keywords`.
+
         .PARAMETER Monolithic
             Use this optional argument if the Powershell module source is monolithic.
 
@@ -56,6 +67,9 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $False)][string]$OutputFolder = "docusaurus/docs",
         [Parameter(Mandatory = $False)][string]$Sidebar = "CmdLets",
         [Parameter(Mandatory = $False)][string]$EditUrl,
+        [Parameter(Mandatory = $False)][array]$Exclude = @(),
+        [Parameter(Mandatory = $False)][string]$MetaDescription,
+        [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
         [switch]$Monolithic
     )
 
@@ -74,13 +88,21 @@ function New-DocusaurusHelp() {
     $markdownFolder = Join-Path -Path $OutputFolder -ChildPath $Sidebar
 
     # generate PlatyPs markdown files
-    $markdownFiles = New-MarkdownHelp -Module $Module -OutputFolder $markdownFolder -Force
+    New-MarkdownHelp -Module $Module -OutputFolder $markdownFolder -Force | Out-Null
+
+    # remove excluded files
+    $Exclude | ForEach-Object {
+        Remove-Item -Path (Join-Path -Path $markdownFolder -ChildPath "$($_).md")
+    }
+
+    # process remaining files
+    $markdownFiles = Get-ChildItem -Path $markdownFolder -Filter *.md
 
     # update generated markdown file(s) to make them Docusaurus compatible
     ForEach ($markdownFile in $markdownFiles) {
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $markdownFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
-        SetMarkdownFrontMatter -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl
+        SetMarkdownFrontMatter -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl -MetaDescription $MetaDescription -MetaKeywords $MetaKeywords
         RemoveMarkdownHeaderOne -MarkdownFile $markdownFile
         UpdateMarkdownCodeBlocks -MarkdownFile $markdownFile
         UpdateMarkdownBackticks -MarkdownFile $markdownFile
