@@ -13,18 +13,23 @@ function GetCustomEditUrl() {
     param(
         [Parameter(Mandatory = $True)][string]$Module,
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile,
-        [Parameter(Mandatory = $True)][string]$EditUrl,
+        [Parameter(Mandatory = $False)][string]$EditUrl,
         [switch]$Monolithic
     )
 
-    # use command for non-monlithics
+    # return "false" so Docusaurus will not render the `Edit this page` button
+    if (-not($EditUrl)) {
+        return
+    }
+
+    # point to the function source file for non-monlithic modules
     if (-not($Monolithic)) {
         $command = [System.IO.Path]::GetFileNameWithoutExtension($MarkdownFile)
 
         return $EditUrl + '/' + $command + ".ps1"
     }
 
-    # use module name for monolithics
+    # point to the module source file for monolithic modules
     if (Test-Path $Module) {
         $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
     }

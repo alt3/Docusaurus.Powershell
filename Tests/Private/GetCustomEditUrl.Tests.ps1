@@ -20,6 +20,16 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
     ${global:dummyModuleFileItem} = Get-Item -Path $dummyModulePath
 
     # the actual tests
+    Context 'when optional -EditUrl argument is not used' {
+        $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
+            GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem}
+        }
+
+        It "simply returns null" {
+            $customEditUrl | Should -Be $null
+        }
+    }
+
     Context 'for non-monolithic modules' {
         $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
             GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com"

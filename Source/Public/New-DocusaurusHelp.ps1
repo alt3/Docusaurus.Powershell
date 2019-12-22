@@ -34,6 +34,8 @@ function New-DocusaurusHelp() {
         .PARAMETER EditUrl
             Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
 
+            Optional, defaults to `null`.
+
         .PARAMETER Monolithic
             Use this optional argument if the Powershell module source is monolithic.
 
@@ -53,7 +55,7 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $True)][string]$Module,
         [Parameter(Mandatory = $False)][string]$OutputFolder = "docusaurus/docs",
         [Parameter(Mandatory = $False)][string]$Sidebar = "CmdLets",
-        [Parameter(Mandatory = $True)][string]$EditUrl,
+        [Parameter(Mandatory = $False)][string]$EditUrl,
         [switch]$Monolithic
     )
 
