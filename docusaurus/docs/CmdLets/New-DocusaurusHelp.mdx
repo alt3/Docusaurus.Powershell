@@ -11,7 +11,8 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 
 ```powershell
 New-DocusaurusHelp [-Module] <String> [[-OutputFolder] <String>] [[-Sidebar] <String>] [[-EditUrl] <String>]
- [[-Exclude] <Array>] [[-MetaDescription] <String>] [-Monolithic] [<CommonParameters>]
+ [[-Exclude] <Array>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [-Monolithic]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -114,7 +115,7 @@ Accept wildcard characters: False
 ```
 
 ### -MetaDescription
-Optional string that will be inserted into Docusaurus front matter to be used as `description` meta tag.
+Optional string that will be inserted into Docusaurus front matter to be used as html meta tag 'description'.
 
 If placeholder `%1` is detected in the string, it will be replaced by the command name.
 
@@ -126,6 +127,21 @@ Aliases:
 Required: False
 Position: 6
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MetaKeywords
+Optional array of keywords inserted into Docusaurus front matter to be used as html meta tag `keywords`.
+
+```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: @()
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

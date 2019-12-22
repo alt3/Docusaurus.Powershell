@@ -40,9 +40,12 @@ function New-DocusaurusHelp() {
             Optional array with command names to exclude.
 
         .PARAMETER MetaDescription
-            Optional string that will be inserted into Docusaurus front matter to be used as `description` meta tag.
+            Optional string that will be inserted into Docusaurus front matter to be used as html meta tag 'description'.
 
             If placeholder `%1` is detected in the string, it will be replaced by the command name.
+
+        .PARAMETER MetaKeywords
+            Optional array of keywords inserted into Docusaurus front matter to be used as html meta tag `keywords`.
 
         .PARAMETER Monolithic
             Use this optional argument if the Powershell module source is monolithic.
@@ -66,6 +69,7 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $False)][string]$EditUrl,
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
         [Parameter(Mandatory = $False)][string]$MetaDescription,
+        [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
         [switch]$Monolithic
     )
 
@@ -98,7 +102,7 @@ function New-DocusaurusHelp() {
     ForEach ($markdownFile in $markdownFiles) {
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $markdownFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
-        SetMarkdownFrontMatter -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl -MetaDescription $MetaDescription
+        SetMarkdownFrontMatter -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl -MetaDescription $MetaDescription -MetaKeywords $MetaKeywords
         RemoveMarkdownHeaderOne -MarkdownFile $markdownFile
         UpdateMarkdownCodeBlocks -MarkdownFile $markdownFile
         UpdateMarkdownBackticks -MarkdownFile $markdownFile
