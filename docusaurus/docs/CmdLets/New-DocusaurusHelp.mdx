@@ -11,7 +11,7 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 
 ```powershell
 New-DocusaurusHelp [-Module] <String> [[-OutputFolder] <String>] [[-Sidebar] <String>] [[-EditUrl] <String>]
- [-Monolithic] [<CommonParameters>]
+ [[-Exclude] <Array>] [-Monolithic] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -94,6 +94,21 @@ Aliases:
 Required: False
 Position: 4
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Exclude
+Optional array with command names to exclude.
+
+```yaml
+Type: Array
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: @()
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
