@@ -31,11 +31,6 @@ function New-DocusaurusHelp() {
 
             Optional, defaults to `CmdLets`, case sensitive.
 
-        .PARAMETER EditUrl
-            Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
-
-            Optional, defaults to `null`.
-
         .PARAMETER Exclude
             Optional array with command names to exclude.
 
@@ -46,6 +41,21 @@ function New-DocusaurusHelp() {
 
         .PARAMETER MetaKeywords
             Optional array of keywords inserted into Docusaurus front matter to be used as html meta tag `keywords`.
+
+        .PARAMETER EditUrl
+            Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
+
+            Optional, defaults to `null`.
+
+        .PARAMETER HideTitle
+            Sets the Docusaurus front matter variable `hide_title`.
+
+            Optional, defaults to `false`.
+
+        .PARAMETER HideTableOfContents
+            Sets the Docusaurus front matter variable `hide_table_of_contents`.
+
+            Optional, defaults to `false`.
 
         .PARAMETER Monolithic
             Use this optional argument if the Powershell module source is monolithic.
@@ -66,10 +76,12 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $True)][string]$Module,
         [Parameter(Mandatory = $False)][string]$OutputFolder = "docusaurus/docs",
         [Parameter(Mandatory = $False)][string]$Sidebar = "CmdLets",
-        [Parameter(Mandatory = $False)][string]$EditUrl,
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
         [Parameter(Mandatory = $False)][string]$MetaDescription,
         [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
+        [Parameter(Mandatory = $False)][string]$EditUrl,
+        [switch]$HideTitle,
+        [switch]$HideTableOfContents,
         [switch]$Monolithic
     )
 
@@ -102,7 +114,16 @@ function New-DocusaurusHelp() {
     ForEach ($markdownFile in $markdownFiles) {
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $markdownFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
-        SetMarkdownFrontMatter -MarkdownFile $markdownFile -CustomEditUrl $customEditUrl -MetaDescription $MetaDescription -MetaKeywords $MetaKeywords
+        $frontMatterArgs = @{
+            MarkdownFile = $markdownFile
+            MetaDescription = $metaDescription
+            CustomEditUrl = $customEditUrl
+            MetaKeywords = $metaKeywords
+            HideTitle = $HideTitle
+            HideTableOfContents = $HideTableOfContents
+        }
+        SetMarkdownFrontMatter @frontmatterArgs
+
         RemoveMarkdownHeaderOne -MarkdownFile $markdownFile
         UpdateMarkdownCodeBlocks -MarkdownFile $markdownFile
         UpdateMarkdownBackticks -MarkdownFile $markdownFile

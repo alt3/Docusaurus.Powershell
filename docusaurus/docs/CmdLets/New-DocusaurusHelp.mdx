@@ -1,6 +1,8 @@
 ---
 id: New-DocusaurusHelp
 title: New-DocusaurusHelp
+hide_title: false
+hide_table_of_contents: false
 custom_edit_url: https://github.com/alt3/Docusaurus.Powershell/edit/master/Source/Public
 ---
 
@@ -10,9 +12,9 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 ## SYNTAX
 
 ```powershell
-New-DocusaurusHelp [-Module] <String> [[-OutputFolder] <String>] [[-Sidebar] <String>] [[-EditUrl] <String>]
- [[-Exclude] <Array>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [-Monolithic]
- [<CommonParameters>]
+New-DocusaurusHelp [-Module] <String> [[-OutputFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
+ [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [[-EditUrl] <String>] [-HideTitle]
+ [-HideTableOfContents] [-Monolithic] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -82,23 +84,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -EditUrl
-Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
-
-Optional, defaults to `null`.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 4
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -Exclude
 Optional array with command names to exclude.
 
@@ -108,7 +93,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 4
 Default value: @()
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -125,7 +110,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: 5
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -140,8 +125,59 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: 6
 Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EditUrl
+Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
+
+Optional, defaults to `null`.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -HideTitle
+Sets the Docusaurus front matter variable `hide_title`.
+
+Optional, defaults to `false`.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -HideTableOfContents
+Sets the Docusaurus front matter variable `hide_table_of_contents`.
+
+Optional, defaults to `false`.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

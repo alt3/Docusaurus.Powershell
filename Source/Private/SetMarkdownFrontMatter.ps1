@@ -10,7 +10,9 @@ function SetMarkdownFrontMatter() {
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile,
         [Parameter(Mandatory = $False)][string]$CustomEditUrl,
         [Parameter(Mandatory = $False)][string]$MetaDescription,
-        [Parameter(Mandatory = $False)][array]$MetaKeywords
+        [Parameter(Mandatory = $False)][array]$MetaKeywords,
+        [switch]$HideTitle,
+        [switch]$HideTableOfContents
     )
 
     $powershellCommandName = [System.IO.Path]::GetFileNameWithoutExtension($markdownFile.Name)
@@ -32,6 +34,8 @@ function SetMarkdownFrontMatter() {
             $newFrontMatter.Add("  - $($_)") | Out-Null
         }
     }
+    $newFrontMatter.Add("hide_title: $(if ($HideTitle) {"true"} else {"false"})") | Out-Null
+    $newFrontMatter.Add("hide_table_of_contents: $(if ($HideTableOfContents) {"true"} else {"false"})") | Out-Null
 
     if ($EditUrl) {
         $newFrontMatter.Add("custom_edit_url: $($EditUrl)") | Out-Null
