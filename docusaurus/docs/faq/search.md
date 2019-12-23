@@ -3,8 +3,10 @@ id: search
 title: Search
 ---
 
-Please be aware that, by default, the Docusaurus searchbar will not be available for your website
-**until** you configure it.
+Docusaurus supports fully indexed search by hooking into the Algolia DocSearch service.
+
+However, by default, the Docusaurus searchbar will not be available for your website
+**until you configure it**.
 
 To enable search:
 
