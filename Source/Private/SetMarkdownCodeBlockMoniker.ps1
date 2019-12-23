@@ -1,7 +1,7 @@
-function UpdateMarkdownCodeBlocks() {
+function SetMarkdownCodeBlockMoniker() {
     <#
         .SYNOPSIS
-        Add `powershell` syntax highlighting to generated code blocks.
+        Add `powershell` moniker to generated code blocks for correct syntax highlighting.
 
         .NOTES
         1. unfortunately we need to do this because PlatyPS does not add the language (design choice)

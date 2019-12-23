@@ -128,7 +128,7 @@ function New-DocusaurusHelp() {
         SetMarkdownFrontMatter @frontmatterArgs
 
         RemoveMarkdownHeaderOne -MarkdownFile $markdownFile
-        UpdateMarkdownCodeBlocks -MarkdownFile $markdownFile
+        SetMarkdownCodeBlockMoniker -MarkdownFile $markdownFile
         UpdateMarkdownBackticks -MarkdownFile $markdownFile
 
         # rename to .mdx
