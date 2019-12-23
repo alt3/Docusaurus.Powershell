@@ -9,5 +9,5 @@
  */
 
 module.exports = [
-    'CmdLets/New-DocusaurusHelp'
+    'commands/New-DocusaurusHelp'
 ];

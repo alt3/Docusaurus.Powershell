@@ -24,13 +24,13 @@ npx @docusaurus/init@next init docusaurus classic
 Modify newly created file `docusaurus/sidebars.js`so it looks like this:
 
 ```js
-const cmdlets = require('./docs/CmdLets/docusaurus.sidebar.js');
+const commands = require('./docs/commands/docusaurus.sidebar.js');
 
 module.exports = {
   docs: {
     Docusaurus: ['doc1', 'doc2', 'doc3'],
     Features: ['mdx'],
-    CmdLets: cmdlets
+    "Command Reference": commands
   },
 };
 ```
@@ -45,7 +45,7 @@ New-DocusaurusHelp -Module "ModuleName" -EditUrl "http://github.com/your/repo/so
 
 > For demo data, replace `ModuleName` with e.g. `Microsoft.PowerShell.Management`
 
-> After the command has completed, the `docusaurus/docs/CmdLets` folder
+> After the command has completed, the `docusaurus/docs/commands` folder
 > should contain one `.mdx` file for each command exported by the Powershell module.
 
 ## Starting the Website
