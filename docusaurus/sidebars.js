@@ -5,12 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 const faq = require('./docs/faq/docusaurus.sidebar.js');
-const cmdlets = require('./docs/CmdLets/docusaurus.sidebar.js');
+const commands = require('./docs/commands/docusaurus.sidebar.js');
 
 module.exports = {
   docs: {
     'Docusaurus.Powershell': ['introduction', 'installation', 'usage'],
     'F.A.Q.': faq,
-    CmdLets: cmdlets,
+    "Command Reference": commands,
   },
 };

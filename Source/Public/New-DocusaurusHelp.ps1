@@ -29,7 +29,7 @@ function New-DocusaurusHelp() {
         .PARAMETER Sidebar
             Specifies the subfolder where the Get-Help `.mdx` files for the module will be created.
 
-            Optional, defaults to `CmdLets`, case sensitive.
+            Optional, defaults to `commands`, case sensitive.
 
         .PARAMETER Exclude
             Optional array with command names to exclude.
@@ -75,7 +75,7 @@ function New-DocusaurusHelp() {
     param(
         [Parameter(Mandatory = $True)][string]$Module,
         [Parameter(Mandatory = $False)][string]$OutputFolder = "docusaurus/docs",
-        [Parameter(Mandatory = $False)][string]$Sidebar = "CmdLets",
+        [Parameter(Mandatory = $False)][string]$Sidebar = "commands",
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
         [Parameter(Mandatory = $False)][string]$MetaDescription,
         [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
