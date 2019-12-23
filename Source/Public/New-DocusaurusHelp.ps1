@@ -104,7 +104,10 @@ function New-DocusaurusHelp() {
 
     # remove excluded files
     $Exclude | ForEach-Object {
-        Remove-Item -Path (Join-Path -Path $markdownFolder -ChildPath "$($_).md")
+        $excludedFile = Join-Path -Path $markdownFolder -ChildPath "$($_).md"
+        if (Test-Path -Path $excludedFile) {
+            Remove-Item -Path $excludedFile
+        }
     }
 
     # process remaining files
