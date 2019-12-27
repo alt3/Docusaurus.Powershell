@@ -16,6 +16,7 @@ module.exports = {
     'F.A.Q.': [
       'faq/multiple-modules',
       'faq/monolithic-modules',
+      'faq/multi-line-examples',
       'faq/search',
       'faq/ci-cd',
     ],
