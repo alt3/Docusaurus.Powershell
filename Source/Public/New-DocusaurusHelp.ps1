@@ -115,6 +115,8 @@ function New-DocusaurusHelp() {
 
     # update generated markdown file(s) to make them Docusaurus compatible
     ForEach ($markdownFile in $markdownFiles) {
+        SetMarkdownLineEndings -MarkdownFile $markdownFile
+
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $markdownFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
         $frontMatterArgs = @{
@@ -128,6 +130,7 @@ function New-DocusaurusHelp() {
         SetMarkdownFrontMatter @frontmatterArgs
 
         RemoveMarkdownHeaderOne -MarkdownFile $markdownFile
+        ReplaceMarkdownCodeBlocks -MarkdownFile $markdownFile
         SetMarkdownCodeBlockMoniker -MarkdownFile $markdownFile
         UpdateMarkdownBackticks -MarkdownFile $markdownFile
 

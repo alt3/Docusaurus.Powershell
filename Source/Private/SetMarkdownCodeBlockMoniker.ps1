@@ -13,12 +13,13 @@ function SetMarkdownCodeBlockMoniker() {
 
     $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
 
-    # this regex replaces all code blocks without a language (test on https://regex101.com using /$regex/g)
-    $regex = '(```)\r((?:(?!```)[\s\S])+)(```)\r'
+    # this regex replaces all opening code fences without a language moniker with "```powershell"
+    # https://regex101.com/r/AYzALd/1
+    $regex = '(```)\n((?:(?!```)[\s\S])+)(```)\n'
 
-    $newContent = [regex]::replace($content, $regex, '```powershell$2```')
+    $content = [regex]::replace($content, $regex, '```powershell' + "`n" + '$2```' + "`n")
 
     # replace file (UTF-8 without BOM)
     $fileEncoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($markdownFile.FullName, $newContent, $fileEncoding)
+    [System.IO.File]::WriteAllLines($markdownFile.FullName, $content, $fileEncoding)
 }
