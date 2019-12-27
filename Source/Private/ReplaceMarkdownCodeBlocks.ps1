@@ -44,7 +44,7 @@ function ReplaceMarkdownCodeBlocks() {
         # https://regex101.com/r/lHdZHM/2/ => code block with description
         # https://regex101.com/r/0a44Tn/2/ => code block without description
         # ---------------------------------------------------------------------
-        $regexCodeFencePowershell6 = [regex]::new('(### EXAMPLE [0-9])\n(```\n(```|```posh|```powershell)\n```\n)\n([\s\S]*?\\`\\`\\`)\n([\s\S]*|\n)')
+        $regexCodeFencePowershell6 = [regex]::new('(### EXAMPLE [0-9])\n(```\n(```|```ps|```posh|```powershell)\n```\n)\n([\s\S]*?\\`\\`\\`)\n([\s\S]*|\n)')
 
         if ($example -match $regexCodeFencePowershell6) {
             $header = $matches[1]
@@ -61,7 +61,7 @@ function ReplaceMarkdownCodeBlocks() {
         # https://regex101.com/r/oXsGLw/1/ => code block with description
         # https://regex101.com/r/Yd1lXR/1/ => code block without description
         # ---------------------------------------------------------------------
-        $regexCodeFencePowershell7 = [regex]::new('(### EXAMPLE [0-9])\n(```\n(```|```posh|```powershell)\n)([\s\S]*?)```\n([\s\S]*?\\`\\`\\`)\n([\s\S]*|\n)')
+        $regexCodeFencePowershell7 = [regex]::new('(### EXAMPLE [0-9])\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?\\`\\`\\`)\n([\s\S]*|\n)')
 
         if ($example -match $regexCodeFencePowershell7) {
             $header = $matches[1]

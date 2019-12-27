@@ -49,6 +49,7 @@ Where you can use any of the following commonly used opening fences:
 - \`\`\`
 - \`\`\`powershell
 - \`\`\`posh
+- \`\`\`ps
 
 ## Powershell 7
 
