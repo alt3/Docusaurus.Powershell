@@ -7,7 +7,7 @@
 
 module.exports = {
   title: 'Docusaurus.Powershell',
-  tagline: 'Awesome documentation for Powershell Modules',
+  tagline: 'Documentation websites for Powershell Modules',
   url: 'https://docusaurus-powershell.netlify.com/',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
@@ -22,7 +22,7 @@ module.exports = {
       },
       links: [
         {to: 'docs/introduction', label: 'Docs', position: 'right'},
-        {to: 'docs/commands/New-DocusaurusHelp', label: 'Commands', position: 'right'},
+        {to: 'docs/commands/New-DocusaurusHelp', label: 'Get-Help', position: 'right'},
         {
           href: 'https://github.com/alt3/Docusaurus.Powershell',
           label: 'GitHub',
@@ -54,7 +54,7 @@ module.exports = {
               to: 'docs/usage',
             },
             {
-              label: 'Commands',
+              label: 'Get-Help',
               to: 'docs/commands/New-DocusaurusHelp',
             },
           ],

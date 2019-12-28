@@ -20,6 +20,6 @@ module.exports = {
       'faq/search',
       'faq/ci-cd',
     ],
-    "Command Reference": commands,
+    "Get-Help": commands,
   },
 };

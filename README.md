@@ -6,7 +6,7 @@
 [![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/alt3bv/Docusaurus.Powershell/2?style=flat-square)](https://dev.azure.com/alt3bv/Docusaurus.Powershell/_build)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg?style=flat-square)](code-of-conduct.md)
 
-Showcase websites for Powershell Modules.
+Documentation websites for Powershell Modules.
 
 ## Live Demo
 
