@@ -1,5 +1,7 @@
 Describe "Private$([IO.Path]::DirectorySeparatorChar)GetMdxFilePath" {
-    Import-Module Alt3.Docusaurus.Powershell -DisableNameChecking -Verbose:$False
+    if (-not(Get-Module Alt3.Docusaurus.Powershell)) {
+        Import-Module Alt3.Docusaurus.Powershell -DisableNameChecking -Verbose:$False
+    }
 
     # up
     $markdownFilePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'pester-markdown.md'
