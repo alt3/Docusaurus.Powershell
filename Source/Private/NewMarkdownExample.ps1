@@ -10,7 +10,7 @@ function NewMarkdownExample() {
     )
 
     $example = "$Header`n"
-    $example += '```' + "`n"
+    $example += '```powershell' + "`n"
     $example += $Code
     $example += '```' + "`n"
 
