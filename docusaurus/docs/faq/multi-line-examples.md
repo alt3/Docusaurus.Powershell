@@ -44,7 +44,11 @@ A simple example would look similar to:
     - can also contain fenced code blocks
 ```
 
-Where you can use any of the following commonly used opening fences:
+> For more usage examples see
+> [this test module](https://github.com/alt3/Docusaurus.Powershell/blob/master/Tests/Integration/CrossVersionCodeExamples.psm1)
+> and the corresponding [rendered markdown](https://github.com/alt3/Docusaurus.Powershell/blob/master/Tests/Integration/CrossVersionCodeExamples.expected.mdx)
+
+**Please note** that you may use any of the following commonly used opening fences:
 
 - \`\`\`
 - \`\`\`powershell
@@ -65,7 +69,7 @@ does so in a limited form as can be seen in this example:
     Powershell 7 will use this line, and everything below it, as the description
 ```
 
-**You could use this native form instead of Code Fence Detection if:**
+**You could consider using it instead of Code Fence Detection if:**
 
 - you are using Powershell 7
 - your example code does not contain any empty newlines
