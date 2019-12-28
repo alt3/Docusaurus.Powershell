@@ -14,7 +14,33 @@ function New-DocusaurusHelp() {
             System.Object
 
         .EXAMPLE
-            New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell -EditUrl "https://github.com/alt3/Docusaurus.Powershell/edit/master/source/Public"
+            New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell
+
+            This example uses default settings to generate a Get-Help page for each command exported by
+            the Alt3.Docusaurus.Powershell module.
+
+        .EXAMPLE
+            ```
+            $arguments = @{
+                Module = "Alt3.Docusaurus.Powershell"
+                OutputFolder = "D:\my-project\docs"
+                SideBar = "commands"
+                Exclude = @(
+                    "Get-SomeCommand"
+                )
+                MetaDescription = 'Help page for the Powershell command "%1"'
+                MetaKeywords = @(
+                    "Powershell"
+                    "Documentation"
+                )
+            }
+
+            New-DocusaurusHelp @arguments
+            ```
+
+            This example uses splatting to override default settings.
+
+            See the list of Parameters below for all available overrides.
 
         .PARAMETER Module
             Specifies the module this cmdlet will generate Docusaurus documentation for.
