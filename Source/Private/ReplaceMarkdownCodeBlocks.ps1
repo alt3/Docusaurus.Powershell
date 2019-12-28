@@ -40,37 +40,21 @@ function ReplaceMarkdownCodeBlocks() {
         }
 
         # ---------------------------------------------------------------------
-        # Powershell 6: re-construct custom code-fenced example
-        # https://regex101.com/r/lHdZHM/2/ => code block with description
-        # https://regex101.com/r/0a44Tn/2/ => code block without description
+        # Powershell 6: re-construct Code Fenced example
+        # - https://regex101.com/r/lHdZHM/6 => code block without a description
+        # - https://regex101.com/r/CGjQco/3 => code block with a description
         # ---------------------------------------------------------------------
-        $regexCodeFencePowershell6 = [regex]::new('(### EXAMPLE [0-9])\n(```\n(```|```ps|```posh|```powershell)\n```\n)\n([\s\S]*?\\`\\`\\`)\n([\s\S]*|\n)')
+        $regexPowershell6CodeFences = [regex]::new('(### EXAMPLE ([0-9|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n```\n)\n([\s\S]*?)\\`\\`\\`(\n\n|\n)([\s\S]*|\n)')
 
-        if ($example -match $regexCodeFencePowershell6) {
+        if ($example -match $regexPowershell6CodeFences) {
             $header = $matches[1]
-            $code = $matches[4]
-            $description  = $matches[5]
+            $code = $matches[5]
+            $description = $matches[7]
 
-            $example = "$header`n" + '```' +  "`n$code`n$description`n"
-            $newExamples += $example
-            return
-        }
+            Write-Verbose "=> $($header): applying Powershell 6 Code Fencing Detection"
 
-        # ---------------------------------------------------------------------
-        # Powershell 7: re-construct custom code-fenced example
-        # https://regex101.com/r/oXsGLw/1/ => code block with description
-        # https://regex101.com/r/Yd1lXR/1/ => code block without description
-        # ---------------------------------------------------------------------
-        $regexCodeFencePowershell7 = [regex]::new('(### EXAMPLE [0-9])\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?\\`\\`\\`)\n([\s\S]*|\n)')
-
-        if ($example -match $regexCodeFencePowershell7) {
-            $header = $matches[1]
-            $codeblock1 = $matches[4]
-            $codeblock2 = $matches[5]
-            $description  = $matches[6]
-
-            $example = "$header`n" + '```' + "`n$($codeblock1)$($codeblock2)`n$description`n"
-            $newExamples += $example
+            $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
+            $newExamples += $newExample
             return
         }
 
@@ -87,7 +71,7 @@ function ReplaceMarkdownCodeBlocks() {
         }
 
         # we should never reach this point
-        write-warning "Unsupported code block detected, please file an issue at https://github.com/alt3/Docusaurus.Powershell/issues"
+        Write-Warning "Unsupported code block detected, please file an issue at https://github.com/alt3/Docusaurus.Powershell/issues"
     }
 
     # replace EXAMPLES section in content with updated examples
