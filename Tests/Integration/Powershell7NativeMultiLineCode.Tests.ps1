@@ -28,21 +28,25 @@ Import-Module ${global:testModulePath} -Force -DisableNameChecking -Verbose:$Fal
 # -----------------------------------------------------------------------------
 # the actual integration test
 # -----------------------------------------------------------------------------
-Describe "Integration Test for Powershell 7" {
-    Context "for Native Multi-Line Code Support" {
-        # render the markdown
-        ${global:outputFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
-        InModuleScope Alt3.Docusaurus.Powershell {
-            New-DocusaurusHelp -Module ${global:testModulePath} -OutputFolder ${global:outputFolder}
-        }
+Describe "Integration Test to ensure Powershell 7's Native Multi-Line Code Examples render as expected" {
 
-        # read markdown
-        $renderedMdx = Get-Content (Join-Path -Path ${global:outputFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx")
-        $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$(${global:testModuleName}).expected.mdx")
+    # render the markdown
+    ${global:outputFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
+    InModuleScope Alt3.Docusaurus.Powershell {
+        New-DocusaurusHelp -Module ${global:testModulePath} -OutputFolder ${global:outputFolder}
+    }
 
-        # make sure output is identical
-        It "generates markdown that is identical to the markdown found in our static 'expected' mdx file" {
-            $renderedMdx | Should -BeExactly $expectedMdx
-        }
+    # read markdown
+    $renderedMdx = Get-Content (Join-Path -Path ${global:outputFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx")
+    $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$(${global:testModuleName}).expected.mdx")
+
+    # make sure output is identical
+    It "generates markdown that is identical to the markdown found in our static 'expected' mdx file" {
+        $renderedMdx | Should -BeExactly $expectedMdx
     }
 }
+
+# -----------------------------------------------------------------------------
+# cleanup
+# -----------------------------------------------------------------------------
+Remove-Item ${global:outputFolder} -Recurse -Force

@@ -25,7 +25,7 @@ Describe "Integration Test to ensure all supported Code Example variants render 
     # render the markdown
     ${global:outputFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
     InModuleScope Alt3.Docusaurus.Powershell {
-        New-DocusaurusHelp -Module ${global:testModulePath} -OutputFolder ${global:outputFolder} -Verbose
+        New-DocusaurusHelp -Module ${global:testModulePath} -OutputFolder ${global:outputFolder}
     }
 
     # read markdown
@@ -37,3 +37,8 @@ Describe "Integration Test to ensure all supported Code Example variants render 
         $renderedMdx | Should -BeExactly $expectedMdx
     }
 }
+
+# -----------------------------------------------------------------------------
+# cleanup
+# -----------------------------------------------------------------------------
+Remove-Item ${global:outputFolder} -Recurse -Force
