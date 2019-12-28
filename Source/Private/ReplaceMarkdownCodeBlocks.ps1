@@ -41,17 +41,17 @@ function ReplaceMarkdownCodeBlocks() {
 
         # ---------------------------------------------------------------------
         # Powershell 6: re-construct Code Fenced example
-        # - https://regex101.com/r/lHdZHM/6 => code block without a description
-        # - https://regex101.com/r/CGjQco/3 => code block with a description
+        # - https://regex101.com/r/lHdZHM/6 => without a description
+        # - https://regex101.com/r/CGjQco/3 => with a description
         # ---------------------------------------------------------------------
-        $regexPowershell6CodeFences = [regex]::new('(### EXAMPLE ([0-9|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n```\n)\n([\s\S]*?)\\`\\`\\`(\n\n|\n)([\s\S]*|\n)')
+        $regexPowershell6TripleCodeFence = [regex]::new('(### EXAMPLE ([0-9|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n```\n)\n([\s\S]*?)\\`\\`\\`(\n\n|\n)([\s\S]*|\n)')
 
-        if ($example -match $regexPowershell6CodeFences) {
+        if ($example -match $regexPowershell6TripleCodeFence) {
             $header = $matches[1]
             $code = $matches[5]
             $description = $matches[7]
 
-            Write-Verbose "=> $($header): applying Powershell 6 Code Fencing Detection"
+            Write-Verbose "=> $($header): Triple Code Fence (Powershell 6 and lower)"
 
             $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
             $newExamples += $newExample
@@ -59,19 +59,64 @@ function ReplaceMarkdownCodeBlocks() {
         }
 
         # ---------------------------------------------------------------------
-        # no matches so we follow the Comment Based Help standard and thus use
-        # PlatyPS generated code block. This regex will detect both single-
-        # line and multi-line code examples and has support for Powershell v7.
+        # Powershell 7: re-construct PlatyPS Paired Code Fences example
+        # - https://regex101.com/r/FRA139/1 => without a description
+        # - https://regex101.com/r/YIIwUs/5 => with a description
         # ---------------------------------------------------------------------
-        $regexDefaultCodeBlocks = [regex]::new('(### EXAMPLE [0-9])\n```\n([\s\S]*)```\n(([\s\S]*|\n|))?(?=\n.*?#|$)')
+        $regexPowershell7PairedCodeFences = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?)```\n```(\n\n|\n)([\s\S]*|\n)')
 
-        if ($example -match $regexDefaultCodeBlocks) {
+        if ($example -match $regexPowershell7PairedCodeFences) {
+            $header = $matches[1]
+            $code = $matches[5]
+            $description = $matches[7]
+
+            Write-Verbose "=> $($header): Paired Code Fences (Powershell 7)"
+
+            $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
+            $newExamples += $newExample
+            return
+        }
+
+        # ---------------------------------------------------------------------
+        # Powershell 7:  re-construct non-adjacent Code Fenced example
+        # - https://regex101.com/r/kLr98l/3 => without a description
+        # - https://regex101.com/r/eJH4cQ/6 => with a complex description
+        # ---------------------------------------------------------------------
+        $regexPowershell7NonAdjacentCodeBlock = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?)\\`\\`\\`(\n\n([\s\S]*)|\n)')
+
+        if ($example -match $regexPowershell7NonAdjacentCodeBlock) {
+            $header = $matches[1]
+            $code = $matches[5] -replace ('```' + "`n"), ''
+            $description = $matches[7]
+
+            Write-Verbose "=> $($header): Non-Adjacent Code Block (Powershell 7)"
+
+            $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
+            $newExamples += $newExample
+            return
+        }
+
+        # ---------------------------------------------------------------------
+        # no matches so we simply use the unaltered PlatyPS generated example
+        # - https://regex101.com/r/rllmTj/1 => without a decription
+        # - https://regex101.com/r/kTH75U/1 => with a description
+        # ---------------------------------------------------------------------
+        $regexPlatyPsDefaults = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n```\n([\s\S]*)```\n([\s\S]*)')
+
+        if ($example -match $regexPlatyPsDefaults) {
+            $header = $matches[1]
+            $code = $matches[5] -replace ('```' + "`n"), ''
+            $description = $matches[7]
+
+            Write-Verbose "=> $($header): PlatyPS Default (all Powershell versions)"
+
             $newExamples += "$example`n"
             return
         }
 
         # we should never reach this point
-        Write-Warning "Unsupported code block detected, please file an issue at https://github.com/alt3/Docusaurus.Powershell/issues"
+        Write-Warning "Unsupported code block detected, please file an issue containing the error message below at https://github.com/alt3/Docusaurus.Powershell/issues"
+        Write-Warning $example
     }
 
     # replace EXAMPLES section in content with updated examples
