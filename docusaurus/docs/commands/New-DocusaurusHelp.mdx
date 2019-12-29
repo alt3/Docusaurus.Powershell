@@ -21,7 +21,7 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 
 ```powershell
 New-DocusaurusHelp [-Module] <String> [[-DocsFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
- [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [[-EditUrl] <String>] [-HideTitle]
+ [[-EditUrl] <String>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [-HideTitle]
  [-HideTableOfContents] [-Monolithic] [<CommonParameters>]
 ```
 
@@ -47,7 +47,7 @@ the Alt3.Docusaurus.Powershell module.
 $arguments = @{
     Module = "Alt3.Docusaurus.Powershell"
     DocsFolder = "D:\my-project\docs"
-    SideBar = "commands"
+    Sidebar = "commands"
     Exclude = @(
         "Get-SomeCommand"
     )
@@ -85,7 +85,7 @@ Accept wildcard characters: False
 ```
 
 ### -DocsFolder
-Specifies the Docusaurus `docs` folder in which the sidebar folder will be created.
+Specifies the absolute or relative **path** to the Docusaurus `docs` folder.
 
 Optional, defaults to `docusaurus/docs`, case sensitive.
 
@@ -102,7 +102,7 @@ Accept wildcard characters: False
 ```
 
 ### -Sidebar
-Specifies the subfolder where the Get-Help `.mdx` files for the module will be created.
+Specifies the **name** of the docs subfolder in which the `.mdx` files will be created.
 
 Optional, defaults to `commands`, case sensitive.
 
@@ -133,6 +133,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -EditUrl
+Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
+
+Optional, defaults to `null`.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -MetaDescription
 Optional string that will be inserted into Docusaurus front matter to be used as html meta tag 'description'.
 
@@ -144,7 +161,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 6
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -159,25 +176,8 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EditUrl
-Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
-
-Optional, defaults to `null`.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
 Position: 7
-Default value: None
+Default value: @()
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

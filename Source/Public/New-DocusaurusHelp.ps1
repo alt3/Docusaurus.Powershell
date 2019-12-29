@@ -24,7 +24,7 @@ function New-DocusaurusHelp() {
             $arguments = @{
                 Module = "Alt3.Docusaurus.Powershell"
                 DocsFolder = "D:\my-project\docs"
-                SideBar = "commands"
+                Sidebar = "commands"
                 Exclude = @(
                     "Get-SomeCommand"
                 )
@@ -48,12 +48,12 @@ function New-DocusaurusHelp() {
             You may specify a module name, a `.psd1` file or a `.psm1` file.
 
         .PARAMETER DocsFolder
-            Specifies the Docusaurus `docs` folder in which the sidebar folder will be created.
+            Specifies the absolute or relative **path** to the Docusaurus `docs` folder.
 
             Optional, defaults to `docusaurus/docs`, case sensitive.
 
         .PARAMETER Sidebar
-            Specifies the subfolder where the Get-Help `.mdx` files for the module will be created.
+            Specifies the **name** of the docs subfolder in which the `.mdx` files will be created.
 
             Optional, defaults to `commands`, case sensitive.
 
@@ -103,9 +103,9 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $False)][string]$DocsFolder = "docusaurus/docs",
         [Parameter(Mandatory = $False)][string]$Sidebar = "commands",
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
+        [Parameter(Mandatory = $False)][string]$EditUrl,
         [Parameter(Mandatory = $False)][string]$MetaDescription,
         [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
-        [Parameter(Mandatory = $False)][string]$EditUrl,
         [switch]$HideTitle,
         [switch]$HideTableOfContents,
         [switch]$Monolithic
