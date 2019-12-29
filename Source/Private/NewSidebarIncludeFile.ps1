@@ -12,6 +12,8 @@ function NewSidebarIncludeFile() {
         [Parameter(Mandatory = $True)][Object]$MarkdownFiles
     )
 
+    Write-Verbose "Generating docusaurus.sidebar.js"
+
     # generate a list of Powershell commands by stripping .md from the generated PlatyPs files
     [array]$commands = $MarkdownFiles | Select-Object @{ Name = "PowershellCommand"; Expression={ "'$Sidebar/" + [System.IO.Path]::GetFileNameWithoutExtension($_) + "'" } } | Select-Object  -Expand PowershellCommand
 
@@ -42,7 +44,4 @@ module.exports = [
     # create the file
     $fileEncoding = New-Object System.Text.UTF8Encoding $False
     [System.IO.File]::WriteAllLines($filePath, $content, $fileEncoding)
-
-    # add created file to output
-    Get-Item $filePath
 }
