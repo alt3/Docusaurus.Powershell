@@ -184,6 +184,7 @@ function New-DocusaurusHelp() {
         ReplaceMarkdownExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
         SetMarkdownCodeBlockMoniker -MarkdownFile $mdxFile
         UpdateMarkdownBackticks -MarkdownFile $mdxFile
+        ReplaceNonSeparatedMarkdownHeaders -MarkdownFile $mdxFile
     }
 
     # copy updated mdx files to the target folder
