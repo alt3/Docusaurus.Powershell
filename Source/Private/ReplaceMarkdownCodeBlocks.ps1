@@ -25,6 +25,10 @@ function ReplaceMarkdownCodeBlocks() {
     $regexExtractExamples = [regex]::new('### (EXAMPLE|Example) [0-9][\s\S]*?(?=\n.*?#|$)')
     $examples = $regexExtractExamples.Matches($content)
 
+    if ($examples.Count -eq 0) {
+        Write-Warning "Unable to find any EXAMPLE nodes. Please check your Get-Help definitions before filing an issue!"
+    }
+
     # process each EXAMPLE node
     $examples | ForEach-Object {
         $example = $_
@@ -34,7 +38,10 @@ function ReplaceMarkdownCodeBlocks() {
         # https://regex101.com/r/WOQL0l/4
         # ---------------------------------------------------------------------
         $regexPlatyPlaceholderExample = [regex]::new('{{ Add example code here }}')
-        if ($regexPlatyPlaceholderExample.Matches($example)) {
+        if ($example -match $regexPlatyPlaceholderExample) {
+
+            Write-Verbose "=> Example 1: PlatyPS Placeholder"
+
             $newExamples += $example
             return
         }
