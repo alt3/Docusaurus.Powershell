@@ -22,7 +22,7 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 ```powershell
 New-DocusaurusHelp [-Module] <String> [[-DocsFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
  [[-EditUrl] <String>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [-HideTitle]
- [-HideTableOfContents] [-Monolithic] [<CommonParameters>]
+ [-HideTableOfContents] [-NoPlaceHolderExamples] [-Monolithic] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -44,7 +44,7 @@ the Alt3.Docusaurus.Powershell module.
 
 ### EXAMPLE 2
 ```powershell
-$arguments = @{
+$parameters = @{
     Module = "Alt3.Docusaurus.Powershell"
     DocsFolder = "D:\my-project\docs"
     Sidebar = "commands"
@@ -58,7 +58,7 @@ $arguments = @{
     )
 }
 
-New-DocusaurusHelp @arguments
+New-DocusaurusHelp @parameters
 ```
 
 This example uses splatting to override default settings.
@@ -216,8 +216,26 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -NoPlaceHolderExamples
+By default, Docusaurus will generate a placeholder example if your Get-Help
+definition does not contain any `EXAMPLE` nodes.
+
+You can use this switch to disable that behavior which will result in an empty `EXAMPLES` section.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Monolithic
-Use this optional argument if the Powershell module source is monolithic.
+Use this optional parameter if the Powershell module source is monolithic.
 
 Will point all `custom_edit_url` front matter variables to the `.psm1` file.
 

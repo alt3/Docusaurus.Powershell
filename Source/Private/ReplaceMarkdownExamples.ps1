@@ -1,7 +1,7 @@
-function ReplaceMarkdownCodeBlocks() {
+function ReplaceMarkdownExamples() {
     <#
         .SYNOPSIS
-            Replace PlatyPS generated code blocks.
+            Replace PlatyPS generated code block examples.
 
         .DESCRIPTION
             Replaces custom fenced code blocks and placeholder examples, otherwise uses PlatyPS generated defaults.
@@ -12,7 +12,8 @@ function ReplaceMarkdownCodeBlocks() {
             https://github.com/alt3/Docusaurus.Powershell/issues/14#issuecomment-568552556
     #>
     param(
-        [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
+        [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile,
+        [switch]$NoPlaceHolderExamples
     )
 
     $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
@@ -40,9 +41,13 @@ function ReplaceMarkdownCodeBlocks() {
         $regexPlatyPlaceholderExample = [regex]::new('{{ Add example code here }}')
         if ($example -match $regexPlatyPlaceholderExample) {
 
-            Write-Verbose "=> Example 1: PlatyPS Placeholder"
+            if ($NoPlaceHolderExamples) {
+                Write-Verbose "=> Example 1: PlatyPS Placeholder (dropping)"
+                return
+            }
 
-            $newExamples += $example
+            Write-Verbose "=> Example 1: PlatyPS Placeholder (keeping)"
+            $newExamples += "$example`n"
             return
         }
 

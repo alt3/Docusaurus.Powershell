@@ -21,7 +21,7 @@ function New-DocusaurusHelp() {
 
         .EXAMPLE
             ```
-            $arguments = @{
+            $parameters = @{
                 Module = "Alt3.Docusaurus.Powershell"
                 DocsFolder = "D:\my-project\docs"
                 Sidebar = "commands"
@@ -35,7 +35,7 @@ function New-DocusaurusHelp() {
                 )
             }
 
-            New-DocusaurusHelp @arguments
+            New-DocusaurusHelp @parameters
             ```
 
             This example uses splatting to override default settings.
@@ -83,8 +83,14 @@ function New-DocusaurusHelp() {
 
             Optional, defaults to `false`.
 
+        .PARAMETER NoPlaceholderExamples
+            By default, Docusaurus will generate a placeholder example if your Get-Help
+            definition does not contain any `EXAMPLE` nodes.
+
+            You can use this switch to disable that behavior which will result in an empty `EXAMPLES` section.
+
         .PARAMETER Monolithic
-            Use this optional argument if the Powershell module source is monolithic.
+            Use this optional parameter if the Powershell module source is monolithic.
 
             Will point all `custom_edit_url` front matter variables to the `.psm1` file.
 
@@ -108,6 +114,7 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
         [switch]$HideTitle,
         [switch]$HideTableOfContents,
+        [switch]$NoPlaceHolderExamples,
         [switch]$Monolithic
     )
 
@@ -174,7 +181,7 @@ function New-DocusaurusHelp() {
         SetMarkdownFrontMatter @frontmatterArgs
 
         RemoveMarkdownHeaderOne -MarkdownFile $mdxFile
-        ReplaceMarkdownCodeBlocks -MarkdownFile $mdxFile
+        ReplaceMarkdownExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
         SetMarkdownCodeBlockMoniker -MarkdownFile $mdxFile
         UpdateMarkdownBackticks -MarkdownFile $mdxFile
     }
