@@ -8,7 +8,7 @@ const commands = require('./docs/commands/docusaurus.sidebar.js');
 
 module.exports = {
   docs: {
-    'Docusaurus.Powershell': [
+    'Docs': [
       'introduction',
       'installation',
       'usage'
@@ -16,9 +16,10 @@ module.exports = {
     'F.A.Q.': [
       'faq/multiple-modules',
       'faq/monolithic-modules',
+      'faq/multi-line-examples',
       'faq/search',
       'faq/ci-cd',
     ],
-    "Command Reference": commands,
+    "Get-Help": commands,
   },
 };

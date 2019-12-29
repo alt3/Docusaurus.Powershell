@@ -9,8 +9,8 @@ For example, the following commands would generate module documentation for
 both `ModuleA` and `ModuleB`, each contained within their own sidebar subfolder.
 
 ```powershell
-New-DocusaurusHelp -Module "ModuleA" -Sidebar "SidebarA" -EditUrl "http://some.url"
-New-DocusaurusHelp -Module "ModuleB" -Sidebar "SidebarB" -EditUrl "http://some.url"
+New-DocusaurusHelp -Module "ModuleA" -Sidebar "SidebarA" -EditUrl "http://some.url/ModuleA"
+New-DocusaurusHelp -Module "ModuleB" -Sidebar "SidebarB" -EditUrl "http://some.url/ModuleB"
 ```
 
 After that, `docusaurus/sidebars.js` would need to be updated to include both sidebar specifications.

@@ -1,6 +1,14 @@
 ---
 id: New-DocusaurusHelp
 title: New-DocusaurusHelp
+description: Help page for the Alt3.Docusaurus.Powershell "New-DocusaurusHelp" command
+keywords:
+  - Alt3
+  - Documentation
+  - Docusaurus
+  - Get-Help
+  - Modules
+  - Powershell
 hide_title: false
 hide_table_of_contents: false
 custom_edit_url: https://github.com/alt3/Docusaurus.Powershell/edit/master/Source/Public
@@ -12,9 +20,9 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 ## SYNTAX
 
 ```powershell
-New-DocusaurusHelp [-Module] <String> [[-OutputFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
- [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [[-EditUrl] <String>] [-HideTitle]
- [-HideTableOfContents] [-Monolithic] [<CommonParameters>]
+New-DocusaurusHelp [-Module] <String> [[-DocsFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
+ [[-EditUrl] <String>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [-HideTitle]
+ [-HideTableOfContents] [-NoPlaceHolderExamples] [-Monolithic] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -28,8 +36,34 @@ Also creates a `sidebar.js` file for simplified integration into the Docusaurus 
 
 ### EXAMPLE 1
 ```powershell
-New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell -EditUrl "https://github.com/alt3/Docusaurus.Powershell/edit/master/source/Public"
+New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell
 ```
+
+This example uses default settings to generate a Get-Help page for each command exported by
+the Alt3.Docusaurus.Powershell module.
+
+### EXAMPLE 2
+```powershell
+$parameters = @{
+    Module = "Alt3.Docusaurus.Powershell"
+    DocsFolder = "D:\my-project\docs"
+    Sidebar = "commands"
+    Exclude = @(
+        "Get-SomeCommand"
+    )
+    MetaDescription = 'Help page for the Powershell command "%1"'
+    MetaKeywords = @(
+        "Powershell"
+        "Documentation"
+    )
+}
+
+New-DocusaurusHelp @parameters
+```
+
+This example uses splatting to override default settings.
+
+See the list of Parameters below for all available overrides.
 
 ## PARAMETERS
 
@@ -50,8 +84,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OutputFolder
-Specifies the folder where the Docusaurus sidebar subfolder will be created.
+### -DocsFolder
+Specifies the absolute or relative **path** to the Docusaurus `docs` folder.
 
 Optional, defaults to `docusaurus/docs`, case sensitive.
 
@@ -68,7 +102,7 @@ Accept wildcard characters: False
 ```
 
 ### -Sidebar
-Specifies the subfolder where the Get-Help `.mdx` files for the module will be created.
+Specifies the **name** of the docs subfolder in which the `.mdx` files will be created.
 
 Optional, defaults to `commands`, case sensitive.
 
@@ -99,6 +133,23 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -EditUrl
+Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
+
+Optional, defaults to `null`.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -MetaDescription
 Optional string that will be inserted into Docusaurus front matter to be used as html meta tag 'description'.
 
@@ -110,7 +161,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 6
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -125,25 +176,8 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -EditUrl
-Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
-
-Optional, defaults to `null`.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
 Position: 7
-Default value: None
+Default value: @()
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -182,8 +216,26 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -NoPlaceHolderExamples
+By default, Docusaurus will generate a placeholder example if your Get-Help
+definition does not contain any `EXAMPLE` nodes.
+
+You can use this switch to disable that behavior which will result in an empty `EXAMPLES` section.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -Monolithic
-Use this optional argument if the Powershell module source is monolithic.
+Use this optional parameter if the Powershell module source is monolithic.
 
 Will point all `custom_edit_url` front matter variables to the `.psm1` file.
 

@@ -14,20 +14,46 @@ function New-DocusaurusHelp() {
             System.Object
 
         .EXAMPLE
-            New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell -EditUrl "https://github.com/alt3/Docusaurus.Powershell/edit/master/source/Public"
+            New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell
+
+            This example uses default settings to generate a Get-Help page for each command exported by
+            the Alt3.Docusaurus.Powershell module.
+
+        .EXAMPLE
+            ```
+            $parameters = @{
+                Module = "Alt3.Docusaurus.Powershell"
+                DocsFolder = "D:\my-project\docs"
+                Sidebar = "commands"
+                Exclude = @(
+                    "Get-SomeCommand"
+                )
+                MetaDescription = 'Help page for the Powershell command "%1"'
+                MetaKeywords = @(
+                    "Powershell"
+                    "Documentation"
+                )
+            }
+
+            New-DocusaurusHelp @parameters
+            ```
+
+            This example uses splatting to override default settings.
+
+            See the list of Parameters below for all available overrides.
 
         .PARAMETER Module
             Specifies the module this cmdlet will generate Docusaurus documentation for.
 
             You may specify a module name, a `.psd1` file or a `.psm1` file.
 
-        .PARAMETER OutputFolder
-            Specifies the folder where the Docusaurus sidebar subfolder will be created.
+        .PARAMETER DocsFolder
+            Specifies the absolute or relative **path** to the Docusaurus `docs` folder.
 
             Optional, defaults to `docusaurus/docs`, case sensitive.
 
         .PARAMETER Sidebar
-            Specifies the subfolder where the Get-Help `.mdx` files for the module will be created.
+            Specifies the **name** of the docs subfolder in which the `.mdx` files will be created.
 
             Optional, defaults to `commands`, case sensitive.
 
@@ -57,8 +83,14 @@ function New-DocusaurusHelp() {
 
             Optional, defaults to `false`.
 
+        .PARAMETER NoPlaceholderExamples
+            By default, Docusaurus will generate a placeholder example if your Get-Help
+            definition does not contain any `EXAMPLE` nodes.
+
+            You can use this switch to disable that behavior which will result in an empty `EXAMPLES` section.
+
         .PARAMETER Monolithic
-            Use this optional argument if the Powershell module source is monolithic.
+            Use this optional parameter if the Powershell module source is monolithic.
 
             Will point all `custom_edit_url` front matter variables to the `.psm1` file.
 
@@ -74,14 +106,15 @@ function New-DocusaurusHelp() {
     [cmdletbinding()]
     param(
         [Parameter(Mandatory = $True)][string]$Module,
-        [Parameter(Mandatory = $False)][string]$OutputFolder = "docusaurus/docs",
+        [Parameter(Mandatory = $False)][string]$DocsFolder = "docusaurus/docs",
         [Parameter(Mandatory = $False)][string]$Sidebar = "commands",
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
+        [Parameter(Mandatory = $False)][string]$EditUrl,
         [Parameter(Mandatory = $False)][string]$MetaDescription,
         [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
-        [Parameter(Mandatory = $False)][string]$EditUrl,
         [switch]$HideTitle,
         [switch]$HideTableOfContents,
+        [switch]$NoPlaceHolderExamples,
         [switch]$Monolithic
     )
 
@@ -96,29 +129,49 @@ function New-DocusaurusHelp() {
         throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
     }
 
-    # markdown for the module will be isolated in a subfolder
-    $markdownFolder = Join-Path -Path $OutputFolder -ChildPath $Sidebar
+    $moduleName = [io.path]::GetFileName($module)
+
+    # markdown for the module will be copied into the sidebar subfolder
+    Write-Verbose "Initializing sidebar folder:"
+    $sidebarFolder = Join-Path -Path $DocsFolder -ChildPath $Sidebar
+    CreateOrCleanFolder -Path $sidebarFolder
+
+    # create tempfolder used for generating the PlatyPS files and creating the mdx files
+    $tempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell" | Join-Path -ChildPath $moduleName
+    InitializeTempFolder -Path $tempFolder
 
     # generate PlatyPs markdown files
-    New-MarkdownHelp -Module $Module -OutputFolder $markdownFolder -Force | Out-Null
+    Write-Verbose "Generating PlatyPS files."
+    New-MarkdownHelp -Module $Module -OutputFolder $tempFolder -Force | Out-Null
 
     # remove excluded files
+    Write-Verbose "Removing excluded files:"
     $Exclude | ForEach-Object {
-        $excludedFile = Join-Path -Path $markdownFolder -ChildPath "$($_).md"
-        if (Test-Path -Path $excludedFile) {
-            Remove-Item -Path $excludedFile
-        }
+        RemoveFile -Path (Join-Path -Path $tempFolder -ChildPath "$($_).md")
     }
 
-    # process remaining files
-    $markdownFiles = Get-ChildItem -Path $markdownFolder -Filter *.md
+    # rename PlatyPS files and create an `.mdx` copy we will transform
+    Write-Verbose "Cloning PlatyPS files."
+    Get-ChildItem -Path $tempFolder -Filter *.md | ForEach-Object {
+        $platyPsFile = $_.FullName -replace '.md', '.PlatyPS.md'
+        $mdxFile = $_.FullName -replace '.md', '.mdx'
+        Move-Item -Path $_.FullName -Destination $platyPsFile
+        Copy-Item  -Path $platyPsFile -Destination $mdxFile
+    }
 
-    # update generated markdown file(s) to make them Docusaurus compatible
-    ForEach ($markdownFile in $markdownFiles) {
-        $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $markdownFile -EditUrl $EditUrl -Monolithic:$Monolithic
+    # update all remaining mdx files to make them Docusaurus compatible
+    Write-Verbose "Updating mdx files."
+    $mdxFiles = Get-ChildItem -Path $tempFolder -Filter *.mdx
+
+    ForEach ($mdxFile in $mdxFiles) {
+        Write-Verbose "Processing $($mdxFile.Name):"
+
+        SetMarkdownLineEndings -MarkdownFile $mdxFile
+
+        $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $mdxFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
         $frontMatterArgs = @{
-            MarkdownFile = $markdownFile
+            MarkdownFile = $mdxFile
             MetaDescription = $metaDescription
             CustomEditUrl = $customEditUrl
             MetaKeywords = $metaKeywords
@@ -127,18 +180,25 @@ function New-DocusaurusHelp() {
         }
         SetMarkdownFrontMatter @frontmatterArgs
 
-        RemoveMarkdownHeaderOne -MarkdownFile $markdownFile
-        UpdateMarkdownCodeBlocks -MarkdownFile $markdownFile
-        UpdateMarkdownBackticks -MarkdownFile $markdownFile
+        RemoveMarkdownHeaderOne -MarkdownFile $mdxFile
+        ReplaceMarkdownExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
+        SetMarkdownCodeBlockMoniker -MarkdownFile $mdxFile
+        UpdateMarkdownBackticks -MarkdownFile $mdxFile
+    }
 
-        # rename to .mdx
-        $mdxFilePath = GetMdxFilePath -MarkdownFile $markdownFile
-        Move-Item -Path $markdownFile.FullName -Destination $mdxFilePath -Force | Out-Null
-
-        # output .mdx item so end-user can post-process files as they see fit
-        Get-Item $mdxFilePath
+    # copy updated mdx files to the target folder
+    Write-Verbose "Copying mdx files to sidebar folder."
+    Get-ChildItem -Path $tempFolder -Filter *.mdx | ForEach-Object {
+        # $mdxFile = $_.FullName -replace '.md', '.mdx'
+        Copy-Item  -Path $_.FullName -Destination (Join-Path -Path $sidebarFolder -ChildPath ($_.Name))
     }
 
     # generate the `.js` file used for the docusaurus sidebar
-    NewSidebarIncludeFile -MarkdownFiles $markdownFiles -OutputFolder $markdownFolder -Sidebar $Sidebar
+    NewSidebarIncludeFile -MarkdownFiles $mdxFiles -OutputFolder $sidebarFolder -Sidebar $Sidebar
+
+    # zip temp files in case we need them
+    Compress-Archive -Path (Join-Path -Path $tempFolder -ChildPath *.*) -DestinationPath (Join-Path $tempFolder -ChildPath "$moduleName.zip")
+
+    # output Get-ChildItem so end-user can post-process generated files as they see fit
+    Get-ChildItem -Path $sidebarFolder
 }

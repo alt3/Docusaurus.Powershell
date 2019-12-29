@@ -24,7 +24,7 @@ Import-Module Pester -NoClobber -Force
 
 $arguments = @{
   Module = "Pester"
-  OutputFolder = "./docs"
+  DocsFolder = "./docs"
   SideBar = "commands"
   Exclude = @(
     "Get-MockDynamicParameter"
@@ -39,12 +39,6 @@ $arguments = @{
       "Help"
       "Documentation"
   )
-}
-
-Write-Host "Removing existing files" -ForegroundColor Magenta
-$outputFolder = Join-Path -Path $arguments.OutputFolder -ChildPath $arguments.Sidebar | Join-Path -ChildPath "*.*"
-if (Test-Path -Path $outputFolder) {
-  Remove-Item -Path $outputFolder
 }
 
 Write-Host "Generating Command Reference" -ForegroundColor Magenta
