@@ -23,13 +23,13 @@ Import-Module ${global:testModulePath} -Force -DisableNameChecking -Verbose:$Fal
 Describe "Integration Test to ensure all supported Code Example variants render identically on all Powershell versions" {
 
     # render the markdown
-    ${global:outputFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
+    ${global:DocsFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
     InModuleScope Alt3.Docusaurus.Powershell {
-        New-DocusaurusHelp -Module ${global:testModulePath} -OutputFolder ${global:outputFolder}
+        New-DocusaurusHelp -Module ${global:testModulePath} -DocsFolder ${global:DocsFolder}
     }
 
     # read markdown
-    $renderedMdx = Get-Content (Join-Path -Path ${global:outputFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx")
+    $renderedMdx = Get-Content (Join-Path -Path ${global:DocsFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx")
     $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$(${global:testModuleName}).expected.mdx")
 
     # make sure output is identical
@@ -41,4 +41,4 @@ Describe "Integration Test to ensure all supported Code Example variants render 
 # -----------------------------------------------------------------------------
 # cleanup
 # -----------------------------------------------------------------------------
-Remove-Item ${global:outputFolder} -Recurse -Force
+Remove-Item ${global:DocsFolder} -Recurse -Force

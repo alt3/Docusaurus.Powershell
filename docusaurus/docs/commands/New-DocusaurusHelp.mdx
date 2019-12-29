@@ -20,7 +20,7 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 ## SYNTAX
 
 ```powershell
-New-DocusaurusHelp [-Module] <String> [[-OutputFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
+New-DocusaurusHelp [-Module] <String> [[-DocsFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
  [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [[-EditUrl] <String>] [-HideTitle]
  [-HideTableOfContents] [-Monolithic] [<CommonParameters>]
 ```
@@ -46,7 +46,7 @@ the Alt3.Docusaurus.Powershell module.
 ```powershell
 $arguments = @{
     Module = "Alt3.Docusaurus.Powershell"
-    OutputFolder = "D:\my-project\docs"
+    DocsFolder = "D:\my-project\docs"
     SideBar = "commands"
     Exclude = @(
         "Get-SomeCommand"
@@ -84,8 +84,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OutputFolder
-Specifies the folder where the Docusaurus sidebar subfolder will be created.
+### -DocsFolder
+Specifies the Docusaurus `docs` folder in which the sidebar folder will be created.
 
 Optional, defaults to `docusaurus/docs`, case sensitive.
 

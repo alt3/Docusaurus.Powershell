@@ -23,7 +23,7 @@ function New-DocusaurusHelp() {
             ```
             $arguments = @{
                 Module = "Alt3.Docusaurus.Powershell"
-                OutputFolder = "D:\my-project\docs"
+                DocsFolder = "D:\my-project\docs"
                 SideBar = "commands"
                 Exclude = @(
                     "Get-SomeCommand"
@@ -47,8 +47,8 @@ function New-DocusaurusHelp() {
 
             You may specify a module name, a `.psd1` file or a `.psm1` file.
 
-        .PARAMETER OutputFolder
-            Specifies the folder where the Docusaurus sidebar subfolder will be created.
+        .PARAMETER DocsFolder
+            Specifies the Docusaurus `docs` folder in which the sidebar folder will be created.
 
             Optional, defaults to `docusaurus/docs`, case sensitive.
 
@@ -100,7 +100,7 @@ function New-DocusaurusHelp() {
     [cmdletbinding()]
     param(
         [Parameter(Mandatory = $True)][string]$Module,
-        [Parameter(Mandatory = $False)][string]$OutputFolder = "docusaurus/docs",
+        [Parameter(Mandatory = $False)][string]$DocsFolder = "docusaurus/docs",
         [Parameter(Mandatory = $False)][string]$Sidebar = "commands",
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
         [Parameter(Mandatory = $False)][string]$MetaDescription,
@@ -126,7 +126,7 @@ function New-DocusaurusHelp() {
 
     # markdown for the module will be copied into the sidebar subfolder
     Write-Verbose "Initializing sidebar folder:"
-    $sidebarFolder = Join-Path -Path $OutputFolder -ChildPath $Sidebar
+    $sidebarFolder = Join-Path -Path $DocsFolder -ChildPath $Sidebar
     CreateOrCleanFolder -Path $sidebarFolder
 
     # create tempfolder used for generating the PlatyPS files and creating the mdx files

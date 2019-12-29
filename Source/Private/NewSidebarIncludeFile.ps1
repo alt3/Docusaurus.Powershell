@@ -34,12 +34,12 @@ module.exports = [
 ];
 "@
 
-    # generate file path, convert relative outputfolder to absolute if needed
+    # generate file path, convert relative output folder to absolute if needed
     if (-Not([System.IO.Path]::IsPathRooted($OutputFolder))) {
         $outputFolder = Join-Path "$(Get-Location)" -ChildPath $OutputFolder
     }
 
-    $filePath = Join-Path -Path $OutputFolder -ChildPath "docusaurus.sidebar.js"
+    $filePath = Join-Path -Path $outputFolder -ChildPath "docusaurus.sidebar.js"
 
     # create the file
     $fileEncoding = New-Object System.Text.UTF8Encoding $False
