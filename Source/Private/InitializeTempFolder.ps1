@@ -11,6 +11,9 @@ function InitializeTempFolder() {
 
             We might even instruct users to send us the files when reporting issues (which
             would require re-generating using the `-KeepTempFiles` switch).
+
+        .NOTES
+            Ideally we would also log used module versions for Alt3, PlatyPS and Pester.
     #>
     param(
         [Parameter(Mandatory = $True)][string]$Path
@@ -22,11 +25,6 @@ function InitializeTempFolder() {
     # prepare the debug info
     Write-Verbose "=> creating debug file"
     $debugInfo = [ordered]@{
-        ModuleVersions = [ordered]@{
-            "Alt3.Docusarus.Powershell" = (Get-Module "Alt3.Docusaurus.Powershell").Version
-            PlatyPs = (Get-Module PlatyPs).Version
-            Pester = (Get-Module Pester).Version
-        }
         PSVersionTable = $PSVersionTable
     } | ConvertTo-Json
 
