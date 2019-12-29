@@ -1,4 +1,4 @@
-function Test-Powershell7NativeMultiLineCode {
+function Test-PS7NativeMultiLineCode {
 <#
     .SYNOPSIS
         Dummy module to test Powershell 7 NATIVE multi-line code examples
