@@ -73,6 +73,13 @@ function New-DocusaurusHelp() {
 
             Optional, defaults to `null`.
 
+        .PARAMETER KeepHeader1
+            By default, the `H1` element will be removed from the PlatyPS generated markdown because
+            Docusaurus uses the per-page frontmatter variable `title` as the page's H1 element instead.
+
+            You may use this switch parameter to keep the markdown `H1` element, most likely in
+            combination with the `HideTitle` parameter.
+
         .PARAMETER HideTitle
             Sets the Docusaurus front matter variable `hide_title`.
 
@@ -112,6 +119,7 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $False)][string]$EditUrl,
         [Parameter(Mandatory = $False)][string]$MetaDescription,
         [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
+        [switch]$KeepHeader1,
         [switch]$HideTitle,
         [switch]$HideTableOfContents,
         [switch]$NoPlaceHolderExamples,
@@ -181,7 +189,7 @@ function New-DocusaurusHelp() {
         # transform the markdown using these steps
         SetLfLineEndings -MarkdownFile $mdxFile
         ReplaceFrontMatter @frontmatterArgs
-        RemoveHeaderOne -MarkdownFile $mdxFile
+        ReplaceHeader1 -MarkdownFile $mdxFile -KeepHeader1:$KeepHeader1
         ReplaceExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
         SetPowershellMonikers -MarkdownFile $mdxFile
         UnescapeBackticks -MarkdownFile $mdxFile

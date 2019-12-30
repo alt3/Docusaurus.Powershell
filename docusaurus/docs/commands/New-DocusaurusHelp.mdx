@@ -22,7 +22,7 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 
 ```powershell
 New-DocusaurusHelp [-Module] <String> [[-DocsFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
- [[-EditUrl] <String>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [-HideTitle]
+ [[-EditUrl] <String>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [-KeepHeader1] [-HideTitle]
  [-HideTableOfContents] [-NoPlaceHolderExamples] [-Monolithic] [<CommonParameters>]
 ```
 
@@ -189,6 +189,26 @@ Aliases:
 Required: False
 Position: 7
 Default value: @()
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -KeepHeader1
+
+By default, the `H1` element will be removed from the PlatyPS generated markdown because
+Docusaurus uses the per-page frontmatter variable `title` as the page's H1 element instead.
+
+You may use this switch parameter to keep the markdown `H1` element, most likely in
+combination with the `HideTitle` parameter.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
