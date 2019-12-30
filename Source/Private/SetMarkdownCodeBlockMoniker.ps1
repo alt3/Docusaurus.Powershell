@@ -11,7 +11,7 @@ function SetMarkdownCodeBlockMoniker() {
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
     )
 
-    $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
+    $content = ReadFile -MarkdownFile $MarkdownFile
 
     # this regex replaces all opening code fences without a language moniker with "```powershell"
     # https://regex101.com/r/AYzALd/1

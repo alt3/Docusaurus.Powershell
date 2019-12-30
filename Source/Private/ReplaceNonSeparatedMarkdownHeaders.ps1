@@ -17,7 +17,7 @@ function ReplaceNonSeparatedMarkdownHeaders() {
 
     Write-Verbose "Inserting empty line beneath non-separated headers."
 
-    $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
+    $content = ReadFile -MarkdownFile $MarkdownFile
 
     $regex = [regex]::new('(?m)([#+].+)\n(.+)')
 

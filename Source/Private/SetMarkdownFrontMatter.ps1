@@ -47,7 +47,7 @@ function SetMarkdownFrontMatter() {
     $newFrontMatter = ($newFrontMatter| Out-String) -replace "`r`n", "`n"
 
     # replace front matter
-    $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
+    $content = ReadFile -MarkdownFile $MarkdownFile
     $regex = "(?sm)^(---)(.+)^(---).$\n"
     $content = $content -replace $regex, $newFrontMatter
 

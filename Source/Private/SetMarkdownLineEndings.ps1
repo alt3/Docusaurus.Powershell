@@ -7,10 +7,9 @@ function SetMarkdownLineEndings() {
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
     )
 
-    $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
+    $content = ReadFile -MarkdownFile $MarkdownFile
 
     $content = ($content -replace "`r`n", "`n") + "`n"
 
-    # replace file
     WriteFileContent -MarkdownFile $MarkdownFile -Content $content
 }

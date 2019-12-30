@@ -16,7 +16,7 @@ function ReplaceMarkdownExamples() {
         [switch]$NoPlaceHolderExamples
     )
 
-    $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
+    $content = ReadFile -MarkdownFile $MarkdownFile
     [string]$newExamples = ""
 
     # ---------------------------------------------------------------------
