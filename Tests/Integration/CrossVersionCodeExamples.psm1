@@ -136,5 +136,24 @@ function Test-CrossVersionCodeExamples {
         ```
 
         Description starts on this line
+
+    .EXAMPLE
+        ```ps
+        $exampleType = 'This example is used as a test-case to ensure proper un-escaping of "PlatyPS escaped special characters"'
+
+        [bool]$string = 'These square brackets should display correctly'
+
+        PS C:\> Get-ChildItem
+
+        $multiline = "this is an example of multiline string using" `
+                     "the backtick method"
+        ```
+
+        It should also unescape properly in the description and thus:
+
+        - unescaped `backticks`
+        - fully functioning [links](https://www.google.com)
+        - use of the prompt directly: PS C:\> Get-ChildItem
+        - use of the prompt backtick-enclosed: `PS C:\> Get-ChildItem`
 #>
 }

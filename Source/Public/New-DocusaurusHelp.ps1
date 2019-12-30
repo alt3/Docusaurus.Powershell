@@ -38,7 +38,9 @@ function New-DocusaurusHelp() {
             New-DocusaurusHelp @parameters
             ```
 
-            This example uses splatting to override default settings.
+            This example uses
+            [splatting](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting)
+            to override default settings.
 
             See the list of Parameters below for all available overrides.
 
@@ -192,7 +194,7 @@ function New-DocusaurusHelp() {
         ReplaceHeader1 -MarkdownFile $mdxFile -KeepHeader1:$KeepHeader1
         ReplaceExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
         SetPowershellMonikers -MarkdownFile $mdxFile
-        UnescapeBackticks -MarkdownFile $mdxFile
+        UnescapeSpecialChars -MarkdownFile $mdxFile
         SeparateHeaders -MarkdownFile $mdxFile
         InsertFinalNewline -MarkdownFile $mdxFile
     }
