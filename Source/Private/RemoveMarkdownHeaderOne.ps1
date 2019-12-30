@@ -11,9 +11,8 @@ function RemoveMarkdownHeaderOne() {
 
     $regex = '\n#{1}\s.+'
 
-    $newContent = [regex]::replace($content, $regex, '')
+    $content = [regex]::replace($content, $regex, '')
 
-    # replace file (UTF-8 without BOM)
-    $fileEncoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($markdownFile.FullName, $newContent, $fileEncoding)
+    # replace file
+    WriteFileContent -MarkdownFile $MarkdownFile -Content $content
 }

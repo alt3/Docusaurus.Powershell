@@ -166,8 +166,7 @@ function New-DocusaurusHelp() {
     ForEach ($mdxFile in $mdxFiles) {
         Write-Verbose "Processing $($mdxFile.Name):"
 
-        SetMarkdownLineEndings -MarkdownFile $mdxFile
-
+        # prepare per-page variables
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $mdxFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
         $frontMatterArgs = @{
@@ -178,13 +177,16 @@ function New-DocusaurusHelp() {
             HideTitle = $HideTitle
             HideTableOfContents = $HideTableOfContents
         }
-        SetMarkdownFrontMatter @frontmatterArgs
 
+        # transform the markdown using these steps
+        SetMarkdownLineEndings -MarkdownFile $mdxFile
+        SetMarkdownFrontMatter @frontmatterArgs
         RemoveMarkdownHeaderOne -MarkdownFile $mdxFile
         ReplaceMarkdownExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
         SetMarkdownCodeBlockMoniker -MarkdownFile $mdxFile
         UpdateMarkdownBackticks -MarkdownFile $mdxFile
         ReplaceNonSeparatedMarkdownHeaders -MarkdownFile $mdxFile
+        InsertFinalNewline -MarkdownFile $mdxFile
     }
 
     # copy updated mdx files to the target folder

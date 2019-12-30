@@ -23,7 +23,6 @@ function ReplaceNonSeparatedMarkdownHeaders() {
 
     $content = $content -replace $regex, ('$1' + "`n`n" + '$2')
 
-    # replace file (UTF-8 without BOM)
-    $fileEncoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($markdownFile.FullName, $content, $fileEncoding)
+    # replace file
+    WriteFileContent -MarkdownFile $MarkdownFile -Content $content
 }

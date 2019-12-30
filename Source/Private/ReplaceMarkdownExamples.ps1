@@ -137,7 +137,6 @@ function ReplaceMarkdownExamples() {
     $replacement = "## EXAMPLES`n`n$($newExamples)## PARAMETERS"
     $content = [regex]::replace($content, $regex, $replacement)
 
-    # replace file (UTF-8 without BOM)
-    $fileEncoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($markdownFile.FullName, $content, $fileEncoding)
+    # replace file
+    WriteFileContent -MarkdownFile $MarkdownFile -Content $content
 }

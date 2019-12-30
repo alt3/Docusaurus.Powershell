@@ -29,12 +29,18 @@ Describe "Integration Test to ensure all supported Code Example variants render 
     }
 
     # read markdown
-    $renderedMdx = Get-Content (Join-Path -Path ${global:DocsFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx")
+    $renderedMdxFile = Join-Path -Path ${global:DocsFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx"
+    $renderedMdx = Get-Content $renderedMdxFile
     $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$(${global:testModuleName}).expected.mdx")
 
     # make sure output is identical
     It "generates markdown that is identical to the markdown found in our static 'expected' mdx file" {
         $renderedMdx | Should -BeExactly $expectedMdx
+    }
+
+    # make sure the file does not contain CRLF
+    It "generates a file without CRLF" {
+        (Get-Content -Path $renderedMdxFile -Raw) -match "`r`n" | Should -Be $False
     }
 }
 
