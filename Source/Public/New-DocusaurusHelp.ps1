@@ -144,7 +144,7 @@ function New-DocusaurusHelp() {
     Write-Verbose "Generating PlatyPS files."
     New-MarkdownHelp -Module $Module -OutputFolder $tempFolder -Force | Out-Null
 
-    # remove excluded files
+    # remove files matching excluded commands
     Write-Verbose "Removing excluded files:"
     $Exclude | ForEach-Object {
         RemoveFile -Path (Join-Path -Path $tempFolder -ChildPath "$($_).md")
@@ -179,20 +179,19 @@ function New-DocusaurusHelp() {
         }
 
         # transform the markdown using these steps
-        SetMarkdownLineEndings -MarkdownFile $mdxFile
-        SetMarkdownFrontMatter @frontmatterArgs
-        RemoveMarkdownHeaderOne -MarkdownFile $mdxFile
-        ReplaceMarkdownExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
-        SetMarkdownCodeBlockMoniker -MarkdownFile $mdxFile
-        UpdateMarkdownBackticks -MarkdownFile $mdxFile
-        ReplaceNonSeparatedMarkdownHeaders -MarkdownFile $mdxFile
+        SetLfLineEndings -MarkdownFile $mdxFile
+        ReplaceFrontMatter @frontmatterArgs
+        RemoveHeaderOne -MarkdownFile $mdxFile
+        ReplaceExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
+        SetPowershellMonikers -MarkdownFile $mdxFile
+        UnescapeBackticks -MarkdownFile $mdxFile
+        SeparateHeaders -MarkdownFile $mdxFile
         InsertFinalNewline -MarkdownFile $mdxFile
     }
 
     # copy updated mdx files to the target folder
     Write-Verbose "Copying mdx files to sidebar folder."
     Get-ChildItem -Path $tempFolder -Filter *.mdx | ForEach-Object {
-        # $mdxFile = $_.FullName -replace '.md', '.mdx'
         Copy-Item  -Path $_.FullName -Destination (Join-Path -Path $sidebarFolder -ChildPath ($_.Name))
     }
 

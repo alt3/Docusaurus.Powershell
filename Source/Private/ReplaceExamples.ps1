@@ -1,4 +1,4 @@
-function ReplaceMarkdownExamples() {
+function ReplaceExamples() {
     <#
         .SYNOPSIS
             Replace PlatyPS generated code block examples.

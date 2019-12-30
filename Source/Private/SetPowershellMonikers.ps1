@@ -1,4 +1,4 @@
-function SetMarkdownCodeBlockMoniker() {
+function SetPowershellMonikers() {
     <#
         .SYNOPSIS
         Add `powershell` moniker to generated code blocks for correct syntax highlighting.

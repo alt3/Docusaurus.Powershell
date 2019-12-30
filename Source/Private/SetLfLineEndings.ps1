@@ -1,4 +1,4 @@
-function SetMarkdownLineEndings() {
+function SetLfLineEndings() {
     <#
         .SYNOPSIS
             Replaces all CRLF line endings with LF so we can consitently use/expect `n when regexing etc.

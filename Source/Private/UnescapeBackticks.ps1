@@ -1,7 +1,7 @@
-function RemoveMarkdownHeaderOne() {
+function UnescapeBackticks() {
     <#
         .SYNOPSIS
-        Removes the H1 element from the markdown content because Docusaurus already generates H1 using the `title` front matter.
+        Replaces platyPS-produced "escaped backticks" with normal backticks so markdown gets rendered as expected.
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
@@ -9,9 +9,9 @@ function RemoveMarkdownHeaderOne() {
 
     $content = ReadFile -MarkdownFile $MarkdownFile
 
-    $regex = '\n#{1}\s.+'
+    $regex = '\\`'
 
-    $content = [regex]::replace($content, $regex, '')
+    $content = [regex]::replace($content, $regex, '`')
 
     # replace file
     WriteFile -MarkdownFile $MarkdownFile -Content $content
