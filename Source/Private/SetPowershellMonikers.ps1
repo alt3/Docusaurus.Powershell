@@ -1,11 +1,11 @@
 function SetPowershellMonikers() {
     <#
         .SYNOPSIS
-        Add `powershell` moniker to generated code blocks for correct syntax highlighting.
+            Add `powershell` moniker to generated code blocks for correct syntax highlighting.
 
         .NOTES
-        1. unfortunately we need to do this because PlatyPS does not add the language (design choice)
-        2. @todo change regex so it will match on \n as well (now only works on CRLF files)
+            Unfortunately we need to do this because PlatyPS does not add the language (design choice)
+            => https://github.com/PowerShell/platyPS/issues/475
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile

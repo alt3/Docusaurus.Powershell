@@ -1,7 +1,7 @@
 function ReplaceHeader1() {
     <#
         .SYNOPSIS
-        Removes the markdown H1 element OR preprends it with an extra newline if the -KeepHeader1 switch is used.
+            Removes the markdown H1 element OR preprends it with an extra newline if the -KeepHeader1 switch is used.
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile,
