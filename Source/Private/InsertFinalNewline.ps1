@@ -10,5 +10,5 @@ function InsertFinalNewline() {
     $content = ReadFile -MarkdownFile $MarkdownFile
 
     # replace file
-    WriteFileContent -MarkdownFile $MarkdownFile -Content ($content + "`n")
+    WriteFile -MarkdownFile $MarkdownFile -Content ($content + "`n")
 }

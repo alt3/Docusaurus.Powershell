@@ -14,5 +14,5 @@ function UpdateMarkdownBackticks() {
     $content = [regex]::replace($content, $regex, '`')
 
     # replace file
-    WriteFileContent -MarkdownFile $MarkdownFile -Content $content
+    WriteFile -MarkdownFile $MarkdownFile -Content $content
 }

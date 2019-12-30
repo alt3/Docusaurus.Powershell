@@ -24,5 +24,5 @@ function ReplaceNonSeparatedMarkdownHeaders() {
     $content = $content -replace $regex, ('$1' + "`n`n" + '$2')
 
     # replace file
-    WriteFileContent -MarkdownFile $MarkdownFile -Content $content
+    WriteFile -MarkdownFile $MarkdownFile -Content $content
 }

@@ -1,4 +1,4 @@
-function WriteFileContent() {
+function WriteFile() {
     <#
         .SYNOPSIS
             Writes content to a UTF-8 file without BOM using LF as newlines.

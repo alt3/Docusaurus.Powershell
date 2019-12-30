@@ -20,5 +20,5 @@ function SetMarkdownCodeBlockMoniker() {
     $content = [regex]::replace($content, $regex, '```powershell' + "`n" + '$2```' + "`n")
 
     # replace file
-    WriteFileContent -MarkdownFile $MarkdownFile -Content $content
+    WriteFile -MarkdownFile $MarkdownFile -Content $content
 }

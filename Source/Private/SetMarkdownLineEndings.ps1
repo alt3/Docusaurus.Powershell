@@ -11,5 +11,5 @@ function SetMarkdownLineEndings() {
 
     $content = ($content -replace "`r`n", "`n") + "`n"
 
-    WriteFileContent -MarkdownFile $MarkdownFile -Content $content
+    WriteFile -MarkdownFile $MarkdownFile -Content $content
 }
