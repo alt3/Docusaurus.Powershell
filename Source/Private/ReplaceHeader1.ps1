@@ -10,12 +10,12 @@ function ReplaceHeader1() {
 
     $content = ReadFile -MarkdownFile $MarkdownFile
 
+    $regex = '(---)\n(# .+)'
+
     if ($KeepHeader1) {
-        $regex = [regex]'\n#\s'
-        $content = $regex.replace($content, "`n`n# ", 1) # prepend newline (for first match only)
+        $content = $content -replace $regex, ("---`n`n" + '$2') # prepend newline (for first match only)
     } else {
-        $regex = [regex]'\n#{1}\s.+'
-        $content = $regex.replace($content, '', 1) # remove line (for first match only)
+        $content = $content -replace $regex, '---' # remove line (for first match only)
     }
 
     # replace file
