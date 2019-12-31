@@ -193,7 +193,7 @@ function New-DocusaurusHelp() {
         ReplaceFrontMatter @frontmatterArgs
         ReplaceHeader1 -MarkdownFile $mdxFile -KeepHeader1:$KeepHeader1
         ReplaceExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
-        SetPowershellMonikers -MarkdownFile $mdxFile
+        InsertPowershellMonikers -MarkdownFile $mdxFile
         UnescapeSpecialChars -MarkdownFile $mdxFile
         SeparateHeaders -MarkdownFile $mdxFile
         InsertFinalNewline -MarkdownFile $mdxFile

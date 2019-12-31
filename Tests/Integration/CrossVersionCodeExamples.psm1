@@ -157,7 +157,12 @@ function Test-CrossVersionCodeExamples {
         - use of the prompt backtick-enclosed: `PS C:\> Get-ChildItem`
 
     .EXAMPLE
-        ```ps
+        $exampleType = 'This test-case ensures that inserting a basic code example does not break the insert-powershell-moniker regex'
+
+        Once seen during development where rendering Pester Mock.mdx would lead to this example containing parts of the example directly below.
+
+    .EXAMPLE
+        ```powershell
         # This test-case is used to ensure that:
         # - using hash (#) characters does not break the EXAMPLES extraction regex
         # - hash characters get rendered as expected (in both code and description)

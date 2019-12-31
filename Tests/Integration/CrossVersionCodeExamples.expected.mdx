@@ -200,6 +200,14 @@ It should also unescape properly in the description and thus:
 ### EXAMPLE 18
 
 ```powershell
+$exampleType = 'This test-case ensures that inserting a basic code example does not break the insert-powershell-moniker regex'
+```
+
+Once seen during development where rendering Pester Mock.mdx would lead to this example containing parts of the example directly below.
+
+### EXAMPLE 19
+
+```powershell
 # This test-case is used to ensure that:
 
 # - using hash (#) characters does not break the EXAMPLES extraction regex

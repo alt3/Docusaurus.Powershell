@@ -1,11 +1,14 @@
-function SetPowershellMonikers() {
+function InsertPowershellMonikers() {
     <#
         .SYNOPSIS
-            Add `powershell` moniker to generated code blocks for correct syntax highlighting.
+            Adds the `powershell` moniker to all code blocks without a language moniker.
 
         .NOTES
-            Unfortunately we need to do this because PlatyPS does not add the language (design choice)
+            We need to do this because PlatyPS does (yet) not add the moniker itself
             => https://github.com/PowerShell/platyPS/issues/475
+
+        .LINK
+            https://regex101.com/r/Jpo9AL/1
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
@@ -13,8 +16,6 @@ function SetPowershellMonikers() {
 
     $content = ReadFile -MarkdownFile $MarkdownFile
 
-    # this regex replaces all opening code fences without a language moniker with "```powershell"
-    # https://regex101.com/r/AYzALd/1
     $regex = '(```)\n((?:(?!```)[\s\S])+)(```)\n'
 
     $content = [regex]::replace($content, $regex, '```powershell' + "`n" + '$2```' + "`n")
