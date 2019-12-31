@@ -38,7 +38,9 @@ function New-DocusaurusHelp() {
             New-DocusaurusHelp @parameters
             ```
 
-            This example uses splatting to override default settings.
+            This example uses
+            [splatting](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_splatting)
+            to override default settings.
 
             See the list of Parameters below for all available overrides.
 
@@ -72,6 +74,13 @@ function New-DocusaurusHelp() {
             Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
 
             Optional, defaults to `null`.
+
+        .PARAMETER KeepHeader1
+            By default, the `H1` element will be removed from the PlatyPS generated markdown because
+            Docusaurus uses the per-page frontmatter variable `title` as the page's H1 element instead.
+
+            You may use this switch parameter to keep the markdown `H1` element, most likely in
+            combination with the `HideTitle` parameter.
 
         .PARAMETER HideTitle
             Sets the Docusaurus front matter variable `hide_title`.
@@ -112,6 +121,7 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $False)][string]$EditUrl,
         [Parameter(Mandatory = $False)][string]$MetaDescription,
         [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
+        [switch]$KeepHeader1,
         [switch]$HideTitle,
         [switch]$HideTableOfContents,
         [switch]$NoPlaceHolderExamples,
@@ -144,7 +154,7 @@ function New-DocusaurusHelp() {
     Write-Verbose "Generating PlatyPS files."
     New-MarkdownHelp -Module $Module -OutputFolder $tempFolder -Force | Out-Null
 
-    # remove excluded files
+    # remove files matching excluded commands
     Write-Verbose "Removing excluded files:"
     $Exclude | ForEach-Object {
         RemoveFile -Path (Join-Path -Path $tempFolder -ChildPath "$($_).md")
@@ -166,8 +176,7 @@ function New-DocusaurusHelp() {
     ForEach ($mdxFile in $mdxFiles) {
         Write-Verbose "Processing $($mdxFile.Name):"
 
-        SetMarkdownLineEndings -MarkdownFile $mdxFile
-
+        # prepare per-page variables
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $mdxFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
         $frontMatterArgs = @{
@@ -178,18 +187,21 @@ function New-DocusaurusHelp() {
             HideTitle = $HideTitle
             HideTableOfContents = $HideTableOfContents
         }
-        SetMarkdownFrontMatter @frontmatterArgs
 
-        RemoveMarkdownHeaderOne -MarkdownFile $mdxFile
-        ReplaceMarkdownExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
-        SetMarkdownCodeBlockMoniker -MarkdownFile $mdxFile
-        UpdateMarkdownBackticks -MarkdownFile $mdxFile
+        # transform the markdown using these steps
+        SetLfLineEndings -MarkdownFile $mdxFile
+        ReplaceFrontMatter @frontmatterArgs
+        ReplaceHeader1 -MarkdownFile $mdxFile -KeepHeader1:$KeepHeader1
+        ReplaceExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
+        InsertPowershellMonikers -MarkdownFile $mdxFile
+        UnescapeSpecialChars -MarkdownFile $mdxFile
+        SeparateHeaders -MarkdownFile $mdxFile
+        InsertFinalNewline -MarkdownFile $mdxFile
     }
 
     # copy updated mdx files to the target folder
     Write-Verbose "Copying mdx files to sidebar folder."
     Get-ChildItem -Path $tempFolder -Filter *.mdx | ForEach-Object {
-        # $mdxFile = $_.FullName -replace '.md', '.mdx'
         Copy-Item  -Path $_.FullName -Destination (Join-Path -Path $sidebarFolder -ChildPath ($_.Name))
     }
 

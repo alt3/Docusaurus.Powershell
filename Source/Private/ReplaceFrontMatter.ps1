@@ -1,4 +1,4 @@
-function SetMarkdownFrontMatter() {
+function ReplaceFrontMatter() {
     <#
         .SYNOPSIS
             Replaces PlatyPS generated front matter with Docusaurus compatible front matter.
@@ -43,14 +43,14 @@ function SetMarkdownFrontMatter() {
 
     $newFrontMatter.Add("---") | Out-Null
 
+    # translate front matter to a string and replace CRLF with LF
+    $newFrontMatter = ($newFrontMatter| Out-String) -replace "`r`n", "`n"
+
     # replace front matter
-    $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
-
+    $content = ReadFile -MarkdownFile $MarkdownFile
     $regex = "(?sm)^(---)(.+)^(---).$\n"
+    $content = $content -replace $regex, $newFrontMatter
 
-    $newContent = $content -replace $regex, ($newFrontMatter | Out-String)
-
-    # replace file (UTF-8 without BOM)
-    $fileEncoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($markdownFile.FullName, $newContent, $fileEncoding)
+    # replace file
+    WriteFile -MarkdownFile $MarkdownFile -Content $content
 }

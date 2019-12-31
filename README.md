@@ -15,3 +15,15 @@ https://docusaurus-powershell.netlify.com
 ## Screenshot
 
 ![Screenshot](docusaurus/static/img/screenshot.png "Screenshot")
+
+## Who's Using This?
+
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://pester.dev/"><img src="https://raw.githubusercontent.com/pester/Pester/master/images/logo.png" width="100px;" alt=""/><br /><h3>Pester</h3></td>
+  </tr>
+</table>
+
+

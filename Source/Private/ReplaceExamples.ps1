@@ -1,4 +1,4 @@
-function ReplaceMarkdownExamples() {
+function ReplaceExamples() {
     <#
         .SYNOPSIS
             Replace PlatyPS generated code block examples.
@@ -16,14 +16,14 @@ function ReplaceMarkdownExamples() {
         [switch]$NoPlaceHolderExamples
     )
 
-    $content = (Get-Content -Path $MarkdownFile.FullName -Raw).TrimEnd()
+    $content = ReadFile -MarkdownFile $MarkdownFile
     [string]$newExamples = ""
 
     # ---------------------------------------------------------------------
     # extract all EXAMPLE nodes
-    # https://regex101.com/r/y4UxP8/2
+    # https://regex101.com/r/y4UxP8/7
     # ---------------------------------------------------------------------
-    $regexExtractExamples = [regex]::new('### (EXAMPLE|Example) [0-9][\s\S]*?(?=\n.*?#|$)')
+    $regexExtractExamples = [regex]'### (EXAMPLE|Example) [0-9][\s\S]*?(?=\n### EXAMPLE|\n## PARAMETERS|$)'
     $examples = $regexExtractExamples.Matches($content)
 
     if ($examples.Count -eq 0) {
@@ -137,7 +137,6 @@ function ReplaceMarkdownExamples() {
     $replacement = "## EXAMPLES`n`n$($newExamples)## PARAMETERS"
     $content = [regex]::replace($content, $regex, $replacement)
 
-    # replace file (UTF-8 without BOM)
-    $fileEncoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($markdownFile.FullName, $content, $fileEncoding)
+    # replace file
+    WriteFile -MarkdownFile $MarkdownFile -Content $content
 }

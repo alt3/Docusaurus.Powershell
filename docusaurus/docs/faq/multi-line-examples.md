@@ -46,16 +46,17 @@ Code fencing ensures identical rendering across all Powershell versions and look
     - could also contain fenced code blocks itself
 ```
 
-> For more usage examples see
-> [this test module](https://github.com/alt3/Docusaurus.Powershell/blob/master/Tests/Integration/CrossVersionCodeExamples.psm1)
-> and the corresponding [rendered markdown](https://github.com/alt3/Docusaurus.Powershell/blob/master/Tests/Integration/CrossVersionCodeExamples.expected.mdx)
-
 **Please note** that you may use any of the following commonly used opening fences:
 
 - \`\`\`
 - \`\`\`ps
 - \`\`\`posh
 - \`\`\`powershell
+
+> For a full list of usage examples see
+> [this test module](https://github.com/alt3/Docusaurus.Powershell/blob/master/Tests/Integration/CrossVersionCodeExamples.psm1)
+> and [the markdown](https://github.com/alt3/Docusaurus.Powershell/blob/master/Tests/Integration/CrossVersionCodeExamples.expected.mdx)
+> it renders.
 
 ## Powershell 7 Native Multi-Lines
 

@@ -50,12 +50,17 @@ Describe "Integration Test for PlatyPS generated placeholder examples" {
         }
 
         # read markdown
-        $renderedMdx = Get-Content (Join-Path -Path ${global:DocsFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx")
+        $renderedMdxFile = Join-Path -Path ${global:DocsFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx"
+        $renderedMdx = Get-Content $renderedMdxFile
         $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$(${global:testModuleName}).DISABLED.expected.mdx")
 
         # make sure output is identical
         It "renders empty EXAMPLES section markdown that is identical to the markdown found in our static 'DISABLED.expected' mdx file" {
             $renderedMdx | Should -BeExactly $expectedMdx
+        }
+
+        It "generates a file without CRLF" {
+            (Get-Content -Path $renderedMdxFile -Raw) -match "`r`n" | Should -Be $False
         }
     }
 }
