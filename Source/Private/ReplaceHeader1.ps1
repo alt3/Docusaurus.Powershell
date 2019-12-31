@@ -11,11 +11,11 @@ function ReplaceHeader1() {
     $content = ReadFile -MarkdownFile $MarkdownFile
 
     if ($KeepHeader1) {
-        $regex = '\n#\s'
-        $content = $content -replace $regex, "`n`n# " # prepend newline
+        $regex = [regex]'\n#\s'
+        $content = $regex.replace($content, "`n`n# ", 1) # prepend newline (for first match only)
     } else {
-        $regex = '\n#{1}\s.+'
-        $content = [regex]::replace($content, $regex, '') # remove line
+        $regex = [regex]'\n#{1}\s.+'
+        $content = $regex.replace($content, '', 1) # remove line (for first match only)
     }
 
     # replace file
