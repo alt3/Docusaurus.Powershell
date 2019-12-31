@@ -21,9 +21,9 @@ function ReplaceExamples() {
 
     # ---------------------------------------------------------------------
     # extract all EXAMPLE nodes
-    # https://regex101.com/r/y4UxP8/2
+    # https://regex101.com/r/y4UxP8/7
     # ---------------------------------------------------------------------
-    $regexExtractExamples = [regex]::new('### (EXAMPLE|Example) [0-9][\s\S]*?(?=\n.*?#|$)')
+    $regexExtractExamples = [regex]'### (EXAMPLE|Example) [0-9][\s\S]*?(?=\n### EXAMPLE|\n## PARAMETERS|$)'
     $examples = $regexExtractExamples.Matches($content)
 
     if ($examples.Count -eq 0) {

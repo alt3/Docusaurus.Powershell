@@ -139,7 +139,7 @@ function Test-CrossVersionCodeExamples {
 
     .EXAMPLE
         ```ps
-        $exampleType = 'This example is used as a test-case to ensure proper un-escaping of "PlatyPS escaped special characters"'
+        $exampleType = 'This test-case is used to ensure proper un-escaping of "PlatyPS escaped special characters"'
 
         [bool]$string = 'These square brackets should display correctly'
 
@@ -155,5 +155,34 @@ function Test-CrossVersionCodeExamples {
         - fully functioning [links](https://www.google.com)
         - use of the prompt directly: PS C:\> Get-ChildItem
         - use of the prompt backtick-enclosed: `PS C:\> Get-ChildItem`
+
+    .EXAMPLE
+        ```ps
+        # This test-case is used to ensure that:
+        # - using hash (#) characters does not break the EXAMPLES extraction regex
+        # - hash characters get rendered as expected (in both code and description)
+        # - regexes that change markdown-headers do not touch anything else
+
+        ######################################
+        ## Even when someone goes all ASCII ##
+        ######################################
+
+        function PublicFunction {
+            # Has a lot of hash characters
+        }
+
+        Export-ModuleMember -Function PublicFunction # comment
+
+        # The test script:
+
+        Import-Module MyModule
+        ```
+
+        # The description starts here, also contains a # character
+        and is adjacent multi-line.
+
+        ######################################################
+        ## Another ASCII fan but now inside the description ##
+        ######################################################
 #>
 }
