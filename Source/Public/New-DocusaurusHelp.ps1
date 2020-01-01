@@ -228,7 +228,7 @@ function New-DocusaurusHelp() {
 
     # generate the `.js` file used for the docusaurus sidebar
     if (-not($VendorAgnostic)) {
-        NewSidebarIncludeFile -MarkdownFiles $mdxFiles -OutputFolder $sidebarFolder -Sidebar $Sidebar
+        NewSidebarIncludeFile -MarkdownFiles $mdxFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar
     }
 
     # output Get-ChildItem so end-user can post-process generated files as they see fit
