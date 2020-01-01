@@ -70,6 +70,16 @@ function New-DocusaurusHelp() {
         .PARAMETER MetaKeywords
             Optional array of keywords inserted into Docusaurus front matter to be used as html meta tag `keywords`.
 
+        .PARAMETER PrependMarkdown
+            Optional string containing raw markdown **OR** path to a markdown file.
+
+            Markdown will be inserted in all pages, directly above the PlatyPS generated markdown.
+
+        .PARAMETER AppendMarkdown
+            Optional string containing raw markdown **OR** path to a markdown file.
+
+            Markdown will be inserted in all pages, directly below the PlatyPS generated markdown.
+
         .PARAMETER EditUrl
             Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter variables.
 
@@ -137,6 +147,8 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $False)][string]$EditUrl,
         [Parameter(Mandatory = $False)][string]$MetaDescription,
         [Parameter(Mandatory = $False)][array]$MetaKeywords,
+        [Parameter(Mandatory = $False)][string]$PrependMarkdown,
+        [Parameter(Mandatory = $False)][string]$AppendMarkdown,
         [switch]$KeepHeader1,
         [switch]$HideTitle,
         [switch]$HideTableOfContents,
@@ -213,7 +225,17 @@ function New-DocusaurusHelp() {
         }
 
         ReplaceHeader1 -MarkdownFile $mdxFile -KeepHeader1:$KeepHeader1
+
+        if ($PrependMarkdown) {
+            InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $PrependMarkdown -Mode "Prepend"
+        }
+
         ReplaceExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
+
+        if ($AppendMarkdown) {
+            InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $AppendMarkdown -Mode "Append"
+        }
+
         InsertPowershellMonikers -MarkdownFile $mdxFile
         UnescapeSpecialChars -MarkdownFile $mdxFile
         SeparateHeaders -MarkdownFile $mdxFile
