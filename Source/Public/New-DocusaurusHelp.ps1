@@ -208,9 +208,6 @@ function New-DocusaurusHelp() {
     # generate the `.js` file used for the docusaurus sidebar
     NewSidebarIncludeFile -MarkdownFiles $mdxFiles -OutputFolder $sidebarFolder -Sidebar $Sidebar
 
-    # zip temp files in case we need them
-    Compress-Archive -Path (Join-Path -Path $tempFolder -ChildPath *.*) -DestinationPath (Join-Path $tempFolder -ChildPath "$moduleName.zip")
-
     # output Get-ChildItem so end-user can post-process generated files as they see fit
     Get-ChildItem -Path $sidebarFolder
 }
