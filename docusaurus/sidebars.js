@@ -11,14 +11,15 @@ module.exports = {
     'Docs': [
       'introduction',
       'installation',
-      'usage'
+      'usage',
     ],
     'F.A.Q.': [
+      'faq/multi-line-examples',
       'faq/multiple-modules',
       'faq/monolithic-modules',
-      'faq/multi-line-examples',
       'faq/search',
       'faq/ci-cd',
+      'faq/vendor-agnostic',
     ],
     "Get-Help": commands,
   },

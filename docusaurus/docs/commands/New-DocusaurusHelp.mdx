@@ -23,7 +23,7 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 ```powershell
 New-DocusaurusHelp [-Module] <String> [[-DocsFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
  [[-EditUrl] <String>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [-KeepHeader1] [-HideTitle]
- [-HideTableOfContents] [-NoPlaceHolderExamples] [-Monolithic] [<CommonParameters>]
+ [-HideTableOfContents] [-NoPlaceHolderExamples] [-Monolithic] [-VendorAgnostic] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -288,6 +288,32 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -VendorAgnostic
+
+Use this switch parameter if you **do not want to use Docusaurus** but would still like
+to benefit of the markdown-enrichment functions this module provides.
+
+If used, the `New-GetDocusaurusHelp` command will produce the exact same markdown as
+always but will skip the following two Docusaurus-specific steps:
+
+- PlatyPS frontmatter will not be touched
+- `docusaurus.sidebar.js` file will not be generated
+
+For more information please
+[visit this page](https://docusaurus-powershell.netlify.com/docs/faq/vendor-agnostic).
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -302,6 +328,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 Please note that Docusaurus v2 is an early and alpha version, just like this module.
 
 ## RELATED LINKS
+
+[https://docusaurus-powershell.netlify.com/](https://docusaurus-powershell.netlify.com/)
 
 [https://v2.docusaurus.io/](https://v2.docusaurus.io/)
 
