@@ -136,7 +136,7 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
         [Parameter(Mandatory = $False)][string]$EditUrl,
         [Parameter(Mandatory = $False)][string]$MetaDescription,
-        [Parameter(Mandatory = $False)][array]$MetaKeywords = @(),
+        [Parameter(Mandatory = $False)][array]$MetaKeywords,
         [switch]$KeepHeader1,
         [switch]$HideTitle,
         [switch]$HideTableOfContents,
