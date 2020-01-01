@@ -7,6 +7,7 @@ function NewSidebarIncludeFile() {
             https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-powershell-1.0/ff730948(v=technet.10)
     #>
     param(
+        [Parameter(Mandatory = $True)][string]$TempFolder,
         [Parameter(Mandatory = $True)][string]$OutputFolder,
         [Parameter(Mandatory = $True)][string]$Sidebar,
         [Parameter(Mandatory = $True)][Object]$MarkdownFiles
@@ -34,14 +35,16 @@ module.exports = [
 ];
 "@
 
-    # generate file path, convert relative output folder to absolute if needed
+    # create the temp file
+    $fileName = "docusaurus.sidebar.js"
+    $tempFile = Join-Path -Path $tempFolder -ChildPath $fileName
+    $fileEncoding = New-Object System.Text.UTF8Encoding $False
+    [System.IO.File]::WriteAllLines($tempFile, $content, $fileEncoding)
+
+    # copy to the sidebar folder, convert relative output folder to absolute if needed
     if (-Not([System.IO.Path]::IsPathRooted($OutputFolder))) {
         $outputFolder = Join-Path "$(Get-Location)" -ChildPath $OutputFolder
     }
 
-    $filePath = Join-Path -Path $outputFolder -ChildPath "docusaurus.sidebar.js"
-
-    # create the file
-    $fileEncoding = New-Object System.Text.UTF8Encoding $False
-    [System.IO.File]::WriteAllLines($filePath, $content, $fileEncoding)
+    Copy-Item -Path $tempFile -Destination (Join-Path -Path $outputFolder -ChildPath $fileName)
 }

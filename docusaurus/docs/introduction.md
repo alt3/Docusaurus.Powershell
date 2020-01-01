@@ -24,6 +24,13 @@ Some of the features you will get:
 - simplified publishing (Netlify, Github Pages)
 - dark mode
 
+## :fire: Vendor Agnostic
+
+This module can produce vendor agnostic output for users who
+**do not want to use Docusaurus** but still want to benefit
+of advanced features like Get-Help Code Fence Detection.
+[Read more...](faq/vendor-agnostic)
+
 ## Early Bird
 
 Just like Docusaurus v2, this module is still in it's early stages.
@@ -32,5 +39,5 @@ things work first, then make it better.
 
 ## Feedback
 
-Suggestions, bug reports, fixes and stars welcomed at our
+Suggestions, bug reports, fixes and :star::star::star: welcomed at our
 [Github repository](https://github.com/alt3/Docusaurus.Powershell).

@@ -103,8 +103,24 @@ function New-DocusaurusHelp() {
 
             Will point all `custom_edit_url` front matter variables to the `.psm1` file.
 
+        .PARAMETER VendorAgnostic
+            Use this switch parameter if you **do not want to use Docusaurus** but would still like
+            to benefit of the markdown-enrichment functions this module provides.
+
+            If used, the `New-GetDocusaurusHelp` command will produce the exact same markdown as
+            always but will skip the following two Docusaurus-specific steps:
+
+            - PlatyPS frontmatter will not be touched
+            - `docusaurus.sidebar.js` file will not be generated
+
+            For more information please
+            [visit this page](https://docusaurus-powershell.netlify.com/docs/faq/vendor-agnostic).
+
         .NOTES
             Please note that Docusaurus v2 is an early and alpha version, just like this module.
+
+        .LINK
+            https://docusaurus-powershell.netlify.com/
 
         .LINK
             https://v2.docusaurus.io/
@@ -125,7 +141,8 @@ function New-DocusaurusHelp() {
         [switch]$HideTitle,
         [switch]$HideTableOfContents,
         [switch]$NoPlaceHolderExamples,
-        [switch]$Monolithic
+        [switch]$Monolithic,
+        [switch]$VendorAgnostic
     )
 
     # make sure the passed module is valid
@@ -188,9 +205,13 @@ function New-DocusaurusHelp() {
             HideTableOfContents = $HideTableOfContents
         }
 
-        # transform the markdown using these steps
+        # transform the markdown using these steps (overwriting the mdx file per step)
         SetLfLineEndings -MarkdownFile $mdxFile
-        ReplaceFrontMatter @frontmatterArgs
+
+        if (-not($VendorAgnostic)) {
+            ReplaceFrontMatter @frontmatterArgs
+        }
+
         ReplaceHeader1 -MarkdownFile $mdxFile -KeepHeader1:$KeepHeader1
         ReplaceExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
         InsertPowershellMonikers -MarkdownFile $mdxFile
@@ -206,10 +227,9 @@ function New-DocusaurusHelp() {
     }
 
     # generate the `.js` file used for the docusaurus sidebar
-    NewSidebarIncludeFile -MarkdownFiles $mdxFiles -OutputFolder $sidebarFolder -Sidebar $Sidebar
-
-    # zip temp files in case we need them
-    Compress-Archive -Path (Join-Path -Path $tempFolder -ChildPath *.*) -DestinationPath (Join-Path $tempFolder -ChildPath "$moduleName.zip")
+    if (-not($VendorAgnostic)) {
+        NewSidebarIncludeFile -MarkdownFiles $mdxFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar
+    }
 
     # output Get-ChildItem so end-user can post-process generated files as they see fit
     Get-ChildItem -Path $sidebarFolder
