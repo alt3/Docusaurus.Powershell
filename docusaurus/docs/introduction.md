@@ -26,9 +26,9 @@ Some of the features you will get:
 
 ## :fire: Vendor Agnostic
 
-This module can produce vendor agnostic output for cases where you
-**do not want to use Docusaurus** but do want to benefit of enriched
-markdown features like multi-line code examples.
+This module can produce vendor agnostic output for users who
+**do not want to use Docusaurus** but still want to benefit
+of advanced features like Get-Help Code Fence Detection.
 [Read more...](faq/vendor-agnostic)
 
 ## Early Bird

@@ -4,7 +4,7 @@ title: Vendor Agnostic
 description: If you do not want to use Docusaurus, the Alt.Docusaurus.Powershell module can also produce vendor agnostic output.
 ---
 
-However much we :heart: Docusaurus, we realize it will not be a fit for everyone as users might:
+No matter how much we :heart: Docusaurus, we realize it will not be the right solution for everyone as users might:
 
 - prefer different (non-javascript) languages
 - need to maintain an existing solution
