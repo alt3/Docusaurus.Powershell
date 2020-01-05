@@ -1,3 +1,5 @@
+#Requires -Modules Pester
+
 Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
     if (-not(Get-Module Alt3.Docusaurus.Powershell)) {
         write-host "module not loaded" -ForegroundColor yellow

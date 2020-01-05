@@ -16,17 +16,34 @@ function InitializeTempFolder() {
         [Parameter(Mandatory = $True)][string]$Path
     )
 
+    # create the folder
     Write-Verbose "Initializing temp folder:"
     CreateOrCleanFolder -Path $Path
 
-    # prepare the debug info
-    Write-Verbose "=> creating debug file"
+    # log the module parameters used for this run
+    $ParameterList = (Get-Command -Name New-DocusaurusHelp).Parameters
+    $parameterHash = [ordered]@{ }
+
+    $ParameterList.Keys | ForEach-Object {
+        $variable = (Get-Variable -Name $_ -ErrorAction SilentlyContinue)
+
+        if ($null -eq $variable) { # Verbose, ErrorAction, etc.
+            return
+        }
+
+        $parameterHash.Add($_, $variable.Value)
+    }
+
+    # create the hash with debug information
     $debugInfo = [ordered]@{
-        PSVersionTable = $PSVersionTable
+        ModuleParameters = $parameterHash
+        PSVersionTable   = $PSVersionTable
     } | ConvertTo-Json
 
     # create the debug file
+    Write-Verbose "=> preparing debug file"
     $debugFile = Join-Path -Path $Path -ChildPath "debug.json"
     $fileEncoding = New-Object System.Text.UTF8Encoding $False
+
     [System.IO.File]::WriteAllLines($debugFile, $debugInfo, $fileEncoding)
 }

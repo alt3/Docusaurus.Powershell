@@ -22,8 +22,9 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 
 ```powershell
 New-DocusaurusHelp [-Module] <String> [[-DocsFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
- [[-EditUrl] <String>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [-KeepHeader1] [-HideTitle]
- [-HideTableOfContents] [-NoPlaceHolderExamples] [-Monolithic] [-VendorAgnostic] [<CommonParameters>]
+ [[-EditUrl] <String>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [[-PrependMarkdown] <String>]
+ [[-AppendMarkdown] <String>] [-KeepHeader1] [-HideTitle] [-HideTableOfContents] [-NoPlaceHolderExamples]
+ [-Monolithic] [-VendorAgnostic] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -190,7 +191,43 @@ Aliases:
 
 Required: False
 Position: 7
-Default value: @()
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PrependMarkdown
+
+Optional string containing raw markdown **OR** path to a markdown file.
+
+Markdown will be inserted in all pages, directly above the PlatyPS generated markdown.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 8
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AppendMarkdown
+
+Optional string containing raw markdown **OR** path to a markdown file.
+
+Markdown will be inserted in all pages, directly below the PlatyPS generated markdown.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 9
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
