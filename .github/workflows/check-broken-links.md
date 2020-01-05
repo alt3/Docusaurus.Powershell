@@ -4,8 +4,10 @@ labels: housekeeping
 assignees: ''
 ---
 
-The Broken Link Checker detected one or more  :coffin:  links on the pester.dev website.
+## Website Contains Broken Links
 
-Please [review the results](https://github.com/pester/docs/commit/{{sha}}/checks) and resolve as appropriate.
+Broken Link Checker found :coffin: links on https://docusaurus-powershell.netlify.com/
 
-> **Pro-Tip:** use search filter `─BROKEN─` to highlight failures
+[View results](https://github.com/alt3/Docusaurus.Powershell/commit/{{sha}}/checks)
+
+_Use search filter `─BROKEN─` to highlight failures_

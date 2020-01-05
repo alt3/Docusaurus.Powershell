@@ -1,6 +1,7 @@
 # -----------------------------------------------------------------------------
-# Checks the live/production website for dead links every 1st day of the month
-# and creates a Github issue (using the markdown template) if any are found.
+# Checks the Docusuaurus.Powershell production website for dead links every
+# 1st day of the month and creates a Github issue (using the markdown template)
+# if any are detected.
 #
 # Please note that we are deliberately not running this action for Pull
 # Requests to prevent harassing contributors and mixing PR content.
@@ -21,7 +22,6 @@ on:
 env:
   WEBSITE_URL: "https://docusaurus-powershell.netlify.com/"
   ISSUE_TEMPLATE: ".github/workflows/check-broken-links.md"
-if: github.repository == 'alt3/Docusaurus.Powershell'
 
 jobs:
   check:
