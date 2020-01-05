@@ -1,3 +1,4 @@
+#Requires -Modules Pester
 <#
     .SYNOPSIS
         This test ensures that ALL Powershell versions render the code examples as expected.

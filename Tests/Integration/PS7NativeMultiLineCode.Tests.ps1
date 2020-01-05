@@ -1,3 +1,4 @@
+#Requires -Modules Pester
 <#
     .SYNOPSIS
         This test ensures Powershell 7 native multi-line code examples render as expected.
