@@ -8,7 +8,7 @@
 module.exports = {
   title: 'Docusaurus.Powershell',
   tagline: 'Documentation websites for Powershell Modules',
-  url: 'https://docusaurus-powershell.netlify.com/',
+  url: 'https://docusaurus-powershell.netlify.app/',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
   organizationName: 'alt3', // Usually your GitHub org/user name.
