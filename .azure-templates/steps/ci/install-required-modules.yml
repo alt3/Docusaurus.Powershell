@@ -33,8 +33,8 @@ steps:
 - powershell: |
     # Apparently, Install-Script isn't good enough except on Windows?
     # Install-Script Install-RequiredModule -Force -Verbose
-    Save-Script Install-RequiredModule -Path '$(Pipeline.Workspace)'
-    &"$(Pipeline.Workspace)/Install-RequiredModule" -Path '${{ parameters.path }}' -Confirm:$false -Verbose
+    Save-Script Install-RequiredModules -Path '$(Pipeline.Workspace)'
+    &"$(Pipeline.Workspace)/Install-RequiredModules" -Path '${{ parameters.path }}' -Confirm:$false -Verbose
     foreach ($installErr in $IRM_InstallErrors) {
         Write-Warning "ERROR: $installErr"
         Write-Warning "STACKTRACE: $($installErr.ScriptStackTrace)"
