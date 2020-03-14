@@ -11,6 +11,9 @@ name: $(GitVersion_InformationalVersion)
 trigger:
 - master
 
+pr:
+- master
+
 variables:
   ArtifactName: Modules
   enablePSGallery: true
