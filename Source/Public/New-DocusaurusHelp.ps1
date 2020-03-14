@@ -124,13 +124,13 @@ function New-DocusaurusHelp() {
             - `docusaurus.sidebar.js` file will not be generated
 
             For more information please
-            [visit this page](https://docusaurus-powershell.netlify.com/docs/faq/vendor-agnostic).
+            [visit this page](https://docusaurus-powershell.netlify.app/docs/faq/vendor-agnostic).
 
         .NOTES
             Please note that Docusaurus v2 is an early and alpha version, just like this module.
 
         .LINK
-            https://docusaurus-powershell.netlify.com/
+            https://docusaurus-powershell.netlify.app/
 
         .LINK
             https://v2.docusaurus.io/

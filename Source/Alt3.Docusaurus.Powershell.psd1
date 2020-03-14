@@ -22,7 +22,7 @@
     Description = '
 Awesome documentation for Powershell Modules.
 
-Live demo at https://docusaurus-powershell.netlify.com/
+Live demo at https://docusaurus-powershell.netlify.app/
 '
 
     # Minimum version of the Windows PowerShell engine required by this module
