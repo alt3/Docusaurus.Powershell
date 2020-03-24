@@ -37,8 +37,8 @@ function ReplaceFrontMatter() {
     $newFrontMatter.Add("hide_title: $(if ($HideTitle) {"true"} else {"false"})") | Out-Null
     $newFrontMatter.Add("hide_table_of_contents: $(if ($HideTableOfContents) {"true"} else {"false"})") | Out-Null
 
-    if ($EditUrl) {
-        $newFrontMatter.Add("custom_edit_url: $($EditUrl)") | Out-Null
+    if ($CustomEditUrl) {
+        $newFrontMatter.Add("custom_edit_url: $($CustomEditUrl)") | Out-Null
     }
 
     $newFrontMatter.Add("---") | Out-Null

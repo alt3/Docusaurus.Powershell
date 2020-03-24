@@ -10,7 +10,7 @@ Documentation websites for Powershell Modules.
 
 ## Live Demo
 
-https://docusaurus-powershell.netlify.app
+[https://docusaurus-powershell.netlify.app](https://docusaurus-powershell.netlify.app)
 
 ## Screenshot
 
