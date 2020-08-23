@@ -16,7 +16,11 @@ function NewSidebarIncludeFile() {
     Write-Verbose "Generating docusaurus.sidebar.js"
 
     # generate a list of Powershell commands by stripping .md from the generated PlatyPs files
-    [array]$commands = $MarkdownFiles | Select-Object @{ Name = "PowershellCommand"; Expression={ "'$Sidebar/" + [System.IO.Path]::GetFileNameWithoutExtension($_) + "'" } } | Select-Object  -Expand PowershellCommand
+    if ($Sidebar) {
+        [array]$commands = $MarkdownFiles | Select-Object @{ Name = "PowershellCommand"; Expression={ "'$Sidebar/" + [System.IO.Path]::GetFileNameWithoutExtension($_) + "'" } } | Select-Object  -Expand PowershellCommand
+    } else {
+        [array]$commands = $MarkdownFiles | Select-Object @{ Name = "PowershellCommand"; Expression={ "'" + [System.IO.Path]::GetFileNameWithoutExtension($_) + "'" } } | Select-Object  -Expand PowershellCommand
+    }
 
     # generate content using Here-String block
 $content = @"
