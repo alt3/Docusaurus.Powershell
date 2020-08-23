@@ -1,5 +1,6 @@
 @{
-    ModuleBuilder = "1.0.*"
-    Pester        = "[4.7.2, 5.0)"
-    platyPS       = "0.*"
+    ModuleBuilder    = "1.*"
+    Pester           = "[4.7.2, 5.0)"
+    PSScriptAnalyzer = "1.*"
+    platyPS          = "0.*"
 }

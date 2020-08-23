@@ -1,6 +1,5 @@
 # We need a pester step because the pester task won't let me specify `pwsh`
 parameters:
-  pesterVersion: ''
   testsDirectory: '$(Build.SourcesDirectory)/Tests'
   includeTag: []
   excludeTag: []
@@ -11,20 +10,8 @@ parameters:
 
 steps:
 - powershell: |
-    # Preinstall and import the specified version of the module
-    Set-PSRepository PSGallery -InstallationPolicy Trusted
-    $Version = if ("${{ parameters.pesterVersion }}") {
-        "${{ parameters.pesterVersion }}"
-    } else {
-        (Find-Module Pester).Version
-    }
-    Write-Host "##vso[task.setvariable variable=PesterVersion]$Version"
-    Write-Host "Installing and importing Pester version $Version"
-    Install-Module Pester -RequiredVersion $Version -Scope CurrentUser -Repository 'PSGallery' -AllowClobber -SkipPublisherCheck
-  displayName: 'Install Required Pester Version'
-
-- powershell: |
-    Import-Module Pester -RequiredVersion $(PesterVersion)
+    Write-Host "Importing Pester version specified in RequiredModules.psd1"
+    Import-Module Pester -Passthru
 
     $Options = @{
         Path = Convert-Path "${{ parameters.testsDirectory }}"

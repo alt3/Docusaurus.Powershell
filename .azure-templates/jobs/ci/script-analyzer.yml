@@ -42,23 +42,11 @@ jobs:
         downloadPath: ${{ parameters.artifactDownloadDirectory }}/$(Build.DefinitionName)
 
     - powershell: |
-        # Preinstall and import the specified version of ScriptAnalyzer
-        Set-PSRepository PSGallery -InstallationPolicy Trusted
-        $Version = if ("${{ parameters.scriptAnalyzerVersion }}") {
-            "${{ parameters.scriptAnalyzerVersion }}"
-        } else {
-            (Find-Module PSScriptAnalyzer).Version
-        }
-        Write-Host "##vso[task.setvariable variable=ScriptAnalyzerVersion]$Version"
-        Write-Host "Installing PsScriptAnalyzer version $Version"
-        Install-Module PsScriptAnalyzer -RequiredVersion $Version -Scope CurrentUser -Repository 'PSGallery' -AllowClobber -SkipPublisherCheck
-      displayName: 'Install Required PSScriptAnalyzer Version'
-
-    - powershell: |
         $Path = (New-Item $Env:TEMP\$(New-Guid)\PSScriptAnalyzer.Tests.ps1 -Type File -Force).FullName
         "##vso[task.setvariable variable=TestPath]$Path"
 
-        Import-Module PsScriptAnalyzer -RequiredVersion $(ScriptAnalyzerVersion)
+        Write-Host "Importing PSScriptAnalyzer version specified in RequiredModules.psd1"
+        Import-Module PSScriptAnalyzer -Passthru
 
         Set-Content $Path '
         $QMExcludeRules = @("${{ join('", "', parameters.excludeRules) }}")
