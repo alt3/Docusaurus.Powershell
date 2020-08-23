@@ -11,7 +11,8 @@ function ReplaceExamples() {
         .LINK
             https://github.com/alt3/Docusaurus.Powershell/issues/14#issuecomment-568552556
     #>
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "NoPlaceHolderExamples", "False positive as rule does not scan child scopes")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "NoPlaceHolderExamples",
+        Justification = 'False positive as rule does not scan child scopes')]
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile,
         [switch]$NoPlaceHolderExamples
