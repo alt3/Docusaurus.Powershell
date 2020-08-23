@@ -29,13 +29,18 @@ Describe "Integration Test to ensure all supported Code Example variants render 
         New-DocusaurusHelp -Module ${global:testModulePath} -DocsFolder ${global:DocsFolder}
     }
 
-    # read markdown
+    # make sure expected markdown file is rendered
     $renderedMdxFile = Join-Path -Path ${global:DocsFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx"
+
+    It "generates mdx file $renderedMdxFile" {
+        Test-Path -Path $renderedMdxFile | Should -Be $True
+    }
+
+    # compare generated mdx with expected mdx
     $renderedMdx = Get-Content $renderedMdxFile
     $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$(${global:testModuleName}).expected.mdx")
 
-    # make sure output is identical
-    It "generates markdown that is identical to the markdown found in our static 'expected' mdx file" {
+    It "generates markdown that is identical to the markdown found in the 'expected' mdx file" {
         $renderedMdx | Should -BeExactly $expectedMdx
     }
 
