@@ -20,7 +20,7 @@ module.exports = {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
       },
-      links: [
+      items: [
         {to: 'docs/introduction', label: 'Docs', position: 'right'},
         {to: 'docs/commands/New-DocusaurusHelp', label: 'Get-Help', position: 'right'},
         {
