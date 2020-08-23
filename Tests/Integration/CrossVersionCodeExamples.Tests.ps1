@@ -29,8 +29,15 @@ Describe "Integration Test to ensure all supported Code Example variants render 
         New-DocusaurusHelp -Module ${global:testModulePath} -DocsFolder ${global:DocsFolder}
     }
 
+    # make sure folder docs/commands is generated
+    $commandsFolder = Join-Path -Path ${global:DocsFolder} -ChildPath "commands"
+
+    It "generates docs/commands folder $commandsFolder" {
+        Test-Path -Path $commandsFolder | Should -Be $True
+    }
+
     # make sure expected markdown file is rendered
-    $renderedMdxFile = Join-Path -Path ${global:DocsFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx"
+    $renderedMdxFile = Join-Path -Path $commandsFolder -ChildPath "Test-$(${global:testModuleName}).mdx"
 
     It "generates mdx file $renderedMdxFile" {
         Test-Path -Path $renderedMdxFile | Should -Be $True
