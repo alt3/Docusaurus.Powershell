@@ -6,6 +6,7 @@ function NewSidebarIncludeFile() {
         .LINK
             https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-powershell-1.0/ff730948(v=technet.10)
     #>
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "Sidebar", "False positive as rule does not scan child scopes")]
     param(
         [Parameter(Mandatory = $True)][string]$TempFolder,
         [Parameter(Mandatory = $True)][string]$OutputFolder,
@@ -16,11 +17,7 @@ function NewSidebarIncludeFile() {
     Write-Verbose "Generating docusaurus.sidebar.js"
 
     # generate a list of Powershell commands by stripping .md from the generated PlatyPs files
-    if ($Sidebar) {
-        [array]$commands = $MarkdownFiles | Select-Object @{ Name = "PowershellCommand"; Expression={ "'$Sidebar/" + [System.IO.Path]::GetFileNameWithoutExtension($_) + "'" } } | Select-Object  -Expand PowershellCommand
-    } else {
-        [array]$commands = $MarkdownFiles | Select-Object @{ Name = "PowershellCommand"; Expression={ "'" + [System.IO.Path]::GetFileNameWithoutExtension($_) + "'" } } | Select-Object  -Expand PowershellCommand
-    }
+    [array]$commands = $MarkdownFiles | Select-Object @{ Name = "PowershellCommand"; Expression={ "'$Sidebar/" + [System.IO.Path]::GetFileNameWithoutExtension($_) + "'" } } | Select-Object  -Expand PowershellCommand
 
     # generate content using Here-String block
 $content = @"
