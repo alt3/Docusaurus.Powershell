@@ -50,7 +50,7 @@ jobs:
         }
 
         Write-Host "Making sure secret pipeline variable GITHUB_PERSONAL_ACCESS_TOKEN is available"
-        if($env:MAPPED_GITHUB_USERNAME -match 'GITHUB_PERSONAL_ACCESS_TOKEN') {
+        if($env:MAPPED_GITHUB_PERSONAL_ACCESS_TOKEN -match 'GITHUB_PERSONAL_ACCESS_TOKEN') {
           throw "Azure pipeline secret variable GITHUB_PERSONAL_ACCESS_TOKEN does not exist. Are you sure that you have configured it using the Azure Devops web interface?"
         }
       displayName: 'Validate API Keys'
