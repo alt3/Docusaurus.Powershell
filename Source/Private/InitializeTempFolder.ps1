@@ -16,6 +16,8 @@ function InitializeTempFolder() {
         [Parameter(Mandatory = $True)][string]$Path
     )
 
+    GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+
     # create the folder
     Write-Verbose "Initializing temp folder:"
     CreateOrCleanFolder -Path $Path

@@ -15,6 +15,8 @@ function SeparateHeaders() {
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
     )
 
+    GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+
     Write-Verbose "Inserting empty line beneath non-separated headers."
 
     $content = ReadFile -MarkdownFile $MarkdownFile

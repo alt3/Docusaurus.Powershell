@@ -157,6 +157,8 @@ function New-DocusaurusHelp() {
         [switch]$VendorAgnostic
     )
 
+    GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+
     # make sure the passed module is valid
     if (Test-Path($Module)) {
         Import-Module $Module -Force -Global
