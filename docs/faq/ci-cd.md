@@ -8,41 +8,94 @@ You might want to consider automating the process for generating the Get-Help pa
 by hooking into your CI/CD workflow. This way you can be sure that your website
 documentation will always be in-sync with the Get-Help code as found in your module.
 
-As can be seen in this sample script (used for [Pester](https://pester.dev)),
-auto-generating the pages is pretty straightforward so we will not describe
-specific solutions for Azure Pipelines, Github Actions, Travis, etc.
-Instead, simply mimic the script's behavior in your favorite ci/cd solution.
+As can be seen in this sample script,
+auto-generating the pages is pretty straightforward and can easily be applied
+to specific solutions for Azure Pipelines, Github Actions, Travis, etc.
 
 ```powershell
+<#
+    .SYNOPSIS
+    Generates the MDX files used for your websites "Command Reference" pages.
+
+    .NOTES
+    Uses ýour latest Module version unless a specific -ModuleVersion is given.
+#>
+param (
+  [Parameter(Mandatory = $True)][string] $Module,
+  [Parameter(Mandatory = $False)][string] $ModuleVersion
+)
+Set-StrictMode -Version Latest
+$PSDefaultParameterValues['*:ErrorAction'] = "Stop"
+
+Write-Host "Generating MDX files for website Command Reference pages" -BackgroundColor DarkGreen
+
+# -----------------------------------------------------------------------------
+# Fetch module versions from PSGallery
+# -----------------------------------------------------------------------------
+$modules = @{}
+
+Write-Host "Fetching module versions from PSGallery..."
+if ($ModuleVersion) {
+  $modules.$Module = $ModuleVersion
+} else {
+  $modules.$Module = (Find-Module -Name $Module).Version
+}
+
+$modules."Alt3.Docusaurus.Powershell" = (Find-Module -Name Alt3.Docusaurus.Powershell).Version
+$modules.PlatyPS = (Find-Module -Name PlatyPS).Version
+
+# -----------------------------------------------------------------------------
+# Install required modules
+# -----------------------------------------------------------------------------
+$modules.GetEnumerator() | ForEach-Object {
+  Write-Host "Requires $($_.Name) $($_.Value)"
+
+  if ((Get-Module -ListAvailable $_.Name).Version -contains $_.Value) {
+    Write-Host "=> already installed"
+  } else {
+    Write-Host "=> installing"
+    Install-Module $_.Name -RequiredVersion $_.Value -Force -SkipPublisherCheck -AllowClobber -Scope CurrentUser
+  }
+
+  Write-Host "=> importing"
+  Import-Module -Name $_.Name -RequiredVersion $_.Value -Force
+}
+
+# -----------------------------------------------------------------------------
+# Use below settings to manipulate the rendered MDX files
+# -----------------------------------------------------------------------------
+$docusaurusOptions = @{
+  Module          = $Module
+  DocsFolder      = "./docs"
+  SideBar         = "commands"
+  EditUrl         = "null" # prevent the `Edit this Page` button from appearing
+  Exclude         = @(
+    "Get-DummyFunction"
+  )
+  MetaDescription = 'Help page for the "%1" command'
+  MetaKeywords    = @(
+    "Powershell"
+    "Help"
+    "Documentation"
+  )
+  AppendMarkdown = "## EDIT THIS PAGE`nThis page was auto-generated using the comment based help in $($Module) $($modules.$Module)."
+}
+
+# -----------------------------------------------------------------------------
+# Generate the new MDX files
+# -----------------------------------------------------------------------------
 Push-Location $PSScriptRoot
 Write-Host (Get-Location)
 
-Write-Host "Importing required modules" -ForegroundColor Magenta
-Import-Module PlatyPS -NoClobber -Force
-Import-Module Alt3.Docusaurus.Powershell -NoClobber -Force
-Import-Module Pester -NoClobber -Force
-
-$arguments = @{
-  Module = "Pester"
-  DocsFolder = "./docs"
-  SideBar = "commands"
-  Exclude = @(
-    "Get-MockDynamicParameter"
-    "Invoke-Mock"
-    "SafeGetCommand"
-    "Set-DynamicParameterVariable"
-  )
-  MetaDescription = 'Help page for the Powershell Pester "%1" command'
-  MetaKeywords = @(
-      "Powershell"
-      "Pester"
-      "Help"
-      "Documentation"
-  )
+Write-Host "Removing existing MDX files" -ForegroundColor Magenta
+$outputFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar | Join-Path -ChildPath "*.*"
+if (Test-Path -Path $outputFolder) {
+  Remove-Item -Path $outputFolder
 }
 
-Write-Host "Generating Command Reference" -ForegroundColor Magenta
-New-DocusaurusHelp @arguments
+Write-Host "Generating new MDX files" -ForegroundColor Magenta
+New-DocusaurusHelp @docusaurusOptions
 
+Write-Host "Render completed successfully" -BackgroundColor DarkGreen
 Pop-Location
 ```
