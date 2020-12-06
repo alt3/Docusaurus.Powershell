@@ -12,11 +12,19 @@ steps:
     Write-Host "Using PSModulePath: $($Env:PSModulePath)"
     Write-Host ""
 
-    foreach ($module in Get-ChildItem "${{ parameters.sourcePath }}") {
+    foreach ($BuildManifest in Get-ChildItem "${{ parameters.sourcePath }}") {
         # Build-Module currently doesn't guarantee the module name will be in the output
-        $params = Import-LocalizedData -BaseDirectory $module.Directory.FullName -FileName $module.Name
-        $destination = Join-Path "${{ parameters.destination }}" ([IO.Path]::GetFileNameWithoutExtension( $params.Path ))
-        Write-Host Build-Module -SourcePath $module -Destination $destination -SemVer "${{ parameters.semVer }}" "-Verbose"
-        Build-Module -SourcePath $module -Destination $destination -SemVer "${{ parameters.semVer }}" -Verbose
+        $BuildInfo = Import-LocalizedData -BaseDirectory $BuildManifest.Directory.FullName -FileName $BuildManifest.Name
+
+        # These are all possible aliases for "Path" which you might have used in the manifest
+        $ModulePath = switch ($BuildInfo) {
+            { $_.SourcePath }     { $_.SourcePath; break; }
+            { $_.Path }           { $_.Path; break; }
+            { $_.ModuleManifest } { $_.ModuleManifest; break; }
+        }
+
+        $destination = Join-Path "${{ parameters.destination }}" ([IO.Path]::GetFileNameWithoutExtension( $ModulePath ))
+        Write-Host Build-Module -SourcePath $BuildManifest -Destination $destination -SemVer "${{ parameters.semVer }}" "-Verbose"
+        Build-Module -SourcePath $BuildManifest -Destination $destination -SemVer "${{ parameters.semVer }}" -Verbose
     }
   displayName: 'Build-Module -SourcePath $sourcePath'
