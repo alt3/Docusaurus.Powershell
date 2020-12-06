@@ -7,6 +7,8 @@ function RemoveFile() {
         [Parameter(Mandatory = $True)][string]$Path
     )
 
+    GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+
     Write-Verbose "=> removing $Path"
 
     if (Test-Path -Path $Path) {

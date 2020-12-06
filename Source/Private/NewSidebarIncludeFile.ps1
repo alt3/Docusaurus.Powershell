@@ -15,6 +15,8 @@ function NewSidebarIncludeFile() {
         [Parameter(Mandatory = $True)][Object]$MarkdownFiles
     )
 
+    GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+
     Write-Verbose "Generating docusaurus.sidebar.js"
 
     # generate a list of Powershell commands by stripping .md from the generated PlatyPs files

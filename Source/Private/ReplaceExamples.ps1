@@ -18,6 +18,8 @@ function ReplaceExamples() {
         [switch]$NoPlaceHolderExamples
     )
 
+    GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+
     $content = ReadFile -MarkdownFile $MarkdownFile
     [string]$newExamples = ""
 
