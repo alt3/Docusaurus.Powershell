@@ -14,7 +14,7 @@ Documentation websites for Powershell Modules.
 
 ## Screenshot
 
-![Screenshot](docusaurus/static/img/screenshot.png "Screenshot")
+![Screenshot](website/static/img/screenshot.png "Screenshot")
 
 ## Who's Using This?
 
