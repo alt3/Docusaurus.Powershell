@@ -15,10 +15,10 @@ to specific solutions for Azure Pipelines, Github Actions, Travis, etc.
 ```powershell
 <#
     .SYNOPSIS
-    Generates the MDX files used for your websites "Command Reference" pages.
+    Generates the MDX files used for your website's "Command Reference" pages.
 
     .NOTES
-    Uses ýour latest Module version unless a specific -ModuleVersion is given.
+    Uses your latest module version unless a specific -ModuleVersion is provided.
 #>
 param (
   [Parameter(Mandatory = $True)][string] $Module,
