@@ -7,6 +7,7 @@ function GetCustomEditUrl() {
             Generates a URL pointing to the Powershell source file that was used to generate the markdown file.
 
         .NOTES
+            - passing string `null` will return string `null`
             - URLs for non-monolithic modules point to a .ps1 file with same name as the markdown file
             - URLs for monolithic modules will always point to a .psm1 with same name as passed module
     #>
@@ -18,12 +19,17 @@ function GetCustomEditUrl() {
     )
 
     # return "false" so Docusaurus will not render the `Edit this page` button
-    if (-not($EditUrl)) {
+    if (-not $EditUrl) {
         return
     }
 
+    # if string "null" was passed explicitely, return as-is
+    if ($EditUrl -eq "null") {
+        return "null"
+    }
+
     # point to the function source file for non-monlithic modules
-    if (-not($Monolithic)) {
+    if (-not $Monolithic) {
         $command = [System.IO.Path]::GetFileNameWithoutExtension($MarkdownFile)
 
         return $EditUrl + '/' + $command + ".ps1"
