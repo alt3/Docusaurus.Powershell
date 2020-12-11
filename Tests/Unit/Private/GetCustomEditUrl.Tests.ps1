@@ -36,6 +36,16 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
         }
     }
 
+    Context 'when "null" is passed' {
+        $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
+            GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem} -EditUrl "null"
+        }
+
+        It "return the string 'null'" {
+            $customEditUrl | Should -Be "null"
+        }
+    }
+
     Context 'for non-monolithic modules' {
         $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
             GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com"
