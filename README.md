@@ -6,7 +6,7 @@
 
 # Docusaurus.Powershell
 
-Documentation websites for Powershell Modules with auto-generated Get-Help pages.
+Documentation websites for Powershell Modules (with auto-generated Get-Help pages).
 
 ## Live Demo
 
