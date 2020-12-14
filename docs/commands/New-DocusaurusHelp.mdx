@@ -29,8 +29,8 @@ New-DocusaurusHelp [-Module] <String> [[-DocsFolder] <String>] [[-Sidebar] <Stri
 
 ## DESCRIPTION
 
-The `New-DocusaurusHelp` cmdlet generates Get-Help documentation in Docusaurus
-compatible format by creating an `.mdx` file for each command exported by
+The `New-DocusaurusHelp` cmdlet generates Get-Help documentation in "Docusaurus
+compatible" format by creating an `.mdx` file for each command exported by
 the module, enriched with command-specific front matter variables.
 
 Also creates a `sidebar.js` file for simplified integration into the Docusaurus sidebar menu.
@@ -362,7 +362,15 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.Object
 
 ## NOTES
-Please note that Docusaurus v2 is an early and alpha version, just like this module.
+For debugging purposes, Docusaurus.Powershell creates a local temp folder with:
+
+- the raw PlatyPS generated `.md` files
+- the Docusaurus.Powershell enriched `.mdx` files
+- a `debug.json` file containing detailed module information
+
+```powershell
+$tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell")
+```
 
 ## RELATED LINKS
 

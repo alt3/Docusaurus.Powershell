@@ -4,8 +4,8 @@ function New-DocusaurusHelp() {
             Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 
         .DESCRIPTION
-            The `New-DocusaurusHelp` cmdlet generates Get-Help documentation in Docusaurus
-            compatible format by creating an `.mdx` file for each command exported by
+            The `New-DocusaurusHelp` cmdlet generates Get-Help documentation in "Docusaurus
+            compatible" format by creating an `.mdx` file for each command exported by
             the module, enriched with command-specific front matter variables.
 
             Also creates a `sidebar.js` file for simplified integration into the Docusaurus sidebar menu.
@@ -127,7 +127,15 @@ function New-DocusaurusHelp() {
             [visit this page](https://docusaurus-powershell.netlify.app/docs/faq/vendor-agnostic).
 
         .NOTES
-            Please note that Docusaurus v2 is an early and alpha version, just like this module.
+            For debugging purposes, Docusaurus.Powershell creates a local temp folder with:
+
+            - the raw PlatyPS generated `.md` files
+            - the Docusaurus.Powershell enriched `.mdx` files
+            - a `debug.json` file containing detailed module information
+
+            ```powershell
+            $tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell")
+            ```
 
         .LINK
             https://docusaurus-powershell.netlify.app/
