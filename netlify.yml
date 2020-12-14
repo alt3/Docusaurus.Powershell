@@ -5,4 +5,4 @@ build:
   base: website/
   publish: build
   command: npm run build
-  ignore: git diff --quiet HEAD^ HEAD ../docs/ ../website/
+  ignore: git diff --quiet HEAD^ HEAD ../website/
