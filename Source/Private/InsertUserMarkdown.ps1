@@ -12,10 +12,12 @@ function InsertUserMarkdown() {
         [Parameter(Mandatory = $True)][ValidateSet('Prepend', 'Append')][string]$Mode
     )
 
+    GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
+
     $content = ReadFile -MarkdownFile $MarkdownFile
 
     # use file content as markdown
-    if (Test-Path $Markdown) {
+    if (Test-Path $Markdown -ErrorAction SilentlyContinue) {
         $Markdown = Get-Content -Path $Markdown -Raw
     }
 
@@ -27,11 +29,15 @@ function InsertUserMarkdown() {
     $Markdown = $Markdown -replace "`r`n", "`n"
 
     # insert user markdown
-    if ($Mode    -eq "Prepend") {
+    if ($Mode -eq "Prepend") {
+        Write-Verbose "=> prepending user markdown"
+
         $regex = '(---\n\n)'
         $content = $content -replace $regex, "---`n`n$Markdown`n`n"
     }
     else {
+        Write-Verbose "=> appending user markdown"
+
         $content = "$content`n`n$Markdown`n`n"
     }
 
