@@ -13,6 +13,8 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'alt3', // Usually your GitHub org/user name.
   projectName: 'Docusaurus.Powershell', // Usually your repo name.
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
   themeConfig: {
     navbar: {
       title: 'Docusaurus.Powershell',
