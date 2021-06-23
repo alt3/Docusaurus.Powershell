@@ -145,7 +145,7 @@ jobs:
                 return
             }
 
-            $hashLink = "[$shortHash]($env:GITHUB_REPO_URL/$hash)"
+            $hashLink = "[$shortHash]($env:GITHUB_REPO_URL/commit/$hash)"
             $authorLink = "[$author](https://github.com/$author)"
 
             $markdownChangeLog += "`n- $message ($authorLink in $hashLink)"
