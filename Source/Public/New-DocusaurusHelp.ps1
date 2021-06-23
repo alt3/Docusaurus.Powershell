@@ -202,8 +202,8 @@ function New-DocusaurusHelp() {
     # rename PlatyPS files and create an `.mdx` copy we will transform
     Write-Verbose "Cloning PlatyPS files."
     Get-ChildItem -Path $tempFolder -Filter *.md | ForEach-Object {
-        $platyPsFile = $_.FullName -replace '.md', '.PlatyPS.md'
-        $mdxFile = $_.FullName -replace '.md', '.mdx'
+        $platyPsFile = $_.FullName -replace '\.md$', '.PlatyPS.md'
+        $mdxFile = $_.FullName -replace '\.md$', '.mdx'
         Move-Item -Path $_.FullName -Destination $platyPsFile
         Copy-Item  -Path $platyPsFile -Destination $mdxFile
     }
