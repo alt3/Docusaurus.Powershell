@@ -63,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-2019, windows-latest, ubuntu-latest, macOS-10.15, macos-latest]
     steps:
     - name: Download Build Output
       uses: actions/download-artifact@v2
@@ -101,6 +101,8 @@ jobs:
 
     - name: Publish to PSGallery
       uses: ./.github/actions/psgallery-publisher
+      env:
+        PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
       with:
         modulePath: Modules/${{env.MODULE_NAME}}
         apiKey: ${{ secrets.PSGALLERY_API_KEY }}
