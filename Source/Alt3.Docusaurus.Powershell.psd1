@@ -10,7 +10,7 @@
     GUID = '0a746d8a-f1f1-4064-967a-aad1877b2d63'
 
     # Author of this module
-    Author = 'Rob van Erkel'
+    Author = 'R. van Erkel'
 
     # Company or vendor of this module
     CompanyName = 'ALT3 B.V.'
