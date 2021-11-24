@@ -1,0 +1,22 @@
+name: "PSGallery Publisher"
+description: "Published the new module to the PSGallery"
+
+inputs:
+  path:
+    description: "The path to the module artifact"
+    required: true
+
+env:
+  PSGALLERY_API_KEY : ${{ secrets.PSGALLERY_API_KEY }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check secret API KEY
+      id: checksecret
+      shell: pwsh
+      run: if -not ($env:PSGALLERY_API_KEY) { exit 1 }
+
+    - id: publish
+      shell: pwsh
+      run: Publish-Module -Path {{ inputs.path }} -NuGetApiKey $env:PSGALLERY_API_KEY -Verbose -WhatIf
