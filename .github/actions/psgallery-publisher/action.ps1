@@ -10,6 +10,9 @@ Param(
 Set-StrictMode -Version Latest
 $PSDefaultParameterValues['*:ErrorAction'] = "Stop" # full script stop on first error
 
+# Debug the module path
+Get-ChildItem -Path "D:\a\Docusaurus.Powershell\Docusaurus.Powershell\Modules"
+
 # Make sure the secret key PSGALLERY_API_KEY is set
 if (-not $env:PSGALLERY_API_KEY) {
     Throw "Github secret PSGALLERY_API_KEY has not been set"
