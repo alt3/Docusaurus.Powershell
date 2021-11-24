@@ -55,6 +55,7 @@ jobs:
       with:
         rootPath: Modules/${{env.MODULE_NAME}}
         repoToken: ${{ secrets.GITHUB_TOKEN }}
+        settingsPath: PSScriptAnalyzerSettings.psd1
 
   test:
     needs: build
