@@ -3,15 +3,15 @@ description: "Published the new module to the PSGallery"
 
 inputs:
   modulePath:
-    description: "The path to the module artifact"
+    description: The path to the module artifact
     required: true
-
-env:
-  PSGALLERY_API_KEY : ${{ secrets.PSGALLERY_API_KEY }}
+  apiKey:
+    description: The NuGet API Key for PowerShell Gallery, with permission to push this module
+    required: true
 
 runs:
   using: composite
   steps:
     - id: publish
       shell: pwsh
-      run: ${{ github.action_path }}/action.ps1 -ModulePath ${{ inputs.modulePath }}
+      run: ${{ github.action_path }}/action.ps1
