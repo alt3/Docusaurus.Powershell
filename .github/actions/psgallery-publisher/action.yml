@@ -11,4 +11,4 @@ runs:
   steps:
     - id: publish
       shell: pwsh
-      run: ${{ github.action_path }}/action.ps1 -ModulePath {{ inputs.modulePath}}
+      run: ${{ github.action_path }}/action.ps1 -ModulePath {{ env.INPUT_MODULEPATH}}
