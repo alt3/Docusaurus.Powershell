@@ -53,9 +53,9 @@ stages:
       strategy:
         matrix:
           Linux:
-            vmImage: 'ubuntu-latest'
+            vmImage: 'ubuntu-18.04'
           MacOS:
-            vmImage: 'macOS-10.14'
+            vmImage: 'macOS-10.15'
           Windows:
             vmImage: 'windows-2019'
       pool:
