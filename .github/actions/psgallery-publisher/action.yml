@@ -5,13 +5,10 @@ inputs:
   modulePath:
     description: The path to the module artifact
     required: true
-  apiKey:
-    description: The NuGet API Key for PowerShell Gallery, with permission to push this module
-    required: true
 
 runs:
   using: composite
   steps:
     - id: publish
       shell: pwsh
-      run: ${{ github.action_path }}/action.ps1
+      run: ${{ github.action_path }}/action.ps1 -ModulePath {{ inputs.modulePath}}
