@@ -106,4 +106,3 @@ jobs:
         PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
       with:
         modulePath: Modules/${{env.MODULE_NAME}}
-        myName: Joe
