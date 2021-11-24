@@ -52,7 +52,7 @@ jobs:
     - name: Invoke-ScriptAnalyzer
       uses: devblackops/github-action-psscriptanalyzer@master
       with:
-        rootPath: Modules/$MODULE_NAME
+        rootPath: Modules/${{env.MODULE_NAME}}
         repoToken: ${{ secrets.GITHUB_TOKEN }}
   test:
     needs: build
@@ -67,8 +67,8 @@ jobs:
     - uses: PoshCode/Actions/install-requiredmodules@v1
     - uses: PoshCode/Actions/pester@v1
       with:
-        codeCoveragePath: Modules/$MODULE_NAME
-        moduleUnderTest: $MODULE_NAME
+        codeCoveragePath: Modules/${{env.MODULE_NAME}}
+        moduleUnderTest: ${{env.MODULE_NAME}}
         additionalModulePaths: ${{github.workspace}}/Modules
     - name: Publish Test Results
       uses: zyborg/dotnet-tests-report@v1
