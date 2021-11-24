@@ -95,8 +95,11 @@ jobs:
     steps:
     - name: Download Build Output
       uses: actions/download-artifact@v2
+
+    - uses: actions/checkout@v1
+
     - name: Publish to PSGallery
-      uses: psgallery-publish-module
+      uses: ./.github/actions/psgallery-publish-module
       with:
         path: Modules/${{env.MODULE_NAME}}
 

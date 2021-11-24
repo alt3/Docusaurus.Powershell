@@ -15,7 +15,7 @@ runs:
     - name: Check secret API KEY
       id: checksecret
       shell: pwsh
-      run: if -not ($env:PSGALLERY_API_KEY) { exit 1 }
+      run: if (-not $env:PSGALLERY_API_KEY) { echo 'Secret key PSGALLERY_API_KEY not set'; exit 1 }
 
     - id: publish
       shell: pwsh
