@@ -42,6 +42,7 @@ jobs:
       with:
         name: ScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
+
   lint:
     needs: build
     name: Run PSScriptAnalyzer
@@ -54,6 +55,7 @@ jobs:
       with:
         rootPath: Modules/${{env.MODULE_NAME}}
         repoToken: ${{ secrets.GITHUB_TOKEN }}
+
   test:
     needs: build
     runs-on: ${{ matrix.os }}
@@ -79,3 +81,11 @@ jobs:
       with:
         name: Pester Results
         path: ${{github.workspace}}/*.xml
+
+  publish:
+    needs: [lint, test]
+    name: Run PSScriptAnalyzer
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Build Output
+      uses: actions/download-artifact@v2
