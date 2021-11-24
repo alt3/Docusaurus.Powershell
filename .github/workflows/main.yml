@@ -96,10 +96,9 @@ jobs:
     - name: Download Build Output
       uses: actions/download-artifact@v2
 
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@main
 
     - name: Publish to PSGallery
-      uses: ./.github/actions/psgallery-publish-module
+      uses: ./.github/actions/psgallery-publisher
       with:
-        path: Modules/${{env.MODULE_NAME}}
-
+        modulePath: Modules/${{env.MODULE_NAME}}
