@@ -85,7 +85,8 @@ jobs:
 
   publish:
     needs: [lint, test]
-    name: Run PSScriptAnalyzer
+    if: ${{ github.ref == 'refs/heads/master' }}
+    name: Publish
     runs-on: windows-latest
     steps:
     - name: Download Build Output
