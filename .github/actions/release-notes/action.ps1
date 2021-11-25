@@ -35,7 +35,15 @@ $logLines | ForEach-Object {
     $markdownChangeLog += "`n- $message ($authorLink in $hashLink)"
 }
 
+## Log generated markdown
+Write-Output "Generated markdown:"
+$markdownChangeLog
+
 # create UTF-8 file
 $filename = "../CHANGELOG.md"
+Write-Output "Creating markdown file $filename"
+
+Get-ChildItem
+Get-ChildItem ..
 
 [IO.File]::AppendAllLines($filename, [string[]]$markdownChangeLog)
