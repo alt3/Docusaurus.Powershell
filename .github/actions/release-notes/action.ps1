@@ -46,4 +46,4 @@ Write-Output "Creating markdown file $filename"
 Get-ChildItem
 Get-ChildItem ..
 
-[IO.File]::AppendAllLines($filename, [string[]]$markdownChangeLog)
+[System.IO.File]::WriteAllLines($filename, [string[]]$markdownChangeLog)
