@@ -14,7 +14,7 @@ $PSDefaultParameterValues['*:ErrorAction'] = "Stop" # full script stop on first 
 Get-ChildItem -Path "D:"
 Get-ChildItem -Path "D:\a"
 Get-ChildItem -Path "D:\a\Docusaurus.Powershell"
-Get-ChildItem -Path "D:\a\Docusaurus.Powershell\Docusaurus.Powershell\Modules"
+Get-ChildItem -Path "D:\a\Docusaurus.Powershell\Docusaurus.Powershell"
 
 # Make sure the secret key PSGALLERY_API_KEY is set
 if (-not $env:PSGALLERY_API_KEY) {
