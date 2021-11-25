@@ -85,8 +85,12 @@ jobs:
         path: ${{github.workspace}}/*.xml
 
   # -----------------------------------------------------------------------------
-  # - publishing stage skipped completely if not on the master branch
-  # - job steps not executed if the commit message contains [no-release]
+  # Publishing stage:
+  # - is skipped completely UNLESS on the master branch
+  # - is skipped IF the commit message contains "no-release"
+  # - the psgallery step auto-bumps the version in the manifest before publishing
+  # - the github step bumps the manifest on master to match published PSGallery version
+  #   (with the [no-release] commit message to prevent an endless loop)
   # -----------------------------------------------------------------------------
   publish:
     name: Publish
@@ -97,10 +101,21 @@ jobs:
     steps:
     - uses: actions/checkout@main
 
-    - name: Publish to PSGallery
-      id: psgallery
-      uses: ./.github/actions/psgallery-publisher
-      env:
-        PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
-      with:
-        modulePath: Modules/${{env.MODULE_NAME}}
+    - name: "Build Changelog"
+      id: build_changelog
+      uses: mikepenz/release-changelog-builder-action@{latest-release}
+
+    # - name: Publish to PSGallery
+    #   id: psgallery
+    #   uses: ./.github/actions/psgallery-publisher
+    #   env:
+    #     PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+    #   with:
+    #     modulePath: Modules/${{env.MODULE_NAME}}
+
+    # - name: Create Github Release
+    #   needs: psgallery
+    #   uses: ./.github/actions/github-release
+    #   with:
+    #     modulePath: Modules/${{env.MODULE_NAME}}
+    #     moduleVersion: ${{ steps.gitversion.outputs.LegacySemVerPadded }}

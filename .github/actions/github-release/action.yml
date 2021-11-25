@@ -1,0 +1,20 @@
+name: "Create Github Release"
+description: "Creates a Gtihub Release with release notes. Also bumps the manifest to match PSGallery published version"
+
+inputs:
+  modulePath:
+    description: The path to the module artifact
+    required: true
+  moduleVersion:
+    description: Next semver version of the module as produced by Gitversion
+    required: true    
+
+runs:
+  using: composite
+  steps:
+    - name: Download Build Output
+      uses: actions/download-artifact@v2
+
+    - name: Create Github Release
+      shell: pwsh
+      run: ${{ github.action_path }}/action.ps1 -ModulePath ${{ inputs.modulePath }} -ModuleVersion ${{ inputs.modulePath }}
