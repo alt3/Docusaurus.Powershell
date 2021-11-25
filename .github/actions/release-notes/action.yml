@@ -4,6 +4,11 @@ description: "Generates release notes in Markdown format"
 runs:
   using: composite
   steps:
+    - name: Checkout Master
+      uses: actions/checkout@v2
+      with:
+        ref: master
+
     - name: Generate Release Notes
       shell: pwsh
       run: ${{ github.action_path }}/action.ps1
