@@ -102,18 +102,10 @@ jobs:
     steps:
     - uses: actions/checkout@main
 
-    - name: Build Changelog
-      id: build_changelog
-      uses: mikepenz/release-changelog-builder-action@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Generate Release Notes
+      id: releaseNotes
+      uses: ./.github/actions/release-notes
 
-    - name: Upload Release Notes
-      uses: actions/upload-artifact@v2
-      with:
-        name: Release Notes
-        path: ${{steps.build_changelog.outputs.changelog}}
-    
     # - name: Publish to PSGallery
     #   id: psgallery
     #   uses: ./.github/actions/psgallery-publisher

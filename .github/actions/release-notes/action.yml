@@ -1,0 +1,15 @@
+name: "Generate Release Notes"
+description: "Generates release notes in Markdown format"
+
+runs:
+  using: composite
+  steps:
+    - name: Generate Release Notes
+      shell: pwsh
+      run: ${{ github.action_path }}/action.ps1
+
+    - name: Upload Release Notes
+      uses: actions/upload-artifact@v2
+      with:
+        name: Release Notes
+        path: ${{github.workspace}}/CHANGELOG.md
