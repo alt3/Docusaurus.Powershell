@@ -96,6 +96,7 @@ jobs:
     name: Publish
     runs-on: windows-latest  
     # needs: [lint, test]
+    needs: build
     # if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'no-release')}}
 
     steps:
