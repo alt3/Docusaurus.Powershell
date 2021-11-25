@@ -14,4 +14,4 @@ runs:
 
     - name: Publish to PSGallery
       shell: pwsh
-      run: ${{ github.action_path }}/action.ps1 -ModulePath ${{ inputs.modulePath}}
+      run: ${{ github.action_path }}/action.ps1 -ModulePath ${{ inputs.modulePath }}

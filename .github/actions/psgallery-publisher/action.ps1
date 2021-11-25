@@ -16,7 +16,7 @@ if (-not $env:PSGALLERY_API_KEY) {
 }
 
 # Construct path to the module version inside the artifact folder
-Write-Output "Artifact path   = $ModulePath"
+Write-Output "Artifact path  = $ModulePath"
 $moduleVersion = (Get-ChildItem $ModulePath -Directory | Sort-Object | Select-Object -Last 1).Name
 Write-Output "Module version = $moduleVersion"
 $fullPath = Join-Path -Path $ModulePath -ChildPath $moduleVersion
