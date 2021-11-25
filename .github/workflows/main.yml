@@ -43,46 +43,46 @@ jobs:
         name: ScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
 
-  lint:
-    needs: build
-    name: Run PSScriptAnalyzer
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download Build Output
-      uses: actions/download-artifact@v2
-    - name: Invoke-ScriptAnalyzer
-      uses: devblackops/github-action-psscriptanalyzer@master
-      with:
-        rootPath: Modules/${{env.MODULE_NAME}}
-        repoToken: ${{ secrets.GITHUB_TOKEN }}
-        settingsPath: ScriptAnalyzer/PSScriptAnalyzerSettings.psd1
+  # lint:
+  #   needs: build
+  #   name: Run PSScriptAnalyzer
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Download Build Output
+  #     uses: actions/download-artifact@v2
+  #   - name: Invoke-ScriptAnalyzer
+  #     uses: devblackops/github-action-psscriptanalyzer@master
+  #     with:
+  #       rootPath: Modules/${{env.MODULE_NAME}}
+  #       repoToken: ${{ secrets.GITHUB_TOKEN }}
+  #       settingsPath: ScriptAnalyzer/PSScriptAnalyzerSettings.psd1
 
-  test:
-    needs: build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        # os: [windows-2016, windows-2019, ubuntu-18-04, ubuntu-20.04, macOS-10.15, macos-11]
-        os: [ubuntu-18.04] # https://github.com/actions/virtual-environments
-    steps:
-    - name: Download Build Output
-      uses: actions/download-artifact@v2
-    - uses: PoshCode/Actions/install-requiredmodules@v1
-    - uses: PoshCode/Actions/pester@v1
-      with:
-        codeCoveragePath: Modules/${{env.MODULE_NAME}}
-        moduleUnderTest: ${{env.MODULE_NAME}}
-        additionalModulePaths: ${{github.workspace}}/Modules
-    - name: Publish Test Results
-      uses: zyborg/dotnet-tests-report@v1
-      with:
-        test_results_path: results.xml
-    - name: Upload Results
-      uses: actions/upload-artifact@v2
-      with:
-        name: Pester Results
-        path: ${{github.workspace}}/*.xml
+  # test:
+  #   needs: build
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       # os: [windows-2016, windows-2019, ubuntu-18-04, ubuntu-20.04, macOS-10.15, macos-11]
+  #       os: [ubuntu-18.04] # https://github.com/actions/virtual-environments
+  #   steps:
+  #   - name: Download Build Output
+  #     uses: actions/download-artifact@v2
+  #   - uses: PoshCode/Actions/install-requiredmodules@v1
+  #   - uses: PoshCode/Actions/pester@v1
+  #     with:
+  #       codeCoveragePath: Modules/${{env.MODULE_NAME}}
+  #       moduleUnderTest: ${{env.MODULE_NAME}}
+  #       additionalModulePaths: ${{github.workspace}}/Modules
+  #   - name: Publish Test Results
+  #     uses: zyborg/dotnet-tests-report@v1
+  #     with:
+  #       test_results_path: results.xml
+  #   - name: Upload Results
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: Pester Results
+  #       path: ${{github.workspace}}/*.xml
 
   # -----------------------------------------------------------------------------
   # Publishing stage:
@@ -96,15 +96,23 @@ jobs:
     name: Publish
     runs-on: windows-latest  
     needs: [lint, test]
-    # if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'no-release')}}    
+    # if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'no-release')}}
 
     steps:
     - uses: actions/checkout@main
 
-    - name: "Build Changelog"
+    - name: Build Changelog
       id: build_changelog
       uses: mikepenz/release-changelog-builder-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Upload Release Notes
+      uses: actions/upload-artifact@v2
+      with:
+        name: Release Notes
+        path: ${{steps.build_changelog.outputs.changelog}}
+    
     # - name: Publish to PSGallery
     #   id: psgallery
     #   uses: ./.github/actions/psgallery-publisher
