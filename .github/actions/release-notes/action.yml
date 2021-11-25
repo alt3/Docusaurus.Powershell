@@ -19,4 +19,4 @@ runs:
       uses: actions/upload-artifact@v2
       with:
         name: Release Notes
-        path: ${{github.workspace}}/CHANGELOG.md
+        path: ${{github.workspace}}/_master/CHANGELOG.md
