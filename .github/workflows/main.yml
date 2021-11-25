@@ -95,9 +95,6 @@ jobs:
     # if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'no-release')}}    
 
     steps:
-    - name: Download Build Output
-      uses: actions/download-artifact@v2
-
     - uses: actions/checkout@main
 
     - name: Publish to PSGallery
@@ -105,4 +102,4 @@ jobs:
       env:
         PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
       with:
-        modulePath: D:/a/Docusaurus.Powershell/Docusaurus.Powershell/Modules
+        modulePath: Modules/${{env.MODULE_NAME}}

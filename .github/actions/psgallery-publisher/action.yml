@@ -9,6 +9,12 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Download Build Output
+      uses: actions/download-artifact@v2
+
+    - name: Display structure of downloaded files
+      run: ls -R      
+
     - id: publish
       shell: pwsh
       run: ${{ github.action_path }}/action.ps1 -ModulePath ${{ inputs.modulePath}}
