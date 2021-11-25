@@ -4,9 +4,13 @@
 #>
 
 Write-Output "Generating CHANGELOG:"
+
+git checkout master
+
 $latestTagVersion = git describe --tags --abbrev=0
-$latestTagHash = git show-ref -s $latestTagVersion
 Write-Output "Previous Tag Version = $latestTagVersion"
+
+$latestTagHash = git show-ref -s $latestTagVersion
 Write-Output "Previous Tag Hash    = $latestTagHash"
 
 [string]$markdownChangeLog = "## CHANGELOG`n"
