@@ -40,7 +40,7 @@ Write-Output "Generated markdown:"
 $markdownChangeLog
 
 # create UTF-8 file
-$filePath = Join-Path -Path ((Get-Location).Path) -ChildPath "CHANGELOG.md"
+$filePath = Join-Path -Path (get-item ((get-location).Path)).Parent.FullName -ChildPath "CHANGELOG.md"
 Write-Output "Creating markdown file $filePath"
 
 Get-ChildItem
