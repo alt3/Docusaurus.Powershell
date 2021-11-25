@@ -40,10 +40,10 @@ Write-Output "Generated markdown:"
 $markdownChangeLog
 
 # create UTF-8 file
-$filename = "../CHANGELOG.md"
-Write-Output "Creating markdown file $filename"
+$filePath = Join-Path -Path ((Get-Location).Path) -ChildPath "CHANGELOG.md"
+Write-Output "Creating markdown file $filePath"
 
 Get-ChildItem
 Get-ChildItem ..
 
-[System.IO.File]::WriteAllLines($filename, [string[]]$markdownChangeLog)
+[System.IO.File]::WriteAllLines($filePath, [string[]]$markdownChangeLog)
