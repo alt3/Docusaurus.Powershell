@@ -5,7 +5,8 @@
 
 Write-Output "Generating CHANGELOG:"
 
-git checkout master
+get-childitem
+git status
 
 $latestTagVersion = git describe --tags --abbrev=0
 Write-Output "Previous Tag Version = $latestTagVersion"
