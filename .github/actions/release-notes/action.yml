@@ -9,6 +9,7 @@ runs:
       with:
         ref: master
         path: _master
+        fetch-depth: 0 # fetch history for all tags and branches
 
     - name: Generate Release Notes
       shell: pwsh

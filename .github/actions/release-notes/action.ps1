@@ -9,6 +9,8 @@ Get-ChildItem
 
 Set-Location _master
 
+Get-ChildItem
+
 $latestTagVersion = git describe --tags --abbrev=0
 Write-Output "Previous Tag Version = $latestTagVersion"
 
