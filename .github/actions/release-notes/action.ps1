@@ -5,6 +5,8 @@
 
 Write-Output "Generating CHANGELOG:"
 
+Get-ChildItem
+
 Set-Location _master
 
 $latestTagVersion = git describe --tags --abbrev=0
