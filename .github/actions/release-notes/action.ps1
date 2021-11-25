@@ -48,4 +48,4 @@ Get-ChildItem ..
 
 [System.IO.File]::WriteAllLines($filePath, [string[]]$markdownChangeLog)
 
-$markdownChangeLog | Out-File -FilePath $filePath
+Get-Content $filePath
