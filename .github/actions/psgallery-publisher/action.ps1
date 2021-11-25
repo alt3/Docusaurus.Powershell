@@ -10,10 +10,20 @@ Param(
 Set-StrictMode -Version Latest
 $PSDefaultParameterValues['*:ErrorAction'] = "Stop" # full script stop on first error
 
+# Debug current directory
+Get-ChildItem
+
 # Debug the module path
+Write-Host "D:"
 Get-ChildItem -Path "D:"
+
+Write-Host "D:\a"
 Get-ChildItem -Path "D:\a"
+
+Write-Host "D:\a\Docusaurus.Powershell:"
 Get-ChildItem -Path "D:\a\Docusaurus.Powershell"
+
+Write-Host "D:\a\Docusaurus.Powershell\Docusaurus.Powershell:"
 Get-ChildItem -Path "D:\a\Docusaurus.Powershell\Docusaurus.Powershell"
 
 # Make sure the secret key PSGALLERY_API_KEY is set
