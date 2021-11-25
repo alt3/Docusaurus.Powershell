@@ -1,15 +1,14 @@
 <#
     .SYNOPSIS
     Generates a changelog in markdown format.
+
+    .NOTES
+    Expects a git clone of master branch with full history in subfolder `_master`.
 #>
 
 Write-Output "Generating CHANGELOG:"
 
-Get-ChildItem
-
 Set-Location _master
-
-Get-ChildItem
 
 $latestTagVersion = git describe --tags --abbrev=0
 Write-Output "Previous Tag Version = $latestTagVersion"
@@ -43,9 +42,4 @@ $markdownChangeLog
 $filePath = Join-Path -Path (get-item ((get-location).Path)).Parent.FullName -ChildPath "CHANGELOG.md"
 Write-Output "Creating markdown file $filePath"
 
-Get-ChildItem
-Get-ChildItem ..
-
 [System.IO.File]::WriteAllLines($filePath, [string[]]$markdownChangeLog)
-
-Get-Content $filePath
