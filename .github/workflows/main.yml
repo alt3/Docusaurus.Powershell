@@ -100,12 +100,9 @@ jobs:
 
     - uses: actions/checkout@main
 
-    - name: Display structure of downloaded files
-      run: ls -R    
-
     - name: Publish to PSGallery
       uses: ./.github/actions/psgallery-publisher
       env:
         PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
       with:
-        modulePath: Modules/${{env.MODULE_NAME}}
+        modulePath: D:/a/Docusaurus.Powershell/Docusaurus.Powershell/Modules
