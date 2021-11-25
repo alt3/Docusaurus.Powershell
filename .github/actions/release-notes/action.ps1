@@ -5,6 +5,8 @@
 
 Write-Output "Generating CHANGELOG:"
 
+Set-Location _master
+
 $latestTagVersion = git describe --tags --abbrev=0
 Write-Output "Previous Tag Version = $latestTagVersion"
 
@@ -30,6 +32,6 @@ $logLines | ForEach-Object {
 }
 
 # create UTF-8 file
-$filename = "CHANGELOG.md"
+$filename = "../CHANGELOG.md"
 
 [IO.File]::AppendAllLines($filename, [string[]]$markdownChangeLog)

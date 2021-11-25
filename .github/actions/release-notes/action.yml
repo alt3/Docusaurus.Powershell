@@ -8,6 +8,7 @@ runs:
       uses: actions/checkout@v2
       with:
         ref: master
+        path: _master
 
     - name: Generate Release Notes
       shell: pwsh
