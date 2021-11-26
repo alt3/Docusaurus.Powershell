@@ -88,16 +88,16 @@ jobs:
   # Publishing stage:
   # - is skipped completely UNLESS on the master branch
   # - is skipped IF the commit message contains "no-release"
-  # - the psgallery step auto-bumps the version in the manifest before publishing
-  # - the github step bumps the manifest on master to match published PSGallery version
-  #   (with the [no-release] commit message to prevent an endless loop)
+  # - the psgallery published manifest already contains bumped module version
+  # - the bump-master bumps the manifest on master to match published PSGallery version
+  #   but adds the [no-release] commit message to prevent an endless CI/CD loop
   # -----------------------------------------------------------------------------
   publish:
     name: Publish
     runs-on: windows-latest  
-    # needs: [lint, test]
+    needs: [lint, test]
     needs: build
-    # if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'no-release')}}
+    if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'no-release')}}
 
     steps:
     - name: Checkout
@@ -106,27 +106,25 @@ jobs:
     - name: Download Build Output
       uses: actions/download-artifact@v2
 
-    # - name: Publish to PSGallery
-    #   id: psgallery
-    #   uses: ./.github/actions/psgallery-publisher
-    #   env:
-    #     PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
-    #   with:
-    #     modulePath: Modules/${{env.MODULE_NAME}}
+    - name: Publish to PSGallery
+      uses: ./.github/actions/psgallery-publisher
+      env:
+        PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+      with:
+        modulePath: Modules/${{env.MODULE_NAME}}
 
-    - name: Bump Manifest Version
-      # needs: psgallery
-      id: bumpManifest
-      uses: ./.github/actions/bump-manifest
+    - name: Bump Manifest Version on Master
+      id: bumpMaster
+      uses: ./.github/actions/bump-master
       with:
         artifactPath: Modules/${{env.MODULE_NAME}}
 
-    # - name: Create Github Release
-    #   uses: softprops/action-gh-release@v1
-    #   with:
-    #     name: Release ${{ steps.gitversion.outputs.LegacySemVerPadded }}
-    #     tag_name: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
-    #     target_commitish: master
-    #     draft: false
-    #     prerelease: false
-    #     generate_release_notes: true
+    - name: Create Github Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Release ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+        tag_name: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+        target_commitish: master
+        draft: false
+        prerelease: false
+        generate_release_notes: true

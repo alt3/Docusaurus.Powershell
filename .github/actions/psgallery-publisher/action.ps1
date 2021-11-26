@@ -24,4 +24,4 @@ Write-Output "Full path      = $fullPath"
 
 # Publish the module
 Write-Output "Publish the module:"
-Publish-Module -Path $fullPath -NuGetApiKey $env:PSGALLERY_API_KEY -Verbose -WhatIf
+Publish-Module -Path $fullPath -NuGetApiKey $env:PSGALLERY_API_KEY -Verbose

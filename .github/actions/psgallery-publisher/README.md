@@ -1,4 +1,3 @@
 # PSGallery Publisher
 
-Github Action for publishing a Powershell module (artifact) to the PSGallery.
-
+Github Action that publishes the newly built Powershell module from the artifact to the PSGallery.

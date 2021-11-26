@@ -77,4 +77,4 @@ git status
 
 Write-Output "========================================================================================================================"
 Write-Output "Git push:"
-# git push origin master --quiet
+git push origin master --quiet
