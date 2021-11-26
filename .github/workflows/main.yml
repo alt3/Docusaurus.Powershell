@@ -63,7 +63,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2016, windows-2019, ubuntu-18-04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
+        os: [windows-2016, windows-2019, ubuntu-18.04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
     steps:
     - name: Download Build Output
       uses: actions/download-artifact@v2
