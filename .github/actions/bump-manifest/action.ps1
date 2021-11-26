@@ -34,8 +34,8 @@ Write-Output "=> master manifest   = $masterManifestPath"
 $commitMessage = "Bump manifest to $artifactVersion [no-release]"
 Write-Output "=> commit message    = $commitMessage"
 
-$artifactManifest = Get-Item -Path $artifactManifestPath
-$masterManifest = Get-Item -Path $masterManifestPath
+$artifactManifest = Get-Item -Path $artifactManifestPath -Verbose
+$masterManifest = Get-Item -Path $masterManifestPath -Verbose
 
 # replace manifest
 Write-Output "================================================================================"
@@ -47,15 +47,28 @@ Get-Content -Path $masterManifest.FullName
 # commit the change
 Write-Output "================================================================================"
 Write-Output "Preparing Git commit:"
+Write-Output "=> actor   = $($env:GITHUB_ACTOR)"
+Write-Output "=> repo_id = $($env:GITHUB_REPOSITORY)"
+$email  = "$($env:GITHUB_ACTOR)@users.noreply.github.com"
+Write-Output "=> email   = $email"
 
 Set-Location $MasterFolder -Verbose
 
 git branch -a
-git status
-git remote -v
-git config --global core.safecrlf false # prevent CRLF/LF warnings stopping the pipeline
-git config --global --core
 
+git remote remove origin
+git remote add origin "https://$($env:GITHUB_ACTOR):$($env:GITHUB_TOKEN)@github.com/$($env:GITHUB_REPOSITORY).git"
+git config --global core.safecrlf false # prevent CRLF/LF warnings stopping the pipeline
+git config --global user.name $env:GITHUB_ACTOR
+git config --global user.email $email
+git config --global --list
+
+Write-Output "================================================================================"
+Write-Output "Git status:"
+git status
+
+Write-Output "================================================================================"
+Write-Output "Git commit:"
 git add $masterManifest.FullName
 git commit -m $commitMessage
 git status
@@ -69,7 +82,7 @@ git status
 # git remote -v
 # git config --global --list
 
-Write-Output "Git Commit Updated Manifest:"
+# Write-Output "Git Commit Updated Manifest:"
 # git add "Source/$env:ARTIFACT_MANIFEST_NAME"
 # git commit -m $commitMessage
 # git push origin master --quiet
