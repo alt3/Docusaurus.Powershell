@@ -19,7 +19,7 @@ Write-Output "==================================================================
 Write-Output "=> artifact folder   = $ArtifactFolder"
 Write-Output "=> master folder     = $MasterFolder"
 
-$moduleName = $env.MODULE_NAME
+$moduleName = $env:MODULE_NAME
 Write-Output "=> module name       = $moduleName"
 
 $artifactVersion = (Get-ChildItem $ArtifactFolder -Directory | Sort-Object | Select-Object -Last 1).Name
