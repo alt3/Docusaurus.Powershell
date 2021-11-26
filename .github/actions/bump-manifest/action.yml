@@ -1,0 +1,22 @@
+name: "Bump Manifest Version"
+description: "Updates the module manifest version, then commits the change to master"
+
+inputs:
+  version:
+    description: Bumped version to insert into the module manifest
+    required: true
+
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout Master
+      uses: actions/checkout@v2
+      with:
+        ref: master
+        path: __master
+        fetch-depth: 0 # fetch history for all tags and branches
+
+    - name: ⌚ Update version
+      shell: pwsh
+      run: ${{ github.action_path }}/action.ps1 -Path "__master" -Version ${{ inputs.version}}

@@ -102,10 +102,6 @@ jobs:
     steps:
     - uses: actions/checkout@main
 
-    - name: Generate Release Notes
-      id: releaseNotes
-      uses: ./.github/actions/release-notes
-
     # - name: Publish to PSGallery
     #   id: psgallery
     #   uses: ./.github/actions/psgallery-publisher
@@ -114,9 +110,19 @@ jobs:
     #   with:
     #     modulePath: Modules/${{env.MODULE_NAME}}
 
+    - name: Bump Manifest Version
+      # needs: psgallery
+      id: bumpManifest
+      uses: ./.github/actions/bump-manifest
+      with:
+        - version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+
     # - name: Create Github Release
-    #   needs: psgallery
-    #   uses: ./.github/actions/github-release
+    #   uses: softprops/action-gh-release@v1
     #   with:
-    #     modulePath: Modules/${{env.MODULE_NAME}}
-    #     moduleVersion: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+    #     name: Release ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+    #     tag_name: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+    #     target_commitish: master
+    #     draft: false
+    #     prerelease: false
+    #     generate_release_notes: true
