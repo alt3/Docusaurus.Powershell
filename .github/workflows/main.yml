@@ -102,6 +102,10 @@ jobs:
     steps:
     - uses: actions/checkout@main
 
+    - name: GitVersion
+      id: gitversion
+      uses: PoshCode/Actions/gitversion@v1
+
     # - name: Publish to PSGallery
     #   id: psgallery
     #   uses: ./.github/actions/psgallery-publisher
