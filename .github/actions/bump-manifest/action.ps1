@@ -1,25 +1,34 @@
 <#
     .SYNOPSIS
-    Updates version number in module manifest, then creates a commit to master.
-
-    .NOTES
-    Expects a git clone of master branch with full history in subfolder `_master`.
+    Replaces module manifest on master with bumped manifest in the artifact, then creates the commit.
 #>
 [cmdletbinding()]
 Param(
-    [Parameter(Mandatory=$true)][string]$Path,
-    [Parameter(Mandatory=$true)][string]$Version
+    [Parameter(Mandatory=$true)][string]$ArtifactPath,
+    [Parameter(Mandatory=$true)][string]$Module
 )
 
-Write-Output "Bumping manifest version using:"
-Write-Output "Path    = $Path"
-Write-Output "Version = $Version"
+# some debugging
 
-Set-Location $Path
-
-Write-Output "Path content:"
 Get-ChildItem
 
-Get-Content .\Source\Alt3.Docusaurus.Powershell.psd1
+git branch -a
+
+Write-Output "================================================================================"
+Write-Output "PSD1 on master:"
+Write-Output "=> module          = $Module"
+$masterManifest = Join-Path -Path "Source" -ChildPath "$Module.psd1"
+Write-Output "=> master manifest = $masterManifest"
+Get-Content $masterManifest
+
+Write-Output "================================================================================"
+Write-Output "PSD1 in artifact:"
+Write-Output "=> artifact path    = $ArtifactPath"
+$artifactVersion = (Get-ChildItem $ArtifactPath -Directory | Sort-Object | Select-Object -Last 1).Name
+Write-Output "=> artifact version = $artifactVersion"
+$artifactManifest = Join-Path $ArtifactPath -ChildPath $artifactVersion | Join-Path -ChildPath "$Module.psd1"
+Write-Output "=> artifact manifest = $artifactManifest"
+
+Get-Content $artifactManifest
 
 

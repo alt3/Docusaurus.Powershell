@@ -100,11 +100,11 @@ jobs:
     # if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'no-release')}}
 
     steps:
-    - uses: actions/checkout@main
+    # - name: Checkout
+    #   uses: actions/checkout@v2
 
-    - name: GitVersion
-      id: gitversion
-      uses: PoshCode/Actions/gitversion@v1
+    - name: Download Build Output
+      uses: actions/download-artifact@v2
 
     # - name: Publish to PSGallery
     #   id: psgallery
@@ -119,7 +119,8 @@ jobs:
       id: bumpManifest
       uses: ./.github/actions/bump-manifest
       with:
-        version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+        artifactPath: Modules
+        module: ${{env.MODULE_NAME}}
 
     # - name: Create Github Release
     #   uses: softprops/action-gh-release@v1
