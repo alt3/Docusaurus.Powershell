@@ -115,7 +115,7 @@ jobs:
       id: bumpManifest
       uses: ./.github/actions/bump-manifest
       with:
-        - version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+        version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
 
     # - name: Create Github Release
     #   uses: softprops/action-gh-release@v1
