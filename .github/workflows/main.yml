@@ -1,0 +1,129 @@
+name: Build on push
+on: [push]
+
+env:
+  MODULE_NAME: Alt3.Docusaurus.Powershell
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: GitVersion
+      id: gitversion
+      uses: PoshCode/Actions/gitversion@v1
+    - name: Install-RequiredModules
+      uses: PoshCode/Actions/install-requiredmodules@v1
+    - name: Build Module
+      id: build
+      uses: PoshCode/actions/build-module@v1
+      with:
+        path: ${{github.workspace}}/Source
+        version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+        destination: ${{github.workspace}}/output
+    - name: Upload Build Output
+      uses: actions/upload-artifact@v2
+      with:
+        name: Modules
+        path: ${{github.workspace}}/output
+    - name: Upload Tests
+      uses: actions/upload-artifact@v2
+      with:
+        name: PesterTests
+        path: ${{github.workspace}}/Tests
+    - name: Upload RequiredModules.psd1
+      uses: actions/upload-artifact@v2
+      with:
+        name: RequiredModules
+        path: ${{github.workspace}}/RequiredModules.psd1
+    - name: Upload PSScriptAnalyzerSettings.psd1
+      uses: actions/upload-artifact@v2
+      with:
+        name: ScriptAnalyzer
+        path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
+
+  lint:
+    needs: build
+    name: Run PSScriptAnalyzer
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Build Output
+      uses: actions/download-artifact@v2
+    - name: Invoke-ScriptAnalyzer
+      uses: devblackops/github-action-psscriptanalyzer@master
+      with:
+        rootPath: Modules/${{env.MODULE_NAME}}
+        repoToken: ${{ secrets.GITHUB_TOKEN }}
+        settingsPath: ScriptAnalyzer/PSScriptAnalyzerSettings.psd1
+
+  test:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2016, windows-2019, ubuntu-18.04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
+    steps:
+    - name: Download Build Output
+      uses: actions/download-artifact@v2
+    - uses: PoshCode/Actions/install-requiredmodules@v1
+    - uses: PoshCode/Actions/pester@v1
+      with:
+        codeCoveragePath: Modules/${{env.MODULE_NAME}}
+        moduleUnderTest: ${{env.MODULE_NAME}}
+        additionalModulePaths: ${{github.workspace}}/Modules
+    - name: Publish Test Results
+      uses: zyborg/dotnet-tests-report@v1
+      with:
+        test_results_path: results.xml
+    - name: Upload Results
+      uses: actions/upload-artifact@v2
+      with:
+        name: Pester Results
+        path: ${{github.workspace}}/*.xml
+
+  # -----------------------------------------------------------------------------
+  # Publishing stage:
+  # - is skipped completely UNLESS on the master branch
+  # - is skipped completely IF the commit message contains "no-release"
+  # - the psgallery published manifest already contains the bumped module version
+  # - the bump-master step bumps copies the artifact manifest to master to match
+  #   the PSGallery-published version (but adds the [no-release] commit message
+  #   to prevent an endless CI/CD loop)
+  # -----------------------------------------------------------------------------
+  publish:
+    name: Publish
+    runs-on: windows-latest  
+    needs: [lint, test]
+    if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'no-release')}}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Download Build Output
+      uses: actions/download-artifact@v2
+
+    - name: Publish to PSGallery
+      uses: ./.github/actions/psgallery-publisher
+      env:
+        PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+      with:
+        modulePath: Modules/${{env.MODULE_NAME}}
+
+    - name: Bump Manifest Version on Master
+      id: bumpMaster
+      uses: ./.github/actions/bump-master
+      with:
+        artifactPath: Modules/${{env.MODULE_NAME}}
+
+    - name: Create Github Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Release ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+        tag_name: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+        target_commitish: master
+        draft: false
+        prerelease: false
+        generate_release_notes: true

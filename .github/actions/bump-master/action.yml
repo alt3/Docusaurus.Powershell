@@ -1,0 +1,21 @@
+name: Bump Module Manifest Version
+description: "Replaces module manifest on master with bumped version, then commits the change to master"
+
+inputs:
+  artifactPath:
+    description: Path to the artifact holding the newly built module (with bumped manifest version)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout Master
+      uses: actions/checkout@v2
+      with:
+        path: __master
+        ref: master
+        fetch-depth: 0 # fetch history for all tags and branches
+
+    - name: Bump Module Manifest
+      shell: pwsh
+      run: ${{ github.action_path }}/action.ps1 -ArtifactFolder ${{ inputs.artifactPath }} -MasterFolder __master
