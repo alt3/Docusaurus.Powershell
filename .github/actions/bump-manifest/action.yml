@@ -18,4 +18,4 @@ runs:
 
     - name: Bump Module Manifest
       shell: pwsh
-      run: ${{ github.action_path }}/action.ps1 -ArtifactPath ${{ inputs.artifactPath }} -MasterPath __master
+      run: ${{ github.action_path }}/action.ps1 -ArtifactFolder ${{ inputs.artifactPath }} -MasterFolder __master
