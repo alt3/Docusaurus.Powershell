@@ -14,7 +14,7 @@ Param(
     [Parameter(Mandatory=$true)][string]$MasterFolder
 )
 
-# construct the paths
+# construct some variables
 Write-Output "================================================================================"
 Write-Output "=> artifact folder   = $ArtifactFolder"
 Write-Output "=> master folder     = $MasterFolder"
@@ -31,21 +31,45 @@ Write-Output "=> artifact manifest = $artifactManifestPath"
 $masterManifestPath = Join-Path $MasterFolder -ChildPath "Source" | Join-Path -ChildPath "$moduleName.psd1"
 Write-Output "=> master manifest   = $masterManifestPath"
 
+$commitMessage = "Bump manifest to $artifactVersion [no-release]"
+Write-Output "=> commit message    = $commitMessage"
+
 $artifactManifest = Get-Item -Path $artifactManifestPath
 $masterManifest = Get-Item -Path $masterManifestPath
 
-# some debugging
+# replace manifest
 Write-Output "================================================================================"
-Write-Output "PSD1 on master BEFORE:"
+Write-Output "Replacing manifest on master:"
+Copy-Item -Path $artifactManifest -Destination $masterManifest -Force -Verbose
+Write-Output "Updated manifest on master:"
 Get-Content -Path $masterManifest.FullName
 
+# commit the change
 Write-Output "================================================================================"
-Write-Output "PSD1 on artifact:"
-Get-Content -Path $artifactManifest.FullName
+Write-Output "Preparing Git commit:"
 
-Write-Output "================================================================================"
-Copy-Item -Path $artifactManifest -Destination $masterManifest -Force
-Write-Output "PSD1 on master AFTER:"
-Get-Content -Path $masterManifest.FullName
+Set-Location $MasterFolder -Verbose
 
-# git branch -a
+git branch -a
+git status
+git remote -v
+git config --global core.safecrlf false # prevent CRLF/LF warnings stopping the pipeline
+git config --global --core
+
+git add $masterManifest.FullName
+git commit -m $commitMessage
+git status
+
+# git remote remove origin
+# git remote add origin "https://$($env:MAPPED_GITHUB_USERNAME):$($env:MAPPED_GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$($env:BUILD_REPOSITORY_ID).git"
+# git config --global core.safecrlf false # prevent CRLF/LF warnings stopping the pipeline
+# git config --global user.name $env:MAPPED_GITHUB_USERNAME
+# git config --global user.email "$($env:MAPPED_GITHUB_USERNAME)@users.noreply.github.com"
+
+# git remote -v
+# git config --global --list
+
+Write-Output "Git Commit Updated Manifest:"
+# git add "Source/$env:ARTIFACT_MANIFEST_NAME"
+# git commit -m $commitMessage
+# git push origin master --quiet
