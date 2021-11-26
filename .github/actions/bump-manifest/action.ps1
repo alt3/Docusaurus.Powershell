@@ -16,45 +16,36 @@ Param(
 
 # construct the paths
 Write-Output "================================================================================"
-Write-Output "➡ artifact folder   = $ArtifactFolder"
-Write-Output "➡ master folder     = $MasterFolder"
+Write-Output "=> artifact folder   = $ArtifactFolder"
+Write-Output "=> master folder     = $MasterFolder"
 
-$moduleName = (Get-Item -Path $ArtifactFolder).Name
-Write-Output "➡ module name       = $moduleName"
+$moduleName = $env.MODULE_NAME
+Write-Output "=> module name       = $moduleName"
 
 $artifactVersion = (Get-ChildItem $ArtifactFolder -Directory | Sort-Object | Select-Object -Last 1).Name
-Write-Output "➡ artifact version  = $moduleName"
+Write-Output "=> artifact version  = $moduleName"
 
 $artifactManifestPath = Join-Path $ArtifactFolder -ChildPath $artifactVersion | Join-Path -ChildPath "$moduleName.psd1"
-Write-Output "➡ artifact manifest = $artifactManifestPath"
+Write-Output "=> artifact manifest = $artifactManifestPath"
 
 $masterManifestPath = Join-Path $MasterFolder -ChildPath "Source" | Join-Path -ChildPath "$moduleName.psd1"
-Write-Output "♥ master manifest   = $masterManifestPath"
+Write-Output "=> master manifest   = $masterManifestPath"
+
+$artifactManifest = Get-Item -Path $artifactManifestPath
+$masterManifest = Get-Item -Path $masterManifestPath
 
 # some debugging
+Write-Output "================================================================================"
+Write-Output "PSD1 on master BEFORE:"
+Get-Content -Path $masterManifest.FullName
 
-# Get-ChildItem
-# Get-ChildItem Modules
+Write-Output "================================================================================"
+Write-Output "PSD1 on artifact:"
+Get-Content -Path $artifactManifest.FullName
 
-
+Write-Output "================================================================================"
+Copy-Item -Path $artifactManifest -Destination $masterManifest -Force
+Write-Output "PSD1 on master AFTER:"
+Get-Content -Path $masterManifest.FullName
 
 # git branch -a
-
-# Write-Output "================================================================================"
-# Write-Output "PSD1 on master:"
-# Write-Output "=> module          = $Module"
-# $masterManifest = Join-Path -Path "Source" -ChildPath "$Module.psd1"
-# Write-Output "=> master manifest = $masterManifest"
-# Get-Content $masterManifest
-
-# Write-Output "================================================================================"
-# Write-Output "PSD1 in artifact:"
-# Write-Output "=> artifact path    = $ArtifactFolder"
-# $artifactVersion = (Get-ChildItem $ArtifactFolder -Directory | Sort-Object | Select-Object -Last 1).Name
-# Write-Output "=> artifact version = $artifactVersion"
-# $artifactManifest = Join-Path $ArtifactFolder -ChildPath $artifactVersion | Join-Path -ChildPath "$Module.psd1"
-# Write-Output "=> artifact manifest = $artifactManifest"
-
-# Get-Content $artifactManifest
-
-
