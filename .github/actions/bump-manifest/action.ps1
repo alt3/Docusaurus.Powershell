@@ -14,8 +14,8 @@ Param(
     [Parameter(Mandatory=$true)][string]$MasterFolder
 )
 
-# construct some variables
-Write-Output "================================================================================"
+# prepare variables
+Write-Output "========================================================================================================================"
 Write-Output "=> artifact folder   = $ArtifactFolder"
 Write-Output "=> master folder     = $MasterFolder"
 
@@ -37,25 +37,27 @@ Write-Output "=> commit message    = $commitMessage"
 $artifactManifest = Get-Item -Path $artifactManifestPath -Verbose
 $masterManifest = Get-Item -Path $masterManifestPath -Verbose
 
-# replace manifest
-Write-Output "================================================================================"
+Write-Output "========================================================================================================================"
 Write-Output "Replacing manifest on master:"
 Copy-Item -Path $artifactManifest -Destination $masterManifest -Force -Verbose
 Write-Output "Updated manifest on master:"
 Get-Content -Path $masterManifest.FullName
 
-# commit the change
-Write-Output "================================================================================"
-Write-Output "Preparing Git commit:"
-Write-Output "=> actor   = $($env:GITHUB_ACTOR)"
-Write-Output "=> repo_id = $($env:GITHUB_REPOSITORY)"
-$email  = "$($env:GITHUB_ACTOR)@users.noreply.github.com"
-Write-Output "=> email   = $email"
-
+Write-Output "========================================================================================================================"
+Write-Output "Switch working directory"
 Set-Location $MasterFolder -Verbose
 
+Write-Output "========================================================================================================================"
+Write-Output "Preparing Git commit:"
+Write-Output "=> actor = $($env:GITHUB_ACTOR)"
+Write-Output "=> repo  = $($env:GITHUB_REPOSITORY)"
+$email  = "$($env:GITHUB_ACTOR)@users.noreply.github.com"
+Write-Output "=> email = $email"
+
+Write-Output "Git branches:"
 git branch -a
 
+Write-Output "Configure remote and config:"
 git remote remove origin
 git remote add origin "https://$($env:GITHUB_ACTOR):$($env:GITHUB_TOKEN)@github.com/$($env:GITHUB_REPOSITORY).git"
 git config --global core.safecrlf false # prevent CRLF/LF warnings stopping the pipeline
@@ -63,26 +65,16 @@ git config --global user.name $env:GITHUB_ACTOR
 git config --global user.email $email
 git config --global --list
 
-Write-Output "================================================================================"
+Write-Output "========================================================================================================================"
 Write-Output "Git status:"
 git status
 
-Write-Output "================================================================================"
+Write-Output "========================================================================================================================"
 Write-Output "Git commit:"
 git add $masterManifest.FullName
 git commit -m $commitMessage
 git status
 
-# git remote remove origin
-# git remote add origin "https://$($env:MAPPED_GITHUB_USERNAME):$($env:MAPPED_GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$($env:BUILD_REPOSITORY_ID).git"
-# git config --global core.safecrlf false # prevent CRLF/LF warnings stopping the pipeline
-# git config --global user.name $env:MAPPED_GITHUB_USERNAME
-# git config --global user.email "$($env:MAPPED_GITHUB_USERNAME)@users.noreply.github.com"
-
-# git remote -v
-# git config --global --list
-
-# Write-Output "Git Commit Updated Manifest:"
-# git add "Source/$env:ARTIFACT_MANIFEST_NAME"
-# git commit -m $commitMessage
+Write-Output "========================================================================================================================"
+Write-Output "Git push:"
 # git push origin master --quiet
