@@ -36,7 +36,8 @@ module.exports = {
       additionalLanguages: ['powershell'],
     },
     algolia: {
-      apiKey: '5b40d1e4b3123f7f10ca9a61e3fe3da4',
+      appId: 'J6HI8PLPVO',
+      apiKey: '7da5313674c5bdc00c7af45eda989ae2',
       indexName: 'docusaurus-powershell',
       algoliaOptions: {}, // Optional, if provided by Algolia
     },
