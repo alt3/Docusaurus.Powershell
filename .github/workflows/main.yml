@@ -1,5 +1,5 @@
 name: Build
-on: [push]
+on: [pull_request]
 
 env:
   MODULE_NAME: Alt3.Docusaurus.Powershell
@@ -10,9 +10,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: GitVersion
-      id: gitversion
-      uses: PoshCode/Actions/gitversion@v1
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: '5.x'
+
+    # - name: GitVersion
+    #   id: gitversion
+    #   uses: PoshCode/Actions/gitversion@v1
+
     - name: Install-RequiredModules
       uses: PoshCode/Actions/install-requiredmodules@v1
     - name: Build Module
@@ -63,7 +69,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2016, windows-2019, ubuntu-18.04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
+        os: [windows-2019, ubuntu-18.04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
     steps:
     - name: Download Build Output
       uses: actions/download-artifact@v2
