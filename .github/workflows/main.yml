@@ -10,6 +10,11 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: '5.x'
+
     - name: GitVersion
       id: gitversion
       uses: PoshCode/Actions/gitversion@v1
