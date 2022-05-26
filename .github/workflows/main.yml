@@ -15,9 +15,10 @@ jobs:
       with:
         versionSpec: '5.x'
 
-    - name: GitVersion
-      id: gitversion
-      uses: PoshCode/Actions/gitversion@v1
+    # - name: GitVersion
+    #   id: gitversion
+    #   uses: PoshCode/Actions/gitversion@v1
+
     - name: Install-RequiredModules
       uses: PoshCode/Actions/install-requiredmodules@v1
     - name: Build Module
