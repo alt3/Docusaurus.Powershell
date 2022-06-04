@@ -35,4 +35,4 @@ Powershell 7, Pester 4:
 - `dev/build-and-import-module.ps1`
 - `Invoke-Pester`
 
-> **Important:** after code changes, make sure to build-and-import your module before running Pester!
+> **Important:** after code changes, make sure to build-and-import the Alt3 module before running Pester!
