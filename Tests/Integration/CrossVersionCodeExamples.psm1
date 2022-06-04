@@ -189,5 +189,8 @@ function Test-CrossVersionCodeExamples {
         ######################################################
         ## Another ASCII fan but now inside the description ##
         ######################################################
+
+        .EXAMPLE
+        "Input" | ForEach-Object {Show-Issue97 -Name $_}
 #>
 }

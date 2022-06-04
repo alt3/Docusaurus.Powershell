@@ -138,7 +138,6 @@ function ReplaceExamples() {
     # replace EXAMPLES section in content with updated examples
     # https://regex101.com/r/8OEW0w/1/
     $regex = '## EXAMPLES\n[\s\S]+## PARAMETERS'
-    $newExamples = $newExamples.Replace('$', '$$') # Escape $ characters in new examples
     $replacement = "## EXAMPLES`n`n$($newExamples)## PARAMETERS"
     $content = [regex]::replace($content, $regex, $replacement)
 
