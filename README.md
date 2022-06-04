@@ -25,3 +25,14 @@ Documentation websites for Powershell Modules (with auto-generated Get-Help page
     <td align="center"><a href="https://pester.dev/"><img src="https://raw.githubusercontent.com/pester/Pester/master/images/logo.png" width="100px;" alt=""/><br /><h3>Pester</h3></td>
   </tr>
 </table>
+
+## Local Development
+
+Powershell 7, Pester 4:
+
+- `cd /local/path/to/repo`
+- `./Install-RequiredModules.s1`
+- `dev/build-and-import-module.ps1`
+- `Invoke-Pester`
+
+> **Important:** after code changes, make sure to build-and-import the Alt3 module before running Pester!
