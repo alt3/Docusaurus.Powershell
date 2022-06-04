@@ -93,17 +93,17 @@ jobs:
   # -----------------------------------------------------------------------------
   # Publishing stage:
   # - is skipped completely UNLESS on the master branch
-  # - is skipped completely IF the commit message contains "no-release"
+  # - is skipped completely UNLESS the commit message contains "[release]"
   # - the psgallery published manifest already contains the bumped module version
   # - the bump-master step bumps copies the artifact manifest to master to match
-  #   the PSGallery-published version (but adds the [no-release] commit message
-  #   to prevent an endless CI/CD loop)
+  #   the PSGallery-published version (without adding [release] to the commit
+  #   so we prevent an endless CI/CD loop)
   # -----------------------------------------------------------------------------
   publish:
     name: Publish
     runs-on: windows-latest  
     needs: [lint, test]
-    if: ${{ github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'no-release')}}
+    if: ${{ github.ref == 'refs/heads/master' && contains(github.event.head_commit.message, '[release]')}}
 
     steps:
     - name: Checkout

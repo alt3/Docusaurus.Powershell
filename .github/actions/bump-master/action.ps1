@@ -31,7 +31,7 @@ Write-Output "=> artifact manifest = $artifactManifestPath"
 $masterManifestPath = Join-Path $MasterFolder -ChildPath "Source" | Join-Path -ChildPath "$moduleName.psd1"
 Write-Output "=> master manifest   = $masterManifestPath"
 
-$commitMessage = "Bump manifest to $artifactVersion [no-release]"
+$commitMessage = "Bump manifest to $artifactVersion"
 Write-Output "=> commit message    = $commitMessage"
 
 $artifactManifest = Get-Item -Path $artifactManifestPath -Verbose
