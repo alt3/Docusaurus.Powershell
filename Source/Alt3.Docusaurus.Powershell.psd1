@@ -1,4 +1,4 @@
-﻿@{
+@{
 
     # Script module or binary module file associated with this manifest.
     RootModule = 'Alt3.Docusaurus.Powershell.psm1'
@@ -128,4 +128,3 @@ Live demo at https://docusaurus-powershell.netlify.app/
     # DefaultCommandPrefix = ''
 
 }
-
