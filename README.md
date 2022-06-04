@@ -34,3 +34,5 @@ Powershell 7, Pester 4:
 - `./Install-RequiredModules.s1`
 - `dev/build-and-import-module.ps1`
 - `Invoke-Pester`
+
+> **Important:** after code changes, make sure to build-and-import your module before running Pester!
