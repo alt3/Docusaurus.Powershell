@@ -74,7 +74,7 @@ jobs:
       uses: actions/download-artifact@v2
 
     - name: Invoke-ScriptAnalyzer
-      uses: devblackops/github-action-psscriptanalyzer@main
+      uses: devblackops/github-action-psscriptanalyzer@master
       with:
         rootPath: Modules/${{env.MODULE_NAME}}
         repoToken: ${{ secrets.GITHUB_TOKEN }}
