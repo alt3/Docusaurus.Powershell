@@ -1,10 +1,10 @@
 BeforeAll {
-    # create dummy markdown file
+    # create dummy markdown file for this test
     $markdownFilePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'Dummy-PesterCommand.md'
     "Dummy markdown for testing GetCustomEditUrl" | Out-File -FilePath $markdownFilePath
     $markdownFile = Get-Item -Path $markdownFilePath
 
-    # create dummy module
+    # create dummy module for this test
     $modulePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'DummyModule.psm1'
     "Dummy markdown for testing GetCustomEditUrl" | Out-File -FilePath $modulePath
     $module = Get-Item -Path $modulePath
