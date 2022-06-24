@@ -9,18 +9,8 @@ root = true
 charset = utf-8
 indent_style = space
 insert_final_newline = true
-
-[*.{cs}]
+trim_trailing_whitespace = true
 indent_size = 4
-trim_trailing_whitespace = true
 
-[*.{json}]
-indent_size = 2
-trim_trailing_whitespace = true
-
-[*.{ps1,psm1,psd1}]
-indent_size = 4
-trim_trailing_whitespace = true
-
-[*.{ps1xml,props,xml,yaml}]
+[*.{json,ps1xml,props,xml,yaml}]
 indent_size = 2

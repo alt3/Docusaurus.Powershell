@@ -16,12 +16,23 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.7
       with:
         versionSpec: '5.x'
+
+    - name: Execute GitVersion
+      id:   gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+      with:
+        useConfigFile: true
+
     - name: Install-RequiredModules
       uses: PoshCode/Actions/install-requiredmodules@v1
+
     - name: Build Module
       id: build
       uses: PoshCode/actions/build-module@v1
@@ -29,21 +40,25 @@ jobs:
         path: ${{github.workspace}}/Source
         version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
         destination: ${{github.workspace}}/output
+
     - name: Upload Build Output
       uses: actions/upload-artifact@v2
       with:
         name: Modules
         path: ${{github.workspace}}/output
+
     - name: Upload Tests
       uses: actions/upload-artifact@v2
       with:
         name: PesterTests
         path: ${{github.workspace}}/Tests
+
     - name: Upload RequiredModules.psd1
       uses: actions/upload-artifact@v2
       with:
         name: RequiredModules
         path: ${{github.workspace}}/RequiredModules.psd1
+
     - name: Upload PSScriptAnalyzerSettings.psd1
       uses: actions/upload-artifact@v2
       with:
@@ -57,6 +72,7 @@ jobs:
     steps:
     - name: Download Build Output
       uses: actions/download-artifact@v2
+
     - name: Invoke-ScriptAnalyzer
       uses: devblackops/github-action-psscriptanalyzer@master
       with:
@@ -74,16 +90,20 @@ jobs:
     steps:
     - name: Download Build Output
       uses: actions/download-artifact@v2
+
     - uses: PoshCode/Actions/install-requiredmodules@v1
+
     - uses: PoshCode/Actions/pester@v1
       with:
         codeCoveragePath: Modules/${{env.MODULE_NAME}}
         moduleUnderTest: ${{env.MODULE_NAME}}
         additionalModulePaths: ${{github.workspace}}/Modules
+
     - name: Publish Test Results
       uses: zyborg/dotnet-tests-report@v1
       with:
         test_results_path: results.xml
+
     - name: Upload Results
       uses: actions/upload-artifact@v2
       with:
@@ -101,18 +121,26 @@ jobs:
   # -----------------------------------------------------------------------------
   publish:
     name: Publish
-    runs-on: windows-latest  
+    runs-on: windows-latest
     needs: [lint, test]
     if: ${{ github.ref == 'refs/heads/master' && contains(github.event.head_commit.message, '[release]')}}
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.9.7
       with:
         versionSpec: '5.x'
+
+    - name: Execute GitVersion
+      id:   gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+      with:
+        useConfigFile: true
 
     - name: Download Build Output
       uses: actions/download-artifact@v2
@@ -133,7 +161,7 @@ jobs:
     - name: Create Github Release
       uses: softprops/action-gh-release@v1
       with:
-        name: Release ${{ env.GitVersion_LegacySemVerPadded }}
+        name: Release ${{ steps.gitversion.outputs.LegacySemVerPadded }}
         tag_name: ${{ env.GitVersion_LegacySemVerPadded }}
         target_commitish: master
         draft: false
