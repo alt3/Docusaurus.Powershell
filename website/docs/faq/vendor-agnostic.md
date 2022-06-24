@@ -49,7 +49,7 @@ The Docusaurus-specific `docusaurus.sidebar.js` file will not be generated.
 
 If your solution/vendor requires a similar list you will need to generate one yourself,
 perhaps using the
-[NewSideBarIncludeFile](https://github.com/alt3/Docusaurus.PowerShell/blob/master/Source/Private/NewSidebarIncludeFile.ps1)
+[NewSideBarIncludeFile](https://github.com/alt3/Docusaurus.PowerShell/blob/main/Source/Private/NewSidebarIncludeFile.ps1)
 function for inspiration.
 
 ## Additional Information

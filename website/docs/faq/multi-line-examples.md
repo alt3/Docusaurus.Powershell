@@ -54,8 +54,8 @@ Code fencing ensures identical rendering across all PowerShell versions and look
 - \`\`\`powershell
 
 > For a full list of usage examples see
-> [this test module](https://github.com/alt3/Docusaurus.PowerShell/blob/master/Tests/Integration/CrossVersionCodeExamples.psm1)
-> and [the markdown](https://github.com/alt3/Docusaurus.PowerShell/blob/master/Tests/Integration/CrossVersionCodeExamples.expected.mdx)
+> [this test module](https://github.com/alt3/Docusaurus.PowerShell/blob/main/Tests/Integration/CrossVersionCodeExamples.psm1)
+> and [the markdown](https://github.com/alt3/Docusaurus.PowerShell/blob/main/Tests/Integration/CrossVersionCodeExamples.expected.mdx)
 > it renders.
 
 ## PowerShell 7 Native Multi-Lines
