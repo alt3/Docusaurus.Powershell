@@ -35,7 +35,7 @@ Describe "Integration Test to ensure PowerShell 7's Native Multi-Line Code Examp
     It "Mdx file generated for test should exist" -Skip:(-not $isPS7) {
         $renderedMdxFile | Should -Exist
     }
-    # make sure output is identical
+
     It "Content of generated mdx file is identical to that of expected fixture" -Skip:(-not $isPS7) {
         $renderedMdx | Should -BeExactly $expectedMdx
     }
