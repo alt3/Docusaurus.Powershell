@@ -8,7 +8,7 @@ This project was created to help you document and showcase your PowerShell Modul
 Instead of reinventing the wheel and failing in an area where PowerShell does not excel
 (frontend development), this project provides a bridge between your
 [PowerShell Comment-Based Help](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help?view=powershell-6)
-and [Docusaurus v2](https://v2.docusaurus.io/), a static website generator written
+and [Docusaurus](https://docusaurus.io/), a static website generator written
 in React, with an empahasis on ease-of-use.
 
 This cross-technology approach allows you to focus on documenting your modules without having
