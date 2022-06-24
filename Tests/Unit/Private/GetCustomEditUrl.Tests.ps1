@@ -1,97 +1,57 @@
-#Requires -Modules Pester
+BeforeAll {
+    # dot source the function
+    . $PSScriptRoot/../../../Source/Private/GetCustomEditUrl.ps1
+
+    # create dummy markdown file
+    $markdownFilePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'Dummy-PesterCommand.md'
+    "Dummy markdown for testing GetCustomEditUrl" | Out-File -FilePath $markdownFilePath
+    $markdownFile = Get-Item -Path $markdownFilePath
+
+    # create dummy module
+    $modulePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'DummyModule.psm1'
+    "Dummy markdown for testing GetCustomEditUrl" | Out-File -FilePath $modulePath
+    $module = Get-Item -Path $modulePath
+
+}
 
 Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
-    if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
-        write-host "module not loaded" -ForegroundColor yellow
-        break
-        Import-Module Alt3.Docusaurus.PowerShell -DisableNameChecking -Verbose:$False
+    It "Dummy markdown file created for test should exist" {
+        $markdownFilePath | Should -Exist
     }
 
-    # up
-    $markdownFilePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'Dummy-PesterCommand.md'
-    $dummyModulePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'DummyModule.psm1'
-
-
-    "Dummy markdown" | Out-File -FilePath $markdownFilePath
-    if (-Not(Test-Path -Path $markdownFilePath)) {
-        throw "temporary markdown file was not created"
+    It "Dummy module created for test should exist" {
+        $modulePath | Should -Exist
     }
 
-    "Dummy module" | Out-File -FilePath $dummyModulePath
-    if (-Not(Test-Path -Path $dummyModulePath)) {
-        throw "temporary module file was not created"
+    It "Returns `$null when omitting optional argument -EditUrl" {
+        GetCustomEditUrl -Module "DummyModule" -MarkdownFile $markdownFile | Should -BeNullOrEmpty
     }
 
-    ${global:markdownFileItem} = Get-Item -Path $markdownFilePath
-    ${global:dummyModuleFileItem} = Get-Item -Path $dummyModulePath
+    It "Returns string ""null"" when using -EditUrl ""null""" {
+        GetCustomEditUrl -Module "DummyModule" -MarkdownFile $markdownFile -EditUrl "null" | Should -Be "null"
+    }
 
-    # the actual tests
-    Context 'when optional -EditUrl argument is not used' {
-        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
-            GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem}
-        }
-
-        It "simply returns null" {
-            $customEditUrl | Should -Be $null
+    Context "for non-monolithic modules" {
+        It "Will always use markdown file name to generate URL pointing to the correlating .ps1 (function) source file when using -EditUrl ""https://site.com""" {
+            GetCustomEditUrl -Module "DummyModule" -MarkdownFile $markdownFile -EditUrl "https://site.com" |
+            Should -Be "https://site.com/Dummy-PesterCommand.ps1"
         }
     }
 
-    Context 'when "null" is passed' {
-        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
-            GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem} -EditUrl "null"
+    Context "for monolithic repos" {
+        It "Will first try to use markdown file name to generate URL pointing to the correlating .psm1 (module) source file when using -EditUrl ""https://site.com"" -Monolithic" {
+            GetCustomEditUrl -Module $module -MarkdownFile $markdownFile -EditUrl "https://site.com" -Monolithic |
+            Should -Be "https://site.com/DummyModule.psm1"
         }
 
-        It "return the string 'null'" {
-            $customEditUrl | Should -Be "null"
-        }
-    }
-
-    Context 'for non-monolithic modules' {
-        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
-            GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com"
-        }
-
-        It "generates a link pointing to a ps1 source file with same name as the markdown file" {
-            $customEditUrl | Should -Be 'https://dummy.com/Dummy-PesterCommand.ps1'
+        It "Will otherwise simply use passed module name to generate URL pointing to the correlating .psm1 (module) source file when using -EditUrl ""https://site.com"" -Monolithic" {
+            GetCustomEditUrl -Module Microsoft.PowerShell.Management -MarkdownFile $markdownFile -EditUrl "https://site.com" -Monolithic |
+            Should -Be "https://site.com/Microsoft.PowerShell.Management.psm1"
         }
     }
+}
 
-    Context 'for monolithic modules' {
-        # ---------------------------------------------------------------------
-        # passed module resolves to a file
-        # ---------------------------------------------------------------------
-        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
-            GetCustomEditUrl -Module ${global:dummyModuleFileItem} -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com" -Monolithic
-        }
-
-        It "generates a link pointing to a psm1 source file with same name as the (file-resolvable) module" {
-            $customEditUrl | Should -Be 'https://dummy.com/DummyModule.psm1'
-        }
-
-        # ---------------------------------------------------------------------
-        # passed module resolves to a loaded/imported module
-        # ---------------------------------------------------------------------
-        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
-            GetCustomEditUrl -Module Microsoft.PowerShell.Management -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com" -Monolithic
-        }
-
-        It "generates a link pointing to a psm1 source file with same name as the (imported/loaded) module" {
-            $customEditUrl | Should -Be 'https://dummy.com/Microsoft.PowerShell.Management.psm1'
-        }
-
-        # ---------------------------------------------------------------------
-        # passed module does not resolve to a file AND is not loaded/imported
-        # ---------------------------------------------------------------------
-        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
-            GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com" -Monolithic
-        }
-
-        It "generates a link pointing to a psm1 source file with same name as the (non-resolvable) module" {
-            $customEditUrl | Should -Be 'https://dummy.com/DummyModule.psm1'
-        }
-    }
-
-    # down
-    Remove-Item -Path ${global:markdownFileItem}
-    Remove-Item -Path ${global:dummyModuleFileItem}
+AfterAll {
+    Remove-Item -Path $markdownFilePath
+    Remove-Item -Path $modulePath
 }
