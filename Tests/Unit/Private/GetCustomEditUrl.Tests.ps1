@@ -16,7 +16,7 @@ BeforeAll {
     $module = Get-Item -Path $modulePath
 }
 
-Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
+Describe "Private function GetCustomEditUrl" {
     It "Dummy markdown file created for test should exist" {
         $markdownFilePath | Should -Exist
     }

@@ -5,12 +5,12 @@
 #>
 
 BeforeDiscovery {
-    [bool]$isPS7 = $PSVersionTable.PSVersion.Major -ge 7
-    Write-Output "isPS7 = $isPS7"
-
     if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
         throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
     }
+
+    # used as -Skip condition so these tests only runs on PowerShell 7
+    [bool]$isPS7 = $PSVersionTable.PSVersion.Major -eq 7
 }
 
 BeforeAll {
@@ -36,11 +36,11 @@ Describe "Integration Test to ensure PowerShell 7's Native Multi-Line Code Examp
         $renderedMdxFile | Should -Exist
     }
     # make sure output is identical
-    It "Content of generated .mdx is identical to that of expected fixture" -Skip:(-not $isPS7) {
+    It "Content of generated mdx file is identical to that of expected fixture" -Skip:(-not $isPS7) {
         $renderedMdx | Should -BeExactly $expectedMdx
     }
 
-    It "Generated .mdx file does not contain CRLF" -Skip:(-not $isPS7) {
+    It "Generated mdx file does not contain CRLF" -Skip:(-not $isPS7) {
         (Get-Content -Path $renderedMdxFile -Raw) -match "`r`n" | Should -Be $False
     }
 }
