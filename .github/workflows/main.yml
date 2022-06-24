@@ -29,7 +29,6 @@ jobs:
       uses: gittools/actions/gitversion/execute@v0.9.7
       with:
         useConfigFile: true
-        updateAssemblyInfo: true
 
     - name: Install-RequiredModules
       uses: PoshCode/Actions/install-requiredmodules@v1
@@ -142,7 +141,6 @@ jobs:
       uses: gittools/actions/gitversion/execute@v0.9.7
       with:
         useConfigFile: true
-        updateAssemblyInfo: false
 
     - name: Download Build Output
       uses: actions/download-artifact@v2
