@@ -40,7 +40,6 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
         }
     }
 
-
     Context "for monolithic repos" {
         It "Uses markdown file name to generate URL pointing to the correlating .psm1 (module) source file when using -EditUrl ""https://site.com"" -Monolithic" {
             InModuleScope Alt3.Docusaurus.Powershell -Parameters @{MarkdownFile = $markdownFile; Module = $module } {
