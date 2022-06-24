@@ -3,11 +3,11 @@ id: introduction
 title: Introduction
 ---
 
-This project was created to help you document and showcase your Powershell Modules.
+This project was created to help you document and showcase your PowerShell Modules.
 
-Instead of reinventing the wheel and failing in an area where Powershell does not excel
+Instead of reinventing the wheel and failing in an area where PowerShell does not excel
 (frontend development), this project provides a bridge between your
-[Powershell Comment-Based Help](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help?view=powershell-6)
+[PowerShell Comment-Based Help](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comment_based_help?view=powershell-6)
 and [Docusaurus v2](https://v2.docusaurus.io/), a static website generator written
 in React, with an empahasis on ease-of-use.
 
@@ -19,7 +19,7 @@ Some of the features you will get:
 - a website for promoting your module
 - auto-generated Get-Help documentation
 - support for complex multi-line Get-Help code examples
-- authoring pages in both Markdown and Powershell source files
+- authoring pages in both Markdown and PowerShell source files
 - localization, versioning and fully indexed (Algolia) search
 - simplified publishing (Netlify, Github Pages)
 - dark mode
@@ -40,4 +40,4 @@ things work first, then make it better.
 ## Feedback
 
 Suggestions, bug reports, fixes and :star::star::star: welcomed at our
-[Github repository](https://github.com/alt3/Docusaurus.Powershell).
+[Github repository](https://github.com/alt3/Docusaurus.PowerShell).

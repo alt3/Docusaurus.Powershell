@@ -3,7 +3,7 @@ id: usage
 title: Usage
 ---
 
-Adding Docusaurus to a Powershell Module project requires three steps:
+Adding Docusaurus to a PowerShell Module project requires three steps:
 
 1. Adding the Docusaurus website skeleton
 2. Generating Module documentation
@@ -11,7 +11,7 @@ Adding Docusaurus to a Powershell Module project requires three steps:
 
 ## Adding Docusaurus
 
-Open a Powershell (Core).
+Open a PowerShell (Core).
 
 Cd into your project's root folder.
 
@@ -37,7 +37,7 @@ module.exports = {
 
 ## Generating Module Documentation
 
-To generate Get-Help pages for any Powershell module run the following command.
+To generate Get-Help pages for any PowerShell module run the following command.
 
 > For demo data, replace `YourModuleName` with e.g. `Microsoft.PowerShell.Management`
 
@@ -46,7 +46,7 @@ New-DocusaurusHelp -Module "YourModuleName"
 ```
 
 After the command has completed, the `docusaurus/docs/commands` folder
-should contain one `.mdx` file for each command exported by the Powershell module.
+should contain one `.mdx` file for each command exported by the PowerShell module.
 
 ## Starting the Website
 

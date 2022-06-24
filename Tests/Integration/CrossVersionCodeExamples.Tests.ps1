@@ -1,14 +1,14 @@
 #Requires -Modules Pester
 <#
     .SYNOPSIS
-        This test ensures that ALL Powershell versions render the code examples as expected.
+        This test ensures that ALL PowerShell versions render the code examples as expected.
 #>
 
 # -----------------------------------------------------------------------------
-# import the Alt3.Docusaurus.Powershell rendering module
+# import the Alt3.Docusaurus.PowerShell rendering module
 # -----------------------------------------------------------------------------
-if (-not(Get-Module Alt3.Docusaurus.Powershell)) {
-    Import-Module Alt3.Docusaurus.Powershell -DisableNameChecking -Verbose:$False -Scope Global
+if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
+    Import-Module Alt3.Docusaurus.PowerShell -DisableNameChecking -Verbose:$False -Scope Global
 }
 
 # -----------------------------------------------------------------------------
@@ -21,11 +21,11 @@ Import-Module ${global:testModulePath} -Force -DisableNameChecking -Verbose:$Fal
 # -----------------------------------------------------------------------------
 # the actual integration test
 # -----------------------------------------------------------------------------
-Describe "Integration Test to ensure all supported Code Example variants render identically on all Powershell versions" {
+Describe "Integration Test to ensure all supported Code Example variants render identically on all PowerShell versions" {
 
     # render the markdown
     ${global:DocsFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
-    InModuleScope Alt3.Docusaurus.Powershell {
+    InModuleScope Alt3.Docusaurus.PowerShell {
         New-DocusaurusHelp -Module ${global:testModulePath} -DocsFolder ${global:DocsFolder}
     }
 

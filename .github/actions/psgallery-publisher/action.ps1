@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    Publishes a module to the Powershell Gallery.
+    Publishes a module to the PowerShell Gallery.
 #>
 [cmdletbinding()]
 Param(

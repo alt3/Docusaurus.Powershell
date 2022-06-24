@@ -1,4 +1,4 @@
-function InsertPowershellMonikers() {
+function InsertPowerShellMonikers() {
     <#
         .SYNOPSIS
             Adds the `powershell` moniker to all code blocks without a language moniker.

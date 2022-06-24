@@ -4,7 +4,7 @@ function NewMarkdownExample() {
             Generates a new markdown example block.
 
         .NOTES
-            Powershell language monicker inserted by the SetPowershellMoniker function.
+            PowerShell language monicker inserted by the SetPowerShellMoniker function.
     #>
     param(
         [Parameter(Mandatory = $True)][string]$Header,

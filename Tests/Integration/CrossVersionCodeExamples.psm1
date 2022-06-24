@@ -1,10 +1,10 @@
 function Test-CrossVersionCodeExamples {
 <#
     .SYNOPSIS
-        Dummy module to ensure all supported Get-Help example variations render identically on all Powershell versions.
+        Dummy module to ensure all supported Get-Help example variations render identically on all PowerShell versions.
 
     .LINK
-        https://github.com/alt3/Docusaurus.Powershell/issues/14#issuecomment-568552556
+        https://github.com/alt3/Docusaurus.PowerShell/issues/14#issuecomment-568552556
 
     .EXAMPLE
         $exampleType = 'Native single-line example without description'
