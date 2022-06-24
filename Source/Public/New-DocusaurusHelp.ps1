@@ -141,7 +141,7 @@ function New-DocusaurusHelp() {
             https://docusaurus-powershell.netlify.app/
 
         .LINK
-            https://v2.docusaurus.io/
+            https://docusaurus.io/
 
         .LINK
             https://github.com/PowerShell/platyPS

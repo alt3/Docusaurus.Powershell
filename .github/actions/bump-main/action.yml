@@ -1,5 +1,5 @@
 name: Bump Module Manifest Version
-description: "Replaces module manifest on master with bumped version, then commits the change to master"
+description: "Replaces module manifest on main with bumped version, then commits the change to main"
 
 inputs:
   artifactPath:
@@ -9,13 +9,13 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout Master
+    - name: Checkout Main
       uses: actions/checkout@v2
       with:
-        path: __master
-        ref: master
+        path: __main
+        ref: main
         fetch-depth: 0 # fetch history for all tags and branches
 
     - name: Bump Module Manifest
       shell: pwsh
-      run: ${{ github.action_path }}/action.ps1 -ArtifactFolder ${{ inputs.artifactPath }} -MasterFolder __master
+      run: ${{ github.action_path }}/action.ps1 -ArtifactFolder ${{ inputs.artifactPath }} -MainFolder __main

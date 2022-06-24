@@ -22,7 +22,7 @@ Documentation websites for PowerShell Modules (with auto-generated Get-Help page
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://pester.dev/"><img src="https://raw.githubusercontent.com/pester/Pester/master/images/logo.png" width="100px;" alt=""/><br /><h3>Pester</h3></td>
+    <td align="center"><a href="https://pester.dev/"><img src="https://raw.githubusercontent.com/pester/Pester/main/images/logo.png" width="100px;" alt=""/><br /><h3>Pester</h3></td>
   </tr>
 </table>
 
@@ -37,4 +37,4 @@ PowerShell 7, Pester 4:
 
 > **Important:** after code changes, make sure to build-and-import the Alt3 module before running Pester!
 
-> Pester 5 coming soon
+> Pester 5 coming soon!

@@ -97,7 +97,7 @@ Live demo at https://docusaurus-powershell.netlify.app/
             ProjectUri = 'https://www.github.com/alt3/Docusaurus.PowerShell'
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/alt3/Docusaurus.PowerShell/blob/master/LICENSE.txt'
+            LicenseUri = 'https://github.com/alt3/Docusaurus.PowerShell/blob/main/LICENSE.txt'
 
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags = @(

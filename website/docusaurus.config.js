@@ -90,7 +90,7 @@ module.exports = {
         docs: {
           path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/alt3/Docusaurus.PowerShell/edit/master/docusaurus',
+          editUrl: 'https://github.com/alt3/Docusaurus.PowerShell/edit/main/docusaurus',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

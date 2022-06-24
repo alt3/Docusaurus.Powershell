@@ -2,10 +2,10 @@ name: Build
 on:
   push:
     branches:
-    - master
+    - main
   pull_request:
     branches:
-    - master
+    - main
 
 env:
   MODULE_NAME: Alt3.Docusaurus.PowerShell
@@ -112,10 +112,10 @@ jobs:
 
   # -----------------------------------------------------------------------------
   # Publishing stage:
-  # - is skipped completely UNLESS on the master branch
+  # - is skipped completely UNLESS on the main branch
   # - is skipped completely UNLESS the commit message contains "[release]"
   # - the psgallery published manifest already contains the bumped module version
-  # - the bump-master step bumps copies the artifact manifest to master to match
+  # - the bump-main step bumps copies the artifact manifest to main to match
   #   the PSGallery-published version (without adding [release] to the commit
   #   message)
   # -----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ jobs:
     name: Publish
     runs-on: windows-latest
     needs: [lint, test]
-    if: ${{ github.ref == 'refs/heads/master' && contains(github.event.head_commit.message, '[release]')}}
+    if: ${{ github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]')}}
 
     steps:
     - name: Checkout
@@ -152,9 +152,9 @@ jobs:
       with:
         modulePath: Modules/${{env.MODULE_NAME}}
 
-    - name: Bump Manifest Version on Master
-      id: bumpMaster
-      uses: ./.github/actions/bump-master
+    - name: Bump Manifest Version on Main
+      id: bumpMain
+      uses: ./.github/actions/bump-main
       with:
         artifactPath: Modules/${{env.MODULE_NAME}}
 
@@ -163,7 +163,7 @@ jobs:
       with:
         name: Release ${{ steps.gitversion.outputs.LegacySemVerPadded }}
         tag_name: ${{ env.GitVersion_LegacySemVerPadded }}
-        target_commitish: master
+        target_commitish: main
         draft: false
         prerelease: false
         generate_release_notes: true

@@ -1,23 +1,23 @@
 <#
     .SYNOPSIS
-    Replaces module manifest on master with bumped manifest in the artifact, then creates the commit.
+    Replaces module manifest on main with bumped manifest in the artifact, then creates the commit.
 
     .PARAMETER ArtifactFolder
     Path to the artifact holding the newly built module (e.g. Modules/Alt3.Docusaurus.PowerShell)
 
-    .PARAMETER MasterFolder
-    Path to the master repo (e.g. __master)
+    .PARAMETER MainFolder
+    Path to the main repo (e.g. __main)
 #>
 [cmdletbinding()]
 Param(
     [Parameter(Mandatory=$true)][string]$ArtifactFolder,
-    [Parameter(Mandatory=$true)][string]$MasterFolder
+    [Parameter(Mandatory=$true)][string]$MainFolder
 )
 
 # prepare variables
 Write-Output "========================================================================================================================"
 Write-Output "=> artifact folder   = $ArtifactFolder"
-Write-Output "=> master folder     = $MasterFolder"
+Write-Output "=> main folder       = $MainFolder"
 
 $moduleName = $env:MODULE_NAME
 Write-Output "=> module name       = $moduleName"
@@ -28,24 +28,24 @@ Write-Output "=> artifact version  = $moduleName"
 $artifactManifestPath = Join-Path $ArtifactFolder -ChildPath $artifactVersion | Join-Path -ChildPath "$moduleName.psd1"
 Write-Output "=> artifact manifest = $artifactManifestPath"
 
-$masterManifestPath = Join-Path $MasterFolder -ChildPath "Source" | Join-Path -ChildPath "$moduleName.psd1"
-Write-Output "=> master manifest   = $masterManifestPath"
+$mainManifestPath = Join-Path $MainFolder -ChildPath "Source" | Join-Path -ChildPath "$moduleName.psd1"
+Write-Output "=> main manifest     = $mainManifestPath"
 
 $commitMessage = "Bump manifest to $artifactVersion"
 Write-Output "=> commit message    = $commitMessage"
 
 $artifactManifest = Get-Item -Path $artifactManifestPath -Verbose
-$masterManifest = Get-Item -Path $masterManifestPath -Verbose
+$mainManifest = Get-Item -Path $mainManifestPath -Verbose
 
 Write-Output "========================================================================================================================"
-Write-Output "Replacing manifest on master:"
-Copy-Item -Path $artifactManifest -Destination $masterManifest -Force -Verbose
-Write-Output "Updated manifest on master:"
-Get-Content -Path $masterManifest.FullName
+Write-Output "Replacing manifest on main:"
+Copy-Item -Path $artifactManifest -Destination $mainManifest -Force -Verbose
+Write-Output "Updated manifest on main:"
+Get-Content -Path $mainManifest.FullName
 
 Write-Output "========================================================================================================================"
 Write-Output "Switch working directory"
-Set-Location $MasterFolder -Verbose
+Set-Location $MainFolder -Verbose
 
 Write-Output "========================================================================================================================"
 Write-Output "Preparing Git commit:"
@@ -71,10 +71,10 @@ git status
 
 Write-Output "========================================================================================================================"
 Write-Output "Git commit:"
-git add $masterManifest.FullName
+git add $mainManifest.FullName
 git commit -m $commitMessage
 git status
 
 Write-Output "========================================================================================================================"
 Write-Output "Git push:"
-git push origin master --quiet
+git push origin main --quiet
