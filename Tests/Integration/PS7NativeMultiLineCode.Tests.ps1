@@ -4,15 +4,16 @@
         This test ensures PowerShell 7 native multi-line code examples render as expected.
 #>
 
-BeforeAll {
+BeforeDiscovery {
     [bool]$isPS7 = $PSVersionTable.PSVersion.Major -ge 7
-
-    write-Host "isPS7 = $isPS7"
+    Write-Output "isPS7 = $isPS7"
 
     if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
         throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
     }
+}
 
+BeforeAll {
     # import the PS7NativeMultiLineCode.psm1 test module
     $testModuleName = [regex]::replace([System.IO.Path]::GetFileName($PSCommandPath), '.Tests.ps1', '')
     $testModulePath = Join-Path -Path $PSScriptRoot -ChildPath "$testModuleName.psm1"

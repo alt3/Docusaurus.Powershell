@@ -1,9 +1,10 @@
-BeforeAll {
-    # make sure the module is loaded
+BeforeDiscovery {
     if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
         throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
     }
+}
 
+BeforeAll {
     # create dummy markdown file for this test
     $markdownFilePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'Dummy-PesterCommand.md'
     "Dummy markdown for testing GetCustomEditUrl" | Out-File -FilePath $markdownFilePath
