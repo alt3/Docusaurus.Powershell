@@ -18,7 +18,7 @@
     # for a few rules you wish to "exclude". Note: if a rule is in both IncludeRules
     # and ExcludeRules, the rule will be excluded.
     ExcludeRules = @(
-        'PSAvoidOverwritingBuiltInCmdlets' # prevent Github Action false positive on internal WriteFile() caused by Powershell Core: https://github.com/PowerShell/PowerShell/issues/7209
+        'PSAvoidOverwritingBuiltInCmdlets' # prevent Github Action false positive on internal WriteFile() caused by PowerShell Core: https://github.com/PowerShell/PowerShell/issues/7209
         'PSUseShouldProcessForStateChangingFunctions' # disable until fixed
     )
 

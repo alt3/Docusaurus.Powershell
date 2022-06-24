@@ -3,7 +3,7 @@
     Replaces module manifest on master with bumped manifest in the artifact, then creates the commit.
 
     .PARAMETER ArtifactFolder
-    Path to the artifact holding the newly built module (e.g. Modules/Alt3.Docusaurus.Powershell)
+    Path to the artifact holding the newly built module (e.g. Modules/Alt3.Docusaurus.PowerShell)
 
     .PARAMETER MasterFolder
     Path to the master repo (e.g. __master)

@@ -7,10 +7,10 @@
 #>
 
 # -----------------------------------------------------------------------------
-# import the Alt3.Docusaurus.Powershell rendering module
+# import the Alt3.Docusaurus.PowerShell rendering module
 # -----------------------------------------------------------------------------
-if (-not(Get-Module Alt3.Docusaurus.Powershell)) {
-    Import-Module Alt3.Docusaurus.Powershell -DisableNameChecking -Verbose:$False -Scope Global
+if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
+    Import-Module Alt3.Docusaurus.PowerShell -DisableNameChecking -Verbose:$False -Scope Global
 }
 
 # -----------------------------------------------------------------------------
@@ -28,7 +28,7 @@ Describe "Integration Test for PlatyPS generated placeholder examples" {
 
         # render the markdown
         ${global:DocsFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
-        InModuleScope Alt3.Docusaurus.Powershell {
+        InModuleScope Alt3.Docusaurus.PowerShell {
             New-DocusaurusHelp -Module ${global:testModulePath} -DocsFolder ${global:DocsFolder}
         }
 
@@ -46,7 +46,7 @@ Describe "Integration Test for PlatyPS generated placeholder examples" {
 
         # render the markdown
         ${global:DocsFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
-        InModuleScope Alt3.Docusaurus.Powershell {
+        InModuleScope Alt3.Docusaurus.PowerShell {
             New-DocusaurusHelp -Module ${global:testModulePath} -DocsFolder ${global:DocsFolder} -NoPlaceHolderExamples
         }
 

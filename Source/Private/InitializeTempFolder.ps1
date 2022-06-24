@@ -7,7 +7,7 @@ function InitializeTempFolder() {
             The temp folder is where all work is done before the enriched mdx files are copied
             to the docusaurus sidebar folder. We use this approach to support future debugging
             as it will be near impossible to reason about bugs without looking at the PlatyPS
-            generated source files, knowing which Powershell version was used etc.
+            generated source files, knowing which PowerShell version was used etc.
 
         .NOTES
             Ideally, we should also log used module versions for Alt3, PlatyPS and Pester.

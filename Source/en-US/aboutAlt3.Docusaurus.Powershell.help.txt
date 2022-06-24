@@ -1,8 +1,8 @@
 TOPIC
-    about_Alt3.Docusaurus.Powershell
+    about_Alt3.Docusaurus.PowerShell
 
 SHORT DESCRIPTION
-    Awesome documentation for Powershell Modules.
+    Awesome documentation for PowerShell Modules.
 
     Live demo at https://docusaurus-powershell.netlify.app/
 
@@ -23,7 +23,7 @@ NOTE
 TROUBLESHOOTING NOTE
 
 SEE ALSO
-  - https://github.com/alt3/Docusaurus.Powershell
+  - https://github.com/alt3/Docusaurus.PowerShell
 
 KEYWORDS
-    Documentation, Docusaurus, Help, Powershell
+    Documentation, Docusaurus, Help, PowerShell

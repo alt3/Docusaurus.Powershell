@@ -4,7 +4,7 @@ title: Multi-Line Examples
 sidebar_label: Multi-Line Examples
 ---
 
-Powershell's Comment Based Help was originally designed for `.EXAMPLE` nodes containing:
+PowerShell's Comment Based Help was originally designed for `.EXAMPLE` nodes containing:
 
 - (only) a **single-line command**
 - followed by the command's output and/or a description
@@ -27,7 +27,7 @@ does not (and cannot) support these use-cases, Docusaurus comes with `Code Fence
 allowing you to use markdown code fences to indicate where your example code block starts
 and where it ends.
 
-Code fencing ensures identical rendering across all Powershell versions and looks similar to:
+Code fencing ensures identical rendering across all PowerShell versions and looks similar to:
 
 ```
 .EXAMPLE
@@ -54,19 +54,19 @@ Code fencing ensures identical rendering across all Powershell versions and look
 - \`\`\`powershell
 
 > For a full list of usage examples see
-> [this test module](https://github.com/alt3/Docusaurus.Powershell/blob/master/Tests/Integration/CrossVersionCodeExamples.psm1)
-> and [the markdown](https://github.com/alt3/Docusaurus.Powershell/blob/master/Tests/Integration/CrossVersionCodeExamples.expected.mdx)
+> [this test module](https://github.com/alt3/Docusaurus.PowerShell/blob/master/Tests/Integration/CrossVersionCodeExamples.psm1)
+> and [the markdown](https://github.com/alt3/Docusaurus.PowerShell/blob/master/Tests/Integration/CrossVersionCodeExamples.expected.mdx)
 > it renders.
 
-## Powershell 7 Native Multi-Lines
+## PowerShell 7 Native Multi-Lines
 
-Even though Powershell 7 ships with
+Even though PowerShell 7 ships with
 [native support for multi-line code examples](https://github.com/PowerShell/platyPS/issues/180#issuecomment-569119138)
 it only supports a single use-case as can be seen in this example:
 
 ```
 .EXAMPLE
-    $exampleType = 'Powershell 7+ multi-line example with a description'
+    $exampleType = 'PowerShell 7+ multi-line example with a description'
     $info = 'PS7 will treat all adjecent lines as code'
     $info = 'The code block will end at the first double-newline`
 
@@ -75,21 +75,21 @@ it only supports a single use-case as can be seen in this example:
 
 You could consider using PS7 multi-lines instead of Code Fence Detection if:
 
-- you will (only) use Powershell 7 to generate your documentation
+- you will (only) use PowerShell 7 to generate your documentation
 - your example code does not contain any empty lines
 
-> Do not use native PS7 multi-lines if you intend to generate/test documentation using other Powershell versions!
+> Do not use native PS7 multi-lines if you intend to generate/test documentation using other PowerShell versions!
 
 ## Default Fallback
 
-Docusuarus.Powershell will fall back to using the unaltered PlatyPS generated code blocks
+Docusuarus.PowerShell will fall back to using the unaltered PlatyPS generated code blocks
 if code fencing is not detected.
 
 This is intentional behavior and is done because:
 
 - it would be impossible to "guess" where the code ends and the description begins
 - we can redirect (and fix) bugs in the right place (PlatyPS repository)
-- it will automatically support the multi-line examples that ships with Powershell 7
+- it will automatically support the multi-line examples that ships with PowerShell 7
 
 ## Unexpected Results
 
@@ -99,4 +99,4 @@ updating your help to use Code Fence Detection would be the better alternative.
 
 ## Additional Information
 
-- [Detailed description of the Docusaurus.Powershell determination process](https://github.com/alt3/Docusaurus.Powershell/issues/14#issuecomment-568552556)
+- [Detailed description of the Docusaurus.PowerShell determination process](https://github.com/alt3/Docusaurus.PowerShell/issues/14#issuecomment-568552556)

@@ -14,23 +14,23 @@ function New-DocusaurusHelp() {
             System.Object
 
         .EXAMPLE
-            New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell
+            New-DocusaurusHelp -Module Alt3.Docusaurus.PowerShell
 
             This example uses default settings to generate a Get-Help page for each command exported by
-            the Alt3.Docusaurus.Powershell module.
+            the Alt3.Docusaurus.PowerShell module.
 
         .EXAMPLE
             ```
             $parameters = @{
-                Module = "Alt3.Docusaurus.Powershell"
+                Module = "Alt3.Docusaurus.PowerShell"
                 DocsFolder = "D:\my-project\docs"
                 Sidebar = "commands"
                 Exclude = @(
                     "Get-SomeCommand"
                 )
-                MetaDescription = 'Help page for the Powershell command "%1"'
+                MetaDescription = 'Help page for the PowerShell command "%1"'
                 MetaKeywords = @(
-                    "Powershell"
+                    "PowerShell"
                     "Documentation"
                 )
             }
@@ -109,7 +109,7 @@ function New-DocusaurusHelp() {
             You can use this switch to disable that behavior which will result in an empty `EXAMPLES` section.
 
         .PARAMETER Monolithic
-            Use this optional parameter if the Powershell module source is monolithic.
+            Use this optional parameter if the PowerShell module source is monolithic.
 
             Will point all `custom_edit_url` front matter variables to the `.psm1` file.
 
@@ -127,14 +127,14 @@ function New-DocusaurusHelp() {
             [visit this page](https://docusaurus-powershell.netlify.app/docs/faq/vendor-agnostic).
 
         .NOTES
-            For debugging purposes, Docusaurus.Powershell creates a local temp folder with:
+            For debugging purposes, Docusaurus.PowerShell creates a local temp folder with:
 
             - the raw PlatyPS generated `.md` files
-            - the Docusaurus.Powershell enriched `.mdx` files
+            - the Docusaurus.PowerShell enriched `.mdx` files
             - a `debug.json` file containing detailed module information
 
             ```powershell
-            $tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell")
+            $tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.PowerShell")
             ```
 
         .LINK
@@ -186,7 +186,7 @@ function New-DocusaurusHelp() {
     CreateOrCleanFolder -Path $sidebarFolder
 
     # create tempfolder used for generating the PlatyPS files and creating the mdx files
-    $tempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell" | Join-Path -ChildPath $moduleName
+    $tempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.PowerShell" | Join-Path -ChildPath $moduleName
     InitializeTempFolder -Path $tempFolder
 
     # generate PlatyPs markdown files
@@ -246,7 +246,7 @@ function New-DocusaurusHelp() {
             InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $AppendMarkdown -Mode "Append"
         }
 
-        InsertPowershellMonikers -MarkdownFile $mdxFile
+        InsertPowerShellMonikers -MarkdownFile $mdxFile
         UnescapeSpecialChars -MarkdownFile $mdxFile
         SeparateHeaders -MarkdownFile $mdxFile
         InsertFinalNewline -MarkdownFile $mdxFile

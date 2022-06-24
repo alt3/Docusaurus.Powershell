@@ -28,7 +28,7 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_tree.svg',
     description: (
       <>
-        Document your Powershell code, nothing else.
+        Document your PowerShell code, nothing else.
       </>
     ),
   },
@@ -49,7 +49,7 @@ function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Awesome documentation for Powershell Modules">
+      description="Awesome documentation for PowerShell Modules">
       <header className={classnames('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>

@@ -1,17 +1,17 @@
 ---
 id: New-DocusaurusHelp
 title: New-DocusaurusHelp
-description: Help page for the Alt3.Docusaurus.Powershell "New-DocusaurusHelp" command
+description: Help page for the Alt3.Docusaurus.PowerShell "New-DocusaurusHelp" command
 keywords:
   - Alt3
   - Documentation
   - Docusaurus
   - Get-Help
   - Modules
-  - Powershell
+  - PowerShell
 hide_title: false
 hide_table_of_contents: false
-custom_edit_url: https://github.com/alt3/Docusaurus.Powershell/edit/master/Source/Public/New-DocusaurusHelp.ps1
+custom_edit_url: https://github.com/alt3/Docusaurus.PowerShell/edit/master/Source/Public/New-DocusaurusHelp.ps1
 ---
 
 ## SYNOPSIS
@@ -40,25 +40,25 @@ Also creates a `sidebar.js` file for simplified integration into the Docusaurus 
 ### EXAMPLE 1
 
 ```powershell
-New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell
+New-DocusaurusHelp -Module Alt3.Docusaurus.PowerShell
 ```
 
 This example uses default settings to generate a Get-Help page for each command exported by
-the Alt3.Docusaurus.Powershell module.
+the Alt3.Docusaurus.PowerShell module.
 
 ### EXAMPLE 2
 
 ```powershell
 $parameters = @{
-    Module = "Alt3.Docusaurus.Powershell"
+    Module = "Alt3.Docusaurus.PowerShell"
     DocsFolder = "D:\my-project\docs"
     Sidebar = "commands"
     Exclude = @(
         "Get-SomeCommand"
     )
-    MetaDescription = 'Help page for the Powershell command "%1"'
+    MetaDescription = 'Help page for the PowerShell command "%1"'
     MetaKeywords = @(
-        "Powershell"
+        "PowerShell"
         "Documentation"
     )
 }
@@ -309,7 +309,7 @@ Accept wildcard characters: False
 
 ### -Monolithic
 
-Use this optional parameter if the Powershell module source is monolithic.
+Use this optional parameter if the PowerShell module source is monolithic.
 
 Will point all `custom_edit_url` front matter variables to the `.psm1` file.
 
@@ -362,14 +362,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.Object
 
 ## NOTES
-For debugging purposes, Docusaurus.Powershell creates a local temp folder with:
+For debugging purposes, Docusaurus.PowerShell creates a local temp folder with:
 
 - the raw PlatyPS generated `.md` files
-- the Docusaurus.Powershell enriched `.mdx` files
+- the Docusaurus.PowerShell enriched `.mdx` files
 - a `debug.json` file containing detailed module information
 
 ```powershell
-$tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell")
+$tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.PowerShell")
 ```
 
 ## RELATED LINKS
@@ -382,4 +382,4 @@ $tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -Child
 
 ## ADDITIONAL INFORMATION
 
-This page was auto-generated using the comment based help in Alt3.Docusaurus.Powershell 1.0.16.
+This page was auto-generated using the comment based help in Alt3.Docusaurus.PowerShell 1.0.16.

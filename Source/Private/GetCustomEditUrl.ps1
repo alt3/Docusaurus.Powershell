@@ -4,7 +4,7 @@ function GetCustomEditUrl() {
             Returns the `custom_edit_url` for the given .md file.
 
         .DESCRIPTION
-            Generates a URL pointing to the Powershell source file that was used to generate the markdown file.
+            Generates a URL pointing to the PowerShell source file that was used to generate the markdown file.
 
         .NOTES
             - passing string `null` will return string `null`

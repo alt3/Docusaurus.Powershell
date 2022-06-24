@@ -14,14 +14,14 @@ $PSDefaultParameterValues['*:ErrorAction'] = "Stop"
 Build-Module -SourcePath ".\Source" -VersionedOutputDirectory
 
 Write-Host "Removing loaded modules"
-Remove-Module Alt3.Docusaurus.Powershell -Force -ErrorAction SilentlyContinue
+Remove-Module Alt3.Docusaurus.PowerShell -Force -ErrorAction SilentlyContinue
 
-$outputFolder = Join-Path -Path ".\Output" -ChildPath "Alt3.Docusaurus.Powershell"
+$outputFolder = Join-Path -Path ".\Output" -ChildPath "Alt3.Docusaurus.PowerShell"
 
 $latestModuleVersion = (Get-ChildItem $outputFolder -Directory | Sort-Object | Select-Object -Last 1).Name
 Write-Host "Newly built module version = $latestModuleVersion"
 
-$latestManifestPath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.Powershell.psd1
+$latestManifestPath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.PowerShell.psd1
 Write-Host "Newly built manifest path  = $latestManifestPath"
 
 Import-Module $latestManifestPath -RequiredVersion $latestModuleVersion -Force -Verbose

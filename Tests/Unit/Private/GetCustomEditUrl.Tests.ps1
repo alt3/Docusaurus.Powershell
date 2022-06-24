@@ -1,10 +1,10 @@
 #Requires -Modules Pester
 
 Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
-    if (-not(Get-Module Alt3.Docusaurus.Powershell)) {
+    if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
         write-host "module not loaded" -ForegroundColor yellow
         break
-        Import-Module Alt3.Docusaurus.Powershell -DisableNameChecking -Verbose:$False
+        Import-Module Alt3.Docusaurus.PowerShell -DisableNameChecking -Verbose:$False
     }
 
     # up
@@ -27,7 +27,7 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
 
     # the actual tests
     Context 'when optional -EditUrl argument is not used' {
-        $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
+        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
             GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem}
         }
 
@@ -37,7 +37,7 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
     }
 
     Context 'when "null" is passed' {
-        $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
+        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
             GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem} -EditUrl "null"
         }
 
@@ -47,7 +47,7 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
     }
 
     Context 'for non-monolithic modules' {
-        $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
+        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
             GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com"
         }
 
@@ -60,7 +60,7 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
         # ---------------------------------------------------------------------
         # passed module resolves to a file
         # ---------------------------------------------------------------------
-        $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
+        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
             GetCustomEditUrl -Module ${global:dummyModuleFileItem} -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com" -Monolithic
         }
 
@@ -71,18 +71,18 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
         # ---------------------------------------------------------------------
         # passed module resolves to a loaded/imported module
         # ---------------------------------------------------------------------
-        $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
+        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
             GetCustomEditUrl -Module Microsoft.PowerShell.Management -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com" -Monolithic
         }
 
         It "generates a link pointing to a psm1 source file with same name as the (imported/loaded) module" {
-            $customEditUrl | Should -Be 'https://dummy.com/Microsoft.Powershell.Management.psm1'
+            $customEditUrl | Should -Be 'https://dummy.com/Microsoft.PowerShell.Management.psm1'
         }
 
         # ---------------------------------------------------------------------
         # passed module does not resolve to a file AND is not loaded/imported
         # ---------------------------------------------------------------------
-        $customEditUrl = InModuleScope Alt3.Docusaurus.Powershell {
+        $customEditUrl = InModuleScope Alt3.Docusaurus.PowerShell {
             GetCustomEditUrl -Module "DummyModule" -MarkdownFile ${global:markdownFileItem} -EditUrl "https://dummy.com" -Monolithic
         }
 

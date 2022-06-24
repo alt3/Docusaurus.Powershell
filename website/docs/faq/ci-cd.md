@@ -41,7 +41,7 @@ if ($ModuleVersion) {
   $modules.$Module = (Find-Module -Name $Module).Version
 }
 
-$modules."Alt3.Docusaurus.Powershell" = (Find-Module -Name Alt3.Docusaurus.Powershell).Version
+$modules."Alt3.Docusaurus.PowerShell" = (Find-Module -Name Alt3.Docusaurus.PowerShell).Version
 $modules.PlatyPS = (Find-Module -Name PlatyPS).Version
 
 # -----------------------------------------------------------------------------
@@ -74,7 +74,7 @@ $docusaurusOptions = @{
   )
   MetaDescription = 'Help page for the "%1" command'
   MetaKeywords    = @(
-    "Powershell"
+    "PowerShell"
     "Help"
     "Documentation"
   )

@@ -9,7 +9,7 @@ function ReplaceExamples() {
             See link below for a detailed description of the determination process.
 
         .LINK
-            https://github.com/alt3/Docusaurus.Powershell/issues/14#issuecomment-568552556
+            https://github.com/alt3/Docusaurus.PowerShell/issues/14#issuecomment-568552556
     #>
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "NoPlaceHolderExamples",
         Justification = 'False positive as rule does not scan child scopes')]
@@ -56,18 +56,18 @@ function ReplaceExamples() {
         }
 
         # ---------------------------------------------------------------------
-        # Powershell 6: re-construct Code Fenced example
+        # PowerShell 6: re-construct Code Fenced example
         # - https://regex101.com/r/lHdZHM/6 => without a description
         # - https://regex101.com/r/CGjQco/3 => with a description
         # ---------------------------------------------------------------------
-        $regexPowershell6TripleCodeFence = [regex]::new('(### EXAMPLE ([0-9|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n```\n)\n([\s\S]*?)\\`\\`\\`(\n\n|\n)([\s\S]*|\n)')
+        $regexPowerShell6TripleCodeFence = [regex]::new('(### EXAMPLE ([0-9|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n```\n)\n([\s\S]*?)\\`\\`\\`(\n\n|\n)([\s\S]*|\n)')
 
-        if ($example -match $regexPowershell6TripleCodeFence) {
+        if ($example -match $regexPowerShell6TripleCodeFence) {
             $header = $matches[1]
             $code = $matches[5]
             $description = $matches[7]
 
-            Write-Verbose "=> $($header): Triple Code Fence (Powershell 6 and lower)"
+            Write-Verbose "=> $($header): Triple Code Fence (PowerShell 6 and lower)"
 
             $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
             $newExamples += $newExample
@@ -75,18 +75,18 @@ function ReplaceExamples() {
         }
 
         # ---------------------------------------------------------------------
-        # Powershell 7: re-construct PlatyPS Paired Code Fences example
+        # PowerShell 7: re-construct PlatyPS Paired Code Fences example
         # - https://regex101.com/r/FRA139/1 => without a description
         # - https://regex101.com/r/YIIwUs/5 => with a description
         # ---------------------------------------------------------------------
-        $regexPowershell7PairedCodeFences = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?)```\n```(\n\n|\n)([\s\S]*|\n)')
+        $regexPowerShell7PairedCodeFences = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?)```\n```(\n\n|\n)([\s\S]*|\n)')
 
-        if ($example -match $regexPowershell7PairedCodeFences) {
+        if ($example -match $regexPowerShell7PairedCodeFences) {
             $header = $matches[1]
             $code = $matches[5]
             $description = $matches[7]
 
-            Write-Verbose "=> $($header): Paired Code Fences (Powershell 7)"
+            Write-Verbose "=> $($header): Paired Code Fences (PowerShell 7)"
 
             $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
             $newExamples += $newExample
@@ -94,18 +94,18 @@ function ReplaceExamples() {
         }
 
         # ---------------------------------------------------------------------
-        # Powershell 7:  re-construct non-adjacent Code Fenced example
+        # PowerShell 7:  re-construct non-adjacent Code Fenced example
         # - https://regex101.com/r/kLr98l/3 => without a description
         # - https://regex101.com/r/eJH4cQ/6 => with a complex description
         # ---------------------------------------------------------------------
-        $regexPowershell7NonAdjacentCodeBlock = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?)\\`\\`\\`(\n\n([\s\S]*)|\n)')
+        $regexPowerShell7NonAdjacentCodeBlock = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?)\\`\\`\\`(\n\n([\s\S]*)|\n)')
 
-        if ($example -match $regexPowershell7NonAdjacentCodeBlock) {
+        if ($example -match $regexPowerShell7NonAdjacentCodeBlock) {
             $header = $matches[1]
             $code = $matches[5] -replace ('```' + "`n"), ''
             $description = $matches[7]
 
-            Write-Verbose "=> $($header): Non-Adjacent Code Block (Powershell 7)"
+            Write-Verbose "=> $($header): Non-Adjacent Code Block (PowerShell 7)"
 
             $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
             $newExamples += $newExample
@@ -124,21 +124,21 @@ function ReplaceExamples() {
             $code = $matches[5] -replace ('```' + "`n"), ''
             $description = $matches[7]
 
-            Write-Verbose "=> $($header): PlatyPS Default (all Powershell versions)"
+            Write-Verbose "=> $($header): PlatyPS Default (all PowerShell versions)"
 
             $newExamples += "$example`n"
             return
         }
 
         # we should never reach this point
-        Write-Warning "Unsupported code block detected, please file an issue containing the error message below at https://github.com/alt3/Docusaurus.Powershell/issues"
+        Write-Warning "Unsupported code block detected, please file an issue containing the error message below at https://github.com/alt3/Docusaurus.PowerShell/issues"
         Write-Warning $example
     }
 
     # replace EXAMPLES section in content with updated examples
     # https://regex101.com/r/8OEW0w/1/
     $regex = '## EXAMPLES\n[\s\S]+## PARAMETERS'
-    $newExamples = $newExamples.Replace('$', '$$') # Escape $ characters in new examples (https://github.com/alt3/Docusaurus.Powershell/pull/98)
+    $newExamples = $newExamples.Replace('$', '$$') # Escape $ characters in new examples (https://github.com/alt3/Docusaurus.PowerShell/pull/98)
     $replacement = "## EXAMPLES`n`n$($newExamples)## PARAMETERS"
     $content = [regex]::replace($content, $regex, $replacement)
 

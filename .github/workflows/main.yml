@@ -8,7 +8,7 @@ on:
     - master
 
 env:
-  MODULE_NAME: Alt3.Docusaurus.Powershell
+  MODULE_NAME: Alt3.Docusaurus.PowerShell
 
 jobs:
   build:
