@@ -33,7 +33,7 @@ of advanced features like Get-Help Code Fence Detection.
 
 ## Early Bird
 
-Just like Docusaurus v2, this module is still in it's early stages.
+Just like Docusaurus, this module is still in it's early stages.
 Features are deliberately kept to a minimum so we can make
 things work first, then make it better.
 
