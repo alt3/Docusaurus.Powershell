@@ -36,3 +36,5 @@ PowerShell 7, Pester 4:
 - `Invoke-Pester`
 
 > **Important:** after code changes, make sure to build-and-import the Alt3 module before running Pester!
+
+> Pester 5 coming soon
