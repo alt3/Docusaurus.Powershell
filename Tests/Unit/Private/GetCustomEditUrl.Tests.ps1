@@ -49,7 +49,7 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
             }
         }
 
-        It "Or simply uses the passed module name to generate URL pointing to the correlating .psm1 (module) source file when using -EditUrl ""https://site.com"" -Monolithic" {
+        It "Otherwise simply uses the passed module name to generate URL pointing to the correlating .psm1 (module) source file when using -EditUrl ""https://site.com"" -Monolithic" {
             InModuleScope Alt3.Docusaurus.Powershell -Parameters @{MarkdownFile = $markdownFile; Module = $module } {
                 GetCustomEditUrl -Module Microsoft.PowerShell.Management -MarkdownFile $markdownFile -EditUrl "https://site.com" -Monolithic |
                 Should -Be "https://site.com/Microsoft.PowerShell.Management.psm1"
