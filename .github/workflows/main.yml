@@ -27,7 +27,7 @@ jobs:
       uses: PoshCode/actions/build-module@v1
       with:
         path: ${{github.workspace}}/Source
-        version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+        version: ${{ env.GitVersion_LegacySemVerPadded }}
         destination: ${{github.workspace}}/output
     - name: Upload Build Output
       uses: actions/upload-artifact@v2
