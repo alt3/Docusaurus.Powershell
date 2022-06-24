@@ -1,4 +1,9 @@
 BeforeAll {
+    # make sure the module is loaded
+    if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
+        throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
+    }
+
     # create dummy markdown file for this test
     $markdownFilePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'Dummy-PesterCommand.md'
     "Dummy markdown for testing GetCustomEditUrl" | Out-File -FilePath $markdownFilePath
@@ -58,6 +63,8 @@ Describe "Private$([IO.Path]::DirectorySeparatorChar)GetCustomEditUrl" {
 }
 
 AfterAll {
-    Remove-Item -Path $markdownFilePath
-    Remove-Item -Path $modulePath
+    if (Get-Module Alt3.Docusaurus.PowerShell) {
+        Remove-Item -Path $markdownFilePath
+        Remove-Item -Path $modulePath
+    }
 }
