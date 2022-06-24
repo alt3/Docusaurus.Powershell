@@ -25,7 +25,7 @@ jobs:
         versionSpec: '5.x'
 
     - name: Execute GitVersion
-      id:   gitversion    
+      id:   gitversion
       uses: gittools/actions/gitversion/execute@v0.9.7
       with:
         useConfigFile: true
@@ -121,7 +121,7 @@ jobs:
   # -----------------------------------------------------------------------------
   publish:
     name: Publish
-    runs-on: windows-latest  
+    runs-on: windows-latest
     needs: [lint, test]
     if: ${{ github.ref == 'refs/heads/master' && contains(github.event.head_commit.message, '[release]')}}
 
@@ -137,6 +137,7 @@ jobs:
         versionSpec: '5.x'
 
     - name: Execute GitVersion
+      id:   gitversion
       uses: gittools/actions/gitversion/execute@v0.9.7
       with:
         useConfigFile: true
