@@ -40,7 +40,7 @@ function InitializeTempFolder() {
     $debugInfo = [ordered]@{
         ModuleParameters = $parameterHash
         PSVersionTable   = $PSVersionTable
-    } | ConvertTo-Json
+    } | ConvertTo-Json -Depth 5
 
     # create the debug file
     Write-Verbose "=> preparing debug file"
