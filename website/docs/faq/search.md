@@ -11,4 +11,4 @@ However, by default, the Docusaurus searchbar will not be available for your web
 To enable search:
 
 1. [apply for the Algolia DocSearch service](https://community.algolia.com/docsearch/)
-2. [update your Docusaurus configuration file](https://v2.docusaurus.io/docs/search/#connecting-algolia)
+2. [update your Docusaurus configuration file](https://docusaurus.io/docs/search/#connecting-algolia)
