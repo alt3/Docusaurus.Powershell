@@ -1,9 +1,10 @@
 <#
     .SYNOPSIS
-        Use this script to run Pester tests locally.
+    Use this script to rebuild and test the Alt3 module after making code changes.
 #>
 [cmdletbinding()]
 param(
+    [Parameter(Mandatory = $False)][string]$Path = ".",
     [Parameter(Mandatory = $False)][ValidateSet("Diagnostic","Detailed","Normal","Minimal","None")][string]$Output = "Normal",
     [switch]$Coverage
 )
@@ -29,7 +30,7 @@ Get-Module Alt3.Docusaurus.PowerShell
 
 # run pester
 if (-Not($Coverage)) {
-    Invoke-Pester .\Tests\Unit\Private\GetCustomEditUrl.Tests.ps1 -Output $Output
+    Invoke-Pester -Path $Path -Output $Output
 } else {
     Invoke-Pester -CodeCoverage $latestModulePath
 }
