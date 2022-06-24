@@ -18,7 +18,7 @@ function GetCustomEditUrl() {
         [switch]$Monolithic
     )
 
-    # return "false" so Docusaurus will not render the `Edit this page` button
+    # return $null so Docusaurus will not render the `Edit this page` button
     if (-not $EditUrl) {
         return
     }

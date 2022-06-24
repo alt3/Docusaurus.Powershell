@@ -6,67 +6,69 @@
         - the `-NoPlaceHolderExamples` leads to an empty `EXAMPLES` section
 #>
 
-# -----------------------------------------------------------------------------
-# import the Alt3.Docusaurus.PowerShell rendering module
-# -----------------------------------------------------------------------------
-if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
-    Import-Module Alt3.Docusaurus.PowerShell -DisableNameChecking -Verbose:$False -Scope Global
+BeforeDiscovery {
+    if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
+        throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
+    }
 }
 
-# -----------------------------------------------------------------------------
-# import the test module associated with this test
-# -----------------------------------------------------------------------------
-${global:testModuleName} = [regex]::replace([System.IO.Path]::GetFileName($PSCommandPath), '.Tests.ps1', '')
-${global:testModulePath} = Join-Path -Path $PSScriptRoot -ChildPath "${global:testModuleName}.psm1"
-Import-Module ${global:testModulePath} -Force -DisableNameChecking -Verbose:$False -Scope Global
+BeforeAll {
+    # import the PlaceholderExamples.psm1 test module
+    $testModuleName = [regex]::replace([System.IO.Path]::GetFileName($PSCommandPath), '.Tests.ps1', '')
+    $testModulePath = Join-Path -Path $PSScriptRoot -ChildPath "$testModuleName.psm1"
+    Import-Module $testModulePath -Force -DisableNameChecking -Verbose:$False -Scope Global
 
-# -----------------------------------------------------------------------------
-# the actual integration test
-# -----------------------------------------------------------------------------
+    # generate Docusaurus docs folder using default settings
+    $docsFolderDefault = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "$testModuleName-Default"
+    InModuleScope Alt3.Docusaurus.PowerShell -Parameters @{TestModulePath = $testModulePath; DocsFolder = $docsFolderDefault } {
+        New-DocusaurusHelp -Module $testModulePath -DocsFolder $DocsFolder
+    }
+
+    $renderedMdxFileDefault = Join-Path -Path $docsFolderDefault -ChildPath "commands" | Join-Path -ChildPath "Test-$testModuleName.mdx"
+    $renderedMdxDefault = Get-Content $renderedMdxFileDefault
+    $expectedMdxDefault = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$testModuleName.DEFAULT.expected.mdx")
+
+    # generate Docusaurus docs folder using the -NoPlaceholderExamples switch parameter
+    $docsFolderNoPlaceholders = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "$testModuleName-NoPlacehoders"
+    InModuleScope Alt3.Docusaurus.PowerShell -Parameters @{TestModulePath = $testModulePath; DocsFolder = $docsFolderNoPlaceholders } {
+        New-DocusaurusHelp -Module $testModulePath -DocsFolder $DocsFolder -NoPlaceholderExamples
+    }
+
+    $renderedMdxFileNoPlaceholders = Join-Path -Path $docsFolderNoPlaceholders -ChildPath "commands" | Join-Path -ChildPath "Test-$testModuleName.mdx"
+    $renderedMdxNoPlaceholders = Get-Content $renderedMdxFileNoPlaceholders
+    $expectedMdxNoPlaceholders = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$testModuleName.NOPLACEHOLDERS.expected.mdx")
+
+}
+
 Describe "Integration Test for PlatyPS generated placeholder examples" {
-    Context "when using default settings" {
-
-        # render the markdown
-        ${global:DocsFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
-        InModuleScope Alt3.Docusaurus.PowerShell {
-            New-DocusaurusHelp -Module ${global:testModulePath} -DocsFolder ${global:DocsFolder}
-        }
-
-        # read markdown
-        $renderedMdx = Get-Content (Join-Path -Path ${global:DocsFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx")
-        $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$(${global:testModuleName}).ENABLED.expected.mdx")
-
-        # make sure output is identical
-        It "renders placeholder markdown that is identical to the markdown found in our static 'ENABLED.expected' mdx file" {
-            $renderedMdx | Should -BeExactly $expectedMdx
-        }
+    It "Mdx file generated for testing DEFAULT should exist" {
+        $renderedMdxFileDefault | Should -Exist
     }
 
-    Context "when using the -NoPlaceholderExamples switch parameter" {
+    It "Content of DEFAULT generated mdx file is identical to that of expected fixture (with PlatyPS example placeholders)" {
+        $renderedMdxDefault | Should -BeExactly $expectedMdxDefault
+    }
 
-        # render the markdown
-        ${global:DocsFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
-        InModuleScope Alt3.Docusaurus.PowerShell {
-            New-DocusaurusHelp -Module ${global:testModulePath} -DocsFolder ${global:DocsFolder} -NoPlaceHolderExamples
-        }
+    It "Generated DEFAULT mdx file does not contain CRLF" {
+        (Get-Content -Path $renderedMdxFileDefault -Raw) -match "`r`n" | Should -Be $False
+    }
 
-        # read markdown
-        $renderedMdxFile = Join-Path -Path ${global:DocsFolder} -ChildPath "commands" | Join-Path -ChildPath "Test-$(${global:testModuleName}).mdx"
-        $renderedMdx = Get-Content $renderedMdxFile
-        $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$(${global:testModuleName}).DISABLED.expected.mdx")
+    It "Mdx file generated for testing NOPLACEHOLDERS should exist" {
+        $renderedMdxFileNoPlaceholders | Should -Exist
+    }
 
-        # make sure output is identical
-        It "renders empty EXAMPLES section markdown that is identical to the markdown found in our static 'DISABLED.expected' mdx file" {
-            $renderedMdx | Should -BeExactly $expectedMdx
-        }
+    It "Content of NOPLACEHOLDERS generated mdx file is identical to that of expected fixture (without PlatyPS example placeholders)" {
+        $renderedMdxNoPlaceholders | Should -BeExactly $expectedMdxNoPlaceholders
+    }
 
-        It "generates a file without CRLF" {
-            (Get-Content -Path $renderedMdxFile -Raw) -match "`r`n" | Should -Be $False
-        }
+    It "Generated NOPLACEHOLDERS mdx file does not contain CRLF" {
+        (Get-Content -Path $renderedMdxFileNoPlaceholders -Raw) -match "`r`n" | Should -Be $False
     }
 }
 
-# -----------------------------------------------------------------------------
-# cleanup
-# -----------------------------------------------------------------------------
-Remove-Item ${global:DocsFolder} -Recurse -Force
+AfterAll {
+    if (Get-Module Alt3.Docusaurus.PowerShell) {
+        Remove-Item $docsFolderDefault -Recurse -Force
+        Remove-Item $docsFolderNoPlaceholders -Recurse -Force
+    }
+}

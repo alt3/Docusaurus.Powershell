@@ -4,60 +4,51 @@
         This test ensures that ALL PowerShell versions render the code examples as expected.
 #>
 
-# -----------------------------------------------------------------------------
-# import the Alt3.Docusaurus.PowerShell rendering module
-# -----------------------------------------------------------------------------
-if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
-    Import-Module Alt3.Docusaurus.PowerShell -DisableNameChecking -Verbose:$False -Scope Global
+BeforeDiscovery {
+    if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
+        throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
+    }
 }
 
-# -----------------------------------------------------------------------------
-# import the test module associated with this test
-# -----------------------------------------------------------------------------
-${global:testModuleName} = [regex]::replace([System.IO.Path]::GetFileName($PSCommandPath), '.Tests.ps1', '')
-${global:testModulePath} = Join-Path -Path $PSScriptRoot -ChildPath "${global:testModuleName}.psm1"
-Import-Module ${global:testModulePath} -Force -DisableNameChecking -Verbose:$False -Scope Global
 
-# -----------------------------------------------------------------------------
-# the actual integration test
-# -----------------------------------------------------------------------------
-Describe "Integration Test to ensure all supported Code Example variants render identically on all PowerShell versions" {
+BeforeAll {
+    # import the CrossVersionCodeExamples.psm1 test module
+    $testModuleName = [regex]::replace([System.IO.Path]::GetFileName($PSCommandPath), '.Tests.ps1', '')
+    $testModulePath = Join-Path -Path $PSScriptRoot -ChildPath "$testModuleName.psm1"
+    Import-Module $testModulePath -Force -DisableNameChecking -Verbose:$False -Scope Global
 
-    # render the markdown
-    ${global:DocsFolder} = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath ${global:testModuleName}
-    InModuleScope Alt3.Docusaurus.PowerShell {
-        New-DocusaurusHelp -Module ${global:testModulePath} -DocsFolder ${global:DocsFolder}
+    # generate Docusaurus docs folder using default settings
+    $docsFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath $testModuleName
+    InModuleScope Alt3.Docusaurus.PowerShell -Parameters @{TestModulePath = $testModulePath; DocsFolder = $docsFolder } {
+        New-DocusaurusHelp -Module $testModulePath -DocsFolder $DocsFolder
     }
 
-    # make sure folder docs/commands is generated
-    $commandsFolder = Join-Path -Path ${global:DocsFolder} -ChildPath "commands"
-
-    It "generates docs/commands folder $commandsFolder" {
-        Test-Path -Path $commandsFolder | Should -Be $True
-    }
-
-    # make sure expected markdown file is rendered
-    $renderedMdxFile = Join-Path -Path $commandsFolder -ChildPath "Test-$(${global:testModuleName}).mdx"
-
-    It "generates mdx file $renderedMdxFile" {
-        Test-Path -Path $renderedMdxFile | Should -Be $True
-    }
-
-    # compare generated mdx with expected mdx
+    # handle generated .mdx file
+    $renderedMdxFile = Join-Path -Path $docsFolder -ChildPath "commands" | Join-Path -ChildPath "Test-$testModuleName.mdx"
     $renderedMdx = Get-Content $renderedMdxFile
-    $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$(${global:testModuleName}).expected.mdx")
+    $expectedMdx = Get-Content (Join-Path -Path $PSScriptRoot -ChildPath "$testModuleName.expected.mdx")
+}
 
-    It "generates markdown that is identical to the markdown found in the 'expected' mdx file" {
+Describe "Integration Test to ensure all supported Code Example variants render identically on all PowerShell versions" {
+    It "Commands folder as required for Docusaurus docs/commands should be created" {
+        Test-Path (Join-Path -Path $docsFolder -ChildPath commands) | Should -Be $True
+    }
+
+    It "Mdx file generated for test should exist" {
+        $renderedMdxFile | Should -Exist
+    }
+
+    It "Content of generated mdx file is identical to that of expected fixture" {
         $renderedMdx | Should -BeExactly $expectedMdx
     }
 
-    # make sure the file does not contain CRLF
-    It "generates a file without CRLF" {
+    It "Generated mdx file does not contain CRLF" {
         (Get-Content -Path $renderedMdxFile -Raw) -match "`r`n" | Should -Be $False
     }
 }
 
-# -----------------------------------------------------------------------------
-# cleanup
-# -----------------------------------------------------------------------------
-Remove-Item ${global:DocsFolder} -Recurse -Force
+AfterAll {
+    if (Get-Module Alt3.Docusaurus.PowerShell) {
+        Remove-Item $docsFolder -Recurse -Force
+    }
+}
