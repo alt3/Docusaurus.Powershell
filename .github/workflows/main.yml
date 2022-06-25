@@ -59,7 +59,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: RequiredModules
-        path: ${{github.workspace}}/RequiredModules.psd1
+        path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - name: Upload PSScriptAnalyzerSettings.psd1
       uses: actions/upload-artifact@v2
@@ -96,7 +96,7 @@ jobs:
     - name: Install-RequiredModules
       uses: PoshCode/Actions/install-requiredmodules@v1
       with:
-        requiredModules-path: ${{github.workspace}}\Dev\RequiredModules.psd1
+        requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - uses: PoshCode/Actions/pester@v1
       with:
