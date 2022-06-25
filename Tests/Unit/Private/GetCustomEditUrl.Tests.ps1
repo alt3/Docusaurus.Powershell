@@ -6,7 +6,7 @@ BeforeDiscovery {
 
 BeforeAll {
     # create dummy markdown file for this test
-    $markdownFilePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'Dummy-PesterCommand.md'
+    $markdownFilePath = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'Dummy-Command.md'
     "Dummy markdown for testing GetCustomEditUrl" | Out-File -FilePath $markdownFilePath
     $markdownFile = Get-Item -Path $markdownFilePath
 
@@ -37,24 +37,45 @@ Describe "Private function GetCustomEditUrl" {
         }
     }
 
-    Context "for non-monolithic modules" {
-        It "Uses markdown file name to generate URL pointing to the correlating .ps1 (function) source file when using -EditUrl ""https://site.com""" {
+    It "Produces the correct URL when passing no trailing slash" {
+        InModuleScope Alt3.Docusaurus.Powershell -Parameters @{MarkdownFile = $markdownFile } {
+            GetCustomEditUrl -Module "DummyModule" -MarkdownFile $markdownFile -EditUrl "https://without.slash.com" |
+            Should -Be "https://without.slash.com/Dummy-Command.ps1"
+        }
+    }
+
+    It "Produces the correct URL when passing a single trailing slash" {
+        InModuleScope Alt3.Docusaurus.Powershell -Parameters @{MarkdownFile = $markdownFile } {
+            GetCustomEditUrl -Module "DummyModule" -MarkdownFile $markdownFile -EditUrl "https://with.slash.com/" |
+            Should -Be "https://with.slash.com/Dummy-Command.ps1"
+        }
+    }
+
+    It "Produces the correct URL when passing multiple trailing slashes" {
+        InModuleScope Alt3.Docusaurus.Powershell -Parameters @{MarkdownFile = $markdownFile } {
+            GetCustomEditUrl -Module "DummyModule" -MarkdownFile $markdownFile -EditUrl "https://with.slashes.com//" |
+            Should -Be "https://with.slashes.com/Dummy-Command.ps1"
+        }
+    }
+
+    Context "when not using -Monolithic" {
+        It "Uses markdown file name to generate URL pointing to the correlating .ps1 (function) source file" {
             InModuleScope Alt3.Docusaurus.Powershell -Parameters @{MarkdownFile = $markdownFile } {
                 GetCustomEditUrl -Module "DummyModule" -MarkdownFile $markdownFile -EditUrl "https://site.com" |
-                Should -Be "https://site.com/Dummy-PesterCommand.ps1"
+                Should -Be "https://site.com/Dummy-Command.ps1"
             }
         }
     }
 
-    Context "for monolithic repos" {
-        It "Uses markdown file name to generate URL pointing to the correlating .psm1 (module) source file when using -EditUrl ""https://site.com"" -Monolithic" {
+    Context "when using -Monolithic" {
+        It "Uses markdown file name to generate URL pointing to the correlating .psm1 (module) source file" {
             InModuleScope Alt3.Docusaurus.Powershell -Parameters @{MarkdownFile = $markdownFile; Module = $module } {
                 GetCustomEditUrl -Module $module -MarkdownFile $markdownFile -EditUrl "https://site.com" -Monolithic |
                 Should -Be "https://site.com/DummyModule.psm1"
             }
         }
 
-        It "Otherwise simply uses the passed module name to generate URL pointing to the correlating .psm1 (module) source file when using -EditUrl ""https://site.com"" -Monolithic" {
+        It "Otherwise simply uses the passed module name to generate URL pointing to the correlating .psm1 (module) source file" {
             InModuleScope Alt3.Docusaurus.Powershell -Parameters @{MarkdownFile = $markdownFile; Module = $module } {
                 GetCustomEditUrl -Module Microsoft.PowerShell.Management -MarkdownFile $markdownFile -EditUrl "https://site.com" -Monolithic |
                 Should -Be "https://site.com/Microsoft.PowerShell.Management.psm1"
