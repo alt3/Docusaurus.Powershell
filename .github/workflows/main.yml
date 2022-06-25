@@ -96,7 +96,7 @@ jobs:
     - name: Install-RequiredModules
       uses: PoshCode/Actions/install-requiredmodules@v1
       with:
-        requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
+        requiredModules-path: ${{github.workspace}}\Dev\RequiredModules.psd1
 
     - uses: PoshCode/Actions/pester@v1
       with:
