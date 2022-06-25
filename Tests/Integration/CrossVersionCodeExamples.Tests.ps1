@@ -10,7 +10,6 @@ BeforeDiscovery {
     }
 }
 
-
 BeforeAll {
     # import the CrossVersionCodeExamples.psm1 test module
     $testModuleName = [regex]::replace([System.IO.Path]::GetFileName($PSCommandPath), '.Tests.ps1', '')

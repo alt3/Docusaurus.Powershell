@@ -13,6 +13,7 @@ module.exports = {
       'installation',
       'usage',
       'contributing',
+      'gallery',
     ],
     'F.A.Q.': [
       'faq/multi-line-examples',

@@ -36,7 +36,7 @@ To run a single Pester tests using the newly built module:
 
 :::tip
 
-Supports the Pester `-Output` parameter for more details.
+Supports the Pester `-Output` parameter for more testing details.
 
 :::
 

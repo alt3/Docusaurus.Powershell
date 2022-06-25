@@ -7,9 +7,9 @@
 #>
 [cmdletbinding()]
 param(
+    [switch]$Test,
     [Parameter(Mandatory = $False)][string]$Path = ".",
-    [Parameter(Mandatory = $False)][ValidateSet("Diagnostic","Detailed","Normal","Minimal","None")][string]$Output = "Normal",
-    [switch]$Test
+    [Parameter(Mandatory = $False)][ValidateSet("Diagnostic","Detailed","Normal","Minimal","None")][string]$Output = "Normal"
 )
 
 # Build new Alt3 module
