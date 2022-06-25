@@ -28,6 +28,9 @@ function GetCustomEditUrl() {
         return "null"
     }
 
+    # removing trailing slashes
+    $EditUrl = $EditUrl.TrimEnd("/")
+
     # point to the function source file for non-monlithic modules
     if (-not $Monolithic) {
         $command = [System.IO.Path]::GetFileNameWithoutExtension($MarkdownFile)
