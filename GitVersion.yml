@@ -1,4 +1,4 @@
-mode: Mainline
+mode: ContinousDelivery
 assembly-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILDCOUNT ?? 0}'
 assembly-informational-format: '{NuGetVersionV2}+Build.{env:BUILDCOUNT ?? 0}.Date.{CommitDate}.Branch.{env:SAFEBRANCHNAME ?? unknown}.Sha.{Sha}'
 major-version-bump-message: '\+?semver:\s?(breaking|major)'
@@ -16,4 +16,3 @@ branches:
     regex: .*?/
     source-branches:
     - main
-    - feature
