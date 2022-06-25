@@ -12,6 +12,7 @@ module.exports = {
       'introduction',
       'installation',
       'usage',
+      'contributing',
     ],
     'F.A.Q.': [
       'faq/multi-line-examples',

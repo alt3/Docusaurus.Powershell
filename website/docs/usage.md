@@ -21,7 +21,7 @@ Add the Docusaurus website skeleton by running:
 npx @docusaurus/init@next init docusaurus classic
 ```
 
-Modify newly created file `docusaurus/sidebars.js`so it looks like this:
+Modify newly created file `docusaurus/sidebars.js` so it looks like this:
 
 ```js
 const commands = require('./docs/commands/docusaurus.sidebar.js');
