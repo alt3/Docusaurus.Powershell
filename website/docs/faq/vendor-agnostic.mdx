@@ -6,9 +6,9 @@ description: If you do not want to use Docusaurus, the Alt.Docusaurus.PowerShell
 
 No matter how much we :heart: Docusaurus, we realize it will not be the right solution for everyone as users might:
 
-- prefer different (non-javascript) languages
-- need to maintain an existing solution
-- simply not like the green lizard
+- Prefer different (non-javascript) languages
+- Need to maintain an existing solution
+- Simply not like the green lizard
 
 ## TL;DR
 
@@ -23,16 +23,16 @@ New-DocusaurusHelp -Module "YourModule" -VendorAgnostic
 By passing the `-VendorAgnostic` switch parameter this module will generate the exact same
 markdown as always but will skip two Docusaurs-specific steps during the process:
 
-1. front matter
+1. Front matter
 2. Docusaurus sidebar file
 
 ### Front Matter
 
 The PlatyPS generated markdown front matter:
 
-- will not be touched
-- will need to updated/replaced (by you) to fit your needs
-- will look similar to the example below
+- Will not be touched
+- Will need to updated/replaced (by you) to fit your needs
+- Will look similar to the example below
 
 ```yml
 ---

@@ -6,8 +6,8 @@ sidebar_label: Multi-Line Examples
 
 PowerShell's Comment Based Help was originally designed for `.EXAMPLE` nodes containing:
 
-- (only) a **single-line command**
-- followed by the command's output and/or a description
+- Only a **single-line** example
+- Followed by the command's output and/or a description
 
 ```
 .EXAMPLE
@@ -75,8 +75,8 @@ it only supports a single use-case as can be seen in this example:
 
 You could consider using PS7 multi-lines instead of Code Fence Detection if:
 
-- you will (only) use PowerShell 7 to generate your documentation
-- your example code does not contain any empty lines
+- You will (only) use PowerShell 7 to generate your documentation
+- Your example code does not contain any empty lines
 
 > Do not use native PS7 multi-lines if you intend to generate/test documentation using other PowerShell versions!
 
@@ -87,9 +87,9 @@ if code fencing is not detected.
 
 This is intentional behavior and is done because:
 
-- it would be impossible to "guess" where the code ends and the description begins
-- we can redirect (and fix) bugs in the right place (PlatyPS repository)
-- it will automatically support the multi-line examples that ships with PowerShell 7
+- It would be impossible to "guess" where the code ends and the description begins
+- We can redirect (and fix) bugs in the right place (PlatyPS repository)
+- It will automatically support the multi-line examples that ships with PowerShell 7
 
 ## Unexpected Results
 
