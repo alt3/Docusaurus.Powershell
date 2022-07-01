@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    DRY helper for test variables used by all tests.
+    DRY helper for logic shared by all tests.
 
     .NOTES
     Every integration test follows the same logic:
@@ -21,4 +21,9 @@ $test = @{
     MdxFile    = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath $TestFolder.Directory.Name |
     Join-Path -ChildPath "commands" |
     Join-Path -ChildPath "Test-$($TestFolder.Directory.Name).mdx"
+}
+
+# unload the Test-Module
+if (Get-Module -Name "TestModule") {
+    Remove-Module -Name "TestModule" -Force -Verbose:$False
 }

@@ -1,9 +1,3 @@
-#Requires -Modules Pester
-<#
-    .SYNOPSIS
-        This test ensures that ALL PowerShell versions render the code examples as expected.
-#>
-
 BeforeDiscovery {
     if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
         throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
@@ -13,12 +7,11 @@ BeforeDiscovery {
 BeforeAll {
     . "$((Get-Item -Path $PSCommandPath).Directory.Parent)/Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
     Import-Module $test.Module -Force -DisableNameChecking -Verbose:$False -Scope Global
-    InModuleScope Alt3.Docusaurus.PowerShell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
-        New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder # generate Docusaurus files in $env:Temp
-    }
 
-    Write-Host "name = $($test.Name)"
-    Write-Host "module = $($test.Module)"
+    # generate and read Docusaurus files in $env:Temp
+    InModuleScope Alt3.Docusaurus.PowerShell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
+        New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder
+    }
 
     $generatedMdx = Get-Content -Path $test.MdxFile
     $expectedMdx = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.mdx")
@@ -27,6 +20,10 @@ BeforeAll {
 Describe "Integration Test to ensure all supported Code Example variants render identically on all PowerShell versions" {
     It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
+    }
+
+    It "Mdx file generated for test should have content" {
+        $generatedMdx | Should -Not -BeNullOrEmpty
     }
 
     It "Mdx file generated for test should not contain CRLF" {
@@ -40,6 +37,6 @@ Describe "Integration Test to ensure all supported Code Example variants render 
 
 AfterAll {
     if (Get-Module Alt3.Docusaurus.PowerShell) {
-        # Remove-Item $test.TempFolder -Recurse -Force
+        Remove-Item $test.TempFolder -Recurse -Force
     }
 }
