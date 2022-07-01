@@ -255,7 +255,7 @@ function New-DocusaurusHelp() {
         ## Continue with general enrichment
         InsertPowerShellMonikers -MarkdownFile $mdxFile
         UnescapeSpecialChars -MarkdownFile $mdxFile
-        SeparateHeaders -MarkdownFile $mdxFile
+        SeparateMarkdownHeadings -MarkdownFile $mdxFile
         InsertFinalNewline -MarkdownFile $mdxFile
     }
 

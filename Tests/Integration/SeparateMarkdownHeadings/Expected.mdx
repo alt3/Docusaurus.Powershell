@@ -1,0 +1,171 @@
+---
+id: Test-SeparateMarkdownHeadings
+title: Test-SeparateMarkdownHeadings
+hide_title: false
+hide_table_of_contents: false
+---
+
+## SYNOPSIS
+
+Dummy module to test PowerShell 7 NATIVE multi-line code examples
+
+## SYNTAX
+
+```powershell
+Test-SeparateMarkdownHeadings
+```
+
+## DESCRIPTION
+
+{{ Fill in the Description }}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+$shouldInsertBlankLine
+```
+
+# MUST MATCH: HEADER1 WITH SINGLE LINE CONTENT
+
+Some h1 text
+
+### EXAMPLE 2
+
+```powershell
+$shouldInsertBlankLine
+```
+
+# MUST MATCH: VALID HEADER1 WITH MULTILINE CONTENT
+
+Allows you to execute parts of a test script within the
+scope of a PowerShell script module.
+
+### EXAMPLE 3
+
+```powershell
+$shouldInsertBlankLine
+```
+
+## MUST MATCH: VALID HEADING 2
+
+But only if there is content beneath it
+
+### EXAMPLE 4
+
+```powershell
+$shouldInsertBlankLine
+```
+
+### MUST MATCH: VALID HEADING 3
+
+But only if there is content beneath it
+
+### EXAMPLE 5
+
+```powershell
+$shouldInsertBlankLine
+```
+
+#### MUST MATCH: VALID HEADING 4
+
+But only if there is content beneath it
+
+### EXAMPLE 6
+
+```powershell
+$shouldInsertBlankLine
+```
+
+##### MUST MATCH: VALID HEADING 5
+
+But only if there is content beneath it
+
+### EXAMPLE 7
+
+```powershell
+$shouldInsertBlankLine
+```
+
+###### MUST MATCH: HEADING 6
+
+But only if there is content beneath it
+
+### EXAMPLE 8
+
+```powershell
+$shouldNotInsertBlankLine
+```
+
+####### SHOULD NOT MATCH: BECAUSE MARKDOWN HEADING 7 DOES NOT EXIST
+Even if there is content beneath it
+
+### EXAMPLE 9
+
+```powershell
+$shouldNotInsertBlankLine
+```
+
+###### SHOULD NOT MATCH: NO CONTENT BENEATH IT
+
+### EXAMPLE 10
+
+```powershell
+$shouldNotInsertBlankLine
+```
+
+```powershell
+    # bug: this should not match as a header
+```
+
+### EXAMPLE 11
+
+```powershell
+$shouldNotInsertBlankLine
+```
+
+```powershell
+# Bug: this should not match as a header
+function PublicFunction
+{
+    # Does something
+}
+
+### EXAMPLE 12
+
+```powershell
+$shouldNotInsertBlankLine
+```
+
+Bug: This should not match as a header
+When used together with Throw, throwing an exception is preferred.
+Default value: $false
+
+### EXAMPLE 13
+
+```powershell
+$shouldNotInsertBlankLine
+```
+
+Bug: this should not match as a header
+required parameter-values.
+This is useful in when tests are generated dynamically
+based on parameter-input.
+This method enables complex test-solutions while being
+able to re-use a lot of test-code.
+
+######################################
+## This ASCII art should not match as a header
+######################################
+But here we go
+
+## PARAMETERS
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS

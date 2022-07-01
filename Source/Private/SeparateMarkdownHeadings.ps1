@@ -1,4 +1,4 @@
-function SeparateHeaders() {
+function SeparateMarkdownHeadings() {
     <#
         .SYNOPSIS
             Adds an empty line after markdown headers IF they are directly followed by an adjacent non-empty lines.

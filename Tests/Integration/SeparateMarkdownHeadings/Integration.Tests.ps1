@@ -2,8 +2,6 @@ BeforeDiscovery {
     if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
         throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
     }
-
-    [bool]$isPS7 = $PSVersionTable.PSVersion.Major -eq 7 # -Skip tests if not on PowerShell 7
 }
 
 BeforeAll {
@@ -20,25 +18,25 @@ BeforeAll {
 }
 
 Describe "Integration Test to ensure PowerShell 7 Native Multi-Line Code Examples render as expected" {
-    It "Mdx file generated for test should exist" -Skip:(-not $isPS7) {
+    It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
     }
 
-    It "Mdx file generated for test should have content" -Skip:(-not $isPS7){
+    It "Mdx file generated for test should have content" {
         $generatedMdx | Should -Not -BeNullOrEmpty
     }
 
-    It "Mdx file generated for test should not contain CRLF" -Skip:(-not $isPS7) {
+    It "Mdx file generated for test should not contain CRLF" {
         (Get-Content -Path $test.MdxFile -Raw) -match "`r`n" | Should -Be $False
     }
 
-    It "Content of generated mdx file is identical to that of expected fixture" -Skip:(-not $isPS7) {
+    It "Content of generated mdx file is identical to that of expected fixture" {
         $generatedMdx | Should -BeExactly $expectedMdx
     }
 }
 
 AfterAll {
     if (Get-Module Alt3.Docusaurus.PowerShell) {
-        Remove-Item $test.TempFolder -Recurse -Force
+#        Remove-Item $test.TempFolder -Recurse -Force
     }
 }
