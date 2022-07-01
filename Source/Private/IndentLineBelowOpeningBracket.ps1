@@ -15,7 +15,7 @@ function IndentLineBelowOpeningBracket() {
 
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
-    Write-Verbose "Removing empty lines above closing curly bracket"
+    Write-Verbose "Removing blank lines above closing curly bracket"
 
     $content = ReadFile -MarkdownFile $MarkdownFile
 

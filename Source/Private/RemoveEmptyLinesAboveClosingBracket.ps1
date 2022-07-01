@@ -1,7 +1,7 @@
 function RemoveEmptyLinesAboveClosingBracket() {
     <#
         .SYNOPSIS
-            Removes empty lines below lines ending with a closing curly bracket.
+            Removes blank lines below lines ending with a closing curly bracket.
 
         .NOTES
             Required so following steps can trust formatting.
@@ -15,7 +15,7 @@ function RemoveEmptyLinesAboveClosingBracket() {
 
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
-    Write-Verbose "Removing empty lines above closing curly bracket"
+    Write-Verbose "Removing blank lines above closing curly bracket"
 
     $content = ReadFile -MarkdownFile $MarkdownFile
 

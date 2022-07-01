@@ -1,7 +1,7 @@
 function SeparateMarkdownHeadings() {
     <#
         .SYNOPSIS
-            Adds an empty line after markdown headers IF they are directly followed by an adjacent non-empty lines.
+            Adds a blank line after markdown headers IF they are directly followed by an adjacent non-blank lines.
 
         .NOTES
             This ensures the markdown format will match with e.g. Prettier which in turn will
@@ -17,7 +17,7 @@ function SeparateMarkdownHeadings() {
 
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
-    Write-Verbose "Inserting empty line beneath non-separated headers."
+    Write-Verbose "Inserting blank line beneath non-separated headers."
 
     $content = ReadFile -MarkdownFile $MarkdownFile
 

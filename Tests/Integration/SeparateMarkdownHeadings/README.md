@@ -2,8 +2,8 @@
 
 This test ensures:
 
-- That only valid markdown headings (with no empty line beneath them) are processed
-- That an empty line is inserted beneath the heading if needed
+- That only valid markdown headings (with no blank line beneath them) are processed
+- That a blank line is inserted beneath the heading if needed
 
 Additional information:
 
