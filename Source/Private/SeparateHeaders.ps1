@@ -9,7 +9,7 @@ function SeparateHeaders() {
             > CTRL+SHIFT+P > Format Document.
 
         .LINK
-            https://regex101.com/r/0WRcIM/1
+            https://regex101.com/r/a3VWhU/1
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
@@ -21,7 +21,7 @@ function SeparateHeaders() {
 
     $content = ReadFile -MarkdownFile $MarkdownFile
 
-    $regex = [regex]::new('(?m)^\n([^\n]#*\s.+)\n([^\s].+)')
+    $regex = [regex]::new('(?m)^\n^([#]#{0,5}[a-z]*\s.+)\n(.+)')
 
     $content = $content -replace $regex, "`n`$1`n`n`$2"
 
