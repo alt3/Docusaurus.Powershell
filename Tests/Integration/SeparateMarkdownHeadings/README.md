@@ -1,9 +1,9 @@
 # SeparateMarkdownHeadings
 
-This test ensures:
+This test ensures that this function:
 
-- That only valid markdown headings (with no blank line beneath them) are processed
-- That a blank line is inserted beneath the heading if needed
+- Only matches valid markdown headings (and thus with no blank line beneath them)
+- Inserts a blank line beneath those heading matches
 
 Additional information:
 
