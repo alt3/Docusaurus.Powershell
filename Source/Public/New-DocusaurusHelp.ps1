@@ -247,8 +247,8 @@ function New-DocusaurusHelp() {
         }
 
         # Post-fix complex multiline code examples (https://github.com/pester/Pester/issues/2195)
-        RemoveEmptyLinesBelowOpeningBracket -MarkdownFile $mdxFile
-        RemoveEmptyLinesAboveClosingBracket -MarkdownFile $mdxFile
+        RemoveBlankLinesBelowOpeningBracket -MarkdownFile $mdxFile
+        RemoveBlankLinesAboveClosingBracket -MarkdownFile $mdxFile
         IndentLineBelowOpeningBracket -MarkdownFile $mdxFile
         IndentLineWithOpeningBracket -MarkdownFile $mdxFile
 
