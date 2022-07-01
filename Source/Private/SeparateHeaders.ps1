@@ -9,7 +9,7 @@ function SeparateHeaders() {
             > CTRL+SHIFT+P > Format Document.
 
         .LINK
-            https://regex101.com/r/a3VWhU/1
+            https://regex101.com/r/llYF0H/1
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
