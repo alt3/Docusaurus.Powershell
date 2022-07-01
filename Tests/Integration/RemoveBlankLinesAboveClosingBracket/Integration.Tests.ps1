@@ -34,9 +34,3 @@ Describe "Integration Test to ensure all supported Code Example variants render 
         $generatedMdx | Should -BeExactly $expectedMdx
     }
 }
-
-AfterAll {
-    if (Get-Module Alt3.Docusaurus.PowerShell) {
-#        Remove-Item $test.TempFolder -Recurse -Force
-    }
-}

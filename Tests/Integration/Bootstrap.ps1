@@ -27,3 +27,8 @@ $test = @{
 if (Get-Module -Name "TestModule") {
     Remove-Module -Name "TestModule" -Force -Verbose:$False
 }
+
+# remove any previous folders in $env:Temp
+if ((Get-Module Alt3.Docusaurus.PowerShell) -and (Test-Path -Path $test.TempFolder)) {
+    Remove-Item $test.TempFolder -Recurse -Force
+}
