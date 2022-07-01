@@ -246,9 +246,16 @@ function New-DocusaurusHelp() {
             InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $AppendMarkdown -Mode "Append"
         }
 
+        # Post-fix complex multiline code examples (https://github.com/pester/Pester/issues/2195)
+        RemoveEmptyLinesBelowOpeningBracket -MarkdownFile $mdxFile
+        RemoveEmptyLinesAboveClosingBracket -MarkdownFile $mdxFile
+        IndentLineBelowOpeningBracket -MarkdownFile $mdxFile
+        IndentLineWithOpeningBracket -MarkdownFile $mdxFile
+
+        ## Continue with general enrichment
         InsertPowerShellMonikers -MarkdownFile $mdxFile
         UnescapeSpecialChars -MarkdownFile $mdxFile
-        SeparateHeaders -MarkdownFile $mdxFile
+        SeparateMarkdownHeadings -MarkdownFile $mdxFile
         InsertFinalNewline -MarkdownFile $mdxFile
     }
 

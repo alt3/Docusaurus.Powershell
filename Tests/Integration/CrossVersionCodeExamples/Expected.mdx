@@ -209,20 +209,16 @@ Once seen during development where rendering Pester Mock.mdx would lead to this 
 
 ```powershell
 # This test-case is used to ensure that:
-
 # - using hash (#) characters does not break the EXAMPLES extraction regex
 # - hash characters get rendered as expected (in both code and description)
-
 # - regexes that change markdown-headers do not touch anything else
 
 ######################################
-
 ## Even when someone goes all ASCII ##
 ######################################
 
 function PublicFunction {
     # Has a lot of hash characters
-
 }
 
 Export-ModuleMember -Function PublicFunction # comment
@@ -237,7 +233,6 @@ Import-Module MyModule
 and is adjacent multi-line.
 
 ######################################################
-
 ## Another ASCII fan but now inside the description ##
 ######################################################
 
@@ -256,5 +251,3 @@ and is adjacent multi-line.
 ## NOTES
 
 ## RELATED LINKS
-
-[https://github.com/alt3/Docusaurus.PowerShell/issues/14#issuecomment-568552556](https://github.com/alt3/Docusaurus.PowerShell/issues/14#issuecomment-568552556)

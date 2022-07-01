@@ -108,6 +108,7 @@ function ReplaceExamples() {
             Write-Verbose "=> $($header): Non-Adjacent Code Block (PowerShell 7)"
 
             $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
+
             $newExamples += $newExample
             return
         }
