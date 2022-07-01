@@ -1,0 +1,96 @@
+---
+id: Test-IndentLineWithOpeningBracket
+title: Test-IndentLineWithOpeningBracket
+hide_title: false
+hide_table_of_contents: false
+---
+
+## SYNOPSIS
+
+Dummy module to ensure that indentation is fixed correctly (but only for lines that
+are ending with an opening curly bracket AND with first char at position 0).
+
+## SYNTAX
+
+```powershell
+Test-IndentLineWithOpeningBracket
+```
+
+## DESCRIPTION
+
+{{ Fill in the Description }}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+InModuleScope MyModule {
+    Describe 'Alt-3 module should not break this correct indentation' {
+        It 'Tests the Private function' {
+            PrivateFunction | Should -Be $true
+        }
+    }
+}
+```
+
+### EXAMPLE 2
+
+```powershell
+Describe "Alt3-module should not break this correct indentation" {
+    BeforeAll {
+        $$samplePath = "$$([IO.Path]::GetTempPath())/$$([Guid]::NewGuid()).txt"
+        Write-Host $$samplePath
+        1..100 | Set-Content -Path $$samplePath
+    }
+}
+```
+
+### EXAMPLE 3
+
+```powershell
+# Alt-3 module should not break this correct indentation
+function PublicFunction
+{
+    # Does something
+}
+```
+
+### EXAMPLE 4
+
+```powershell
+    It 'Alt3-Module should not break this correct indentation (this line should be untouched because first char not at position 0)'
+        $SomeVar = 123
+        InModuleScope 'MyModule' -Parameters @{ MyVar = $SomeVar } {
+            $MyVar | Should -Be 123
+        }
+    }
+```
+
+### EXAMPLE 5
+
+```powershell
+    It "Alt3-module should fix this incorrect indentation (to match line below)" {
+        @(Get-Content $$samplePath).Count | Should -Be 100
+    }
+```
+
+### EXAMPLE 6
+
+```powershell
+    AfterEach {
+        if (Test-Path $file) {
+            # Alt3-module should fix incorrect indentation of AfterEach
+        }
+    }
+```
+
+## PARAMETERS
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
