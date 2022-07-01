@@ -9,6 +9,8 @@ This test ensures that this function:
 - By comparing indentation of the line below
 - And recalculating indentation if things are amiss
 
+## Why?
+
 Required because PlatyPS sometimes gets things wrong when parsing complex code
 examples like the example below where the line with `It` should have been indented.
 
@@ -40,7 +42,7 @@ examples like the example below where the line with `It` should have been indent
 
 ```
 
-Addtional information:
+## Additional information:
 
 - https://github.com/pester/Pester/issues/2195
 - Link to regex in function [source file](https://github.com/alt3/Docusaurus.PowerShell/blob/main/Source/Private/IndentLineWithOpeningBracket.ps1#L17)
