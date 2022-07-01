@@ -36,9 +36,3 @@ Describe "Integration Test to ensure PowerShell 7 Native Multi-Line Code Example
         $generatedMdx | Should -BeExactly $expectedMdx
     }
 }
-
-AfterAll {
-    if (Get-Module Alt3.Docusaurus.PowerShell) {
-        Remove-Item $test.TempFolder -Recurse -Force
-    }
-}

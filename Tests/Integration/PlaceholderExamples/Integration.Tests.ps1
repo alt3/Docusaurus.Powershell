@@ -46,9 +46,3 @@ Describe "Integration Test for PlatyPS generated placeholder examples" {
         $generatedMdxWithoutPlaceholders | Should -BeExactly $expectedMdxWithoutPlaceholders
     }
 }
-
-AfterAll {
-    if (Get-Module Alt3.Docusaurus.PowerShell) {
-        Remove-Item $test.TempFolder -Recurse -Force
-    }
-}
