@@ -1,13 +1,13 @@
 function RemoveBlankLinesAboveClosingBracket() {
     <#
         .SYNOPSIS
-            Removes blank lines below lines ending with a closing curly bracket.
+            Removes blank lines ABOVE lines ending with a closing curly bracket.
 
         .NOTES
             Required so following steps can trust formatting.
 
         .LINK
-            https://regex101.com/r/y1ofCa/1
+            https://regex101.com/r/jMBHcT/1
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
