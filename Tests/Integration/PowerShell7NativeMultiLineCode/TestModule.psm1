@@ -3,12 +3,6 @@ function Test-PowerShell7NativeMultiLineCode {
         .SYNOPSIS
             Dummy module to test PowerShell 7 NATIVE multi-line code examples
 
-        .LINK
-            https://github.com/PowerShell/platyPS/issues/180#issuecomment-568877700
-
-        .LINK
-            https://github.com/PowerShell/PowerShell/pull/10776
-
         .EXAMPLE
             $exampleType = 'PowerShell 7 multi-line example WITHOUT a description'
                 $respecsIndentation = $True
