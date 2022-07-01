@@ -12,7 +12,7 @@ BeforeDiscovery {
 }
 
 BeforeAll {
-    . "D:\vscodeprojects\Powershell\Alt3.Docusaurus.PowerShell\Tests\Integration\Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
+    . "$((Get-Item -Path $PSCommandPath).Directory.Parent)/Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
     Import-Module $test.Module -Force -DisableNameChecking -Verbose:$False -Scope Global
     InModuleScope Alt3.Docusaurus.PowerShell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
         New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder # generate Docusaurus files in $env:Temp
