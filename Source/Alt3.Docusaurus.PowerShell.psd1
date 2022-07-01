@@ -4,7 +4,7 @@
     RootModule = 'Alt3.Docusaurus.PowerShell.psm1'
 
     # Version number of this module.
-    ModuleVersion = '1.0.29'
+    ModuleVersion = '1.0.30'
 
     # ID used to uniquely identify this module
     GUID = '0a746d8a-f1f1-4064-967a-aad1877b2d63'
