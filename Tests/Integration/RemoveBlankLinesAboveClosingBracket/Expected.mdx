@@ -1,0 +1,80 @@
+---
+id: Test-RemoveBlankLinesAboveClosingBracket
+title: Test-RemoveBlankLinesAboveClosingBracket
+hide_title: false
+hide_table_of_contents: false
+---
+
+## SYNOPSIS
+
+Dummy module to ensure that black lines ABOVE a line ending with
+a closing curly bracket are removed.
+
+## SYNTAX
+
+```powershell
+Test-RemoveBlankLinesAboveClosingBracket
+```
+
+## DESCRIPTION
+
+{{ Fill in the Description }}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+function SomeFunction {
+    Write-Host "Alt3-module should not change this correct example"
+}
+```
+
+### EXAMPLE 2
+
+```powershell
+function SomeFunction {
+    Write-Host "Alt3-module should remove single blank line below"
+}
+```
+
+### EXAMPLE 3
+
+```powershell
+function SomeFunction {
+    Write-Host "Alt3-module should remove single blank lines below"
+}
+```
+
+### EXAMPLE 4
+
+```powershell
+    It "Bug: that was happening with Test Export-Clixml" {
+        Get-ChildItem | Export-Clixml -Path $filePath
+        $dir = Import-Clixml -Path $filePath
+        # Alt3-module should remove single blank line below
+}
+```
+
+### EXAMPLE 5
+
+```powershell
+Describe  {
+    Write-Host "Bug: that was happening with InModuleScope.mdx"
+
+    It "Test Export-CSV" {
+        Get-ChildItem | Export-CSV -Path $filePath -NoTypeInformation
+        $dir = Import-CSV -Path $filePath
+        # Alt3-Module should remove multiple blank lines below
+}
+```
+
+## PARAMETERS
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS

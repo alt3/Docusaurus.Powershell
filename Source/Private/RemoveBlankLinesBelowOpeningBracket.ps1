@@ -7,7 +7,7 @@ function RemoveBlankLinesBelowOpeningBracket() {
             Required so following steps can trust formatting.
 
         .LINK
-            https://regex101.com/r/VsCt2h/1
+            https://regex101.com/r/FAdpGh/1
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile

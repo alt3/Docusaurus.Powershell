@@ -1,7 +1,7 @@
 function Test-RemoveBlankLinesBelowOpeningBracket {
     <#
     .SYNOPSIS
-    Dummy module to ensure that black lines below lines ending with an
+    Dummy module to ensure that blank lines BELOW a line ending with an
     opening curly bracket are removed.
 
     .EXAMPLE
