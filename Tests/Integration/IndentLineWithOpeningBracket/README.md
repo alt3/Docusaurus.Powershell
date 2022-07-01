@@ -3,14 +3,14 @@
 This test ensures that this function:
 
 - Corrects indentation for lines:
-    - that end with an opening curly bracket
-    - that are not yet indented (at all, first char at position 0)
-    - are indented incorrectly
+    - That end with an opening curly bracket
+    - That are not yet indented at all (first char at position 0)
+    - Are indented incorrectly
 - By comparing indentation of the line below
 - And recalculating indentation if things are amiss
 
-Required because PlatyPS sometimes gets things wrong when parsing complex code examples like the one below
-where the line with `It` should have been indented.
+Required because PlatyPS sometimes gets things wrong when parsing complex code
+examples like the example below where the line with `It` should have been indented.
 
 ```txt
     ### EXAMPLE 1
