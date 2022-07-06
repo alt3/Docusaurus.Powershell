@@ -5,7 +5,7 @@ BeforeDiscovery {
 }
 
 BeforeAll {
-    . "$((Get-Item -Path $PSCommandPath).Directory.Parent)/Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
+    . "$((Get-Item -Path $PSCommandPath).Directory.Parent.FullName)/Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
     Import-Module $test.Module -Force -DisableNameChecking -Verbose:$False -Scope Global
 
     # generate and read Docusaurus files in $env:Temp
