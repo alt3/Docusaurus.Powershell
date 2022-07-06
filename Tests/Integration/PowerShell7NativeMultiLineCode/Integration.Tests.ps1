@@ -19,7 +19,7 @@ BeforeAll {
     $expectedMdx = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.mdx")
 }
 
-Describe "Integration Test to ensure PowerShell 7 Native Multi-Line Code Examples render as expected" -Skip:(-not $isPS7) {
+Describe "Integration test to ensure PowerShell 7 Native Multi-Line Code Examples render as expected" -Skip:(-not $isPS7) {
     It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
     }

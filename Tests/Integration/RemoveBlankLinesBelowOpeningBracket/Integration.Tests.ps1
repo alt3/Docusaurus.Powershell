@@ -17,7 +17,7 @@ BeforeAll {
     $expectedMdx = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.mdx")
 }
 
-Describe "Integration Test to ensure all supported Code Example variants render identically on all PowerShell versions" {
+Describe "Integration test to ensure proper removal of blank lines BELOW lines ending with an opening curly bracket" {
     It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
     }

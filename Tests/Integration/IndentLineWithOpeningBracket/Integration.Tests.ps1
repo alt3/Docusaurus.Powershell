@@ -17,7 +17,7 @@ BeforeAll {
     $expectedMdx = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.mdx")
 }
 
-Describe "Integration Test to ensure all supported Code Example variants render identically on all PowerShell versions" {
+Describe "Integration test to ensure that indentation is fixed for lines ending with an opening curly bracket" {
     It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
     }
@@ -30,7 +30,7 @@ Describe "Integration Test to ensure all supported Code Example variants render 
         (Get-Content -Path $test.MdxFile -Raw) -match "`r`n" | Should -Be $False
     }
 
-    It "Content of generated mdx file is identical to that of expected fixture" {
+    It "Content of generated $($test.Name) mdx file is identical to that of expected fixture" {
         $generatedMdx | Should -BeExactly $expectedMdx
     }
 }

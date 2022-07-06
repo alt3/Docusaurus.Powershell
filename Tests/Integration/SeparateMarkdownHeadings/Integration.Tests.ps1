@@ -17,7 +17,7 @@ BeforeAll {
     $expectedMdx = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.mdx")
 }
 
-Describe "Integration Test to ensure PowerShell 7 Native Multi-Line Code Examples render as expected" {
+Describe "Integration test to ensure that blank lines are inserted below Markdown headings as expected" {
     It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
     }

@@ -25,7 +25,7 @@ BeforeAll {
     $expectedMdxWithoutPlaceholders = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.WithoutPlaceholders.mdx")
 }
 
-Describe "Integration Test for PlatyPS generated placeholder examples" {
+Describe "Integration test to ensure PlatyPS placeholder examples render as expected" {
     It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
     }
