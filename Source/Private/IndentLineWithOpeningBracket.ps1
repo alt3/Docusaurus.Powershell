@@ -14,7 +14,7 @@ function IndentLineWithOpeningBracket() {
             - Group 3 contains the leading spaces of the second line
 
         .LINK
-            https://regex101.com/r/mT2jLC/1
+            https://regex101.com/r/WYGbfX/1
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile

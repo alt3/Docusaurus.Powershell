@@ -5,7 +5,7 @@ BeforeDiscovery {
 }
 
 BeforeAll {
-    . "$((Get-Item -Path $PSCommandPath).Directory.Parent)/Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
+    . "$((Get-Item -Path $PSCommandPath).Directory.Parent.FullName)/Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
     Import-Module $test.Module -Force -DisableNameChecking -Verbose:$False -Scope Global
 
     # generate and read Docusaurus files in $env:Temp
@@ -17,7 +17,7 @@ BeforeAll {
     $expectedMdx = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.mdx")
 }
 
-Describe "Integration Test to ensure all supported Code Example variants render identically on all PowerShell versions" {
+Describe "Integration test to ensure proper removal of blank lines BELOW lines ending with an opening curly bracket" {
     It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
     }

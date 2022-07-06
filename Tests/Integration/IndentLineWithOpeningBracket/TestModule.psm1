@@ -37,7 +37,7 @@ function Test-IndentLineWithOpeningBracket {
 
     .EXAMPLE
     ```powershell
-        It 'Alt3-Module should not break this correct indentation (this line should be untouched because first char not at position 0)'
+        It 'Alt3-Module should fix this indentation on PowerShell 5 (first-char will be 0 there) but ignore on Powershell 7 (first-char-not-0)' {
             $SomeVar = 123
             InModuleScope 'MyModule' -Parameters @{ MyVar = $SomeVar } {
                 $MyVar | Should -Be 123

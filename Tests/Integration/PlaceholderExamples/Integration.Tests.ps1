@@ -5,7 +5,7 @@ BeforeDiscovery {
 }
 
 BeforeAll {
-    . "$((Get-Item -Path $PSCommandPath).Directory.Parent)/Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
+    . "$((Get-Item -Path $PSCommandPath).Directory.Parent.FullName)/Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
     Import-Module $test.Module -Force -DisableNameChecking -Verbose:$False -Scope Global
 
     # generate and read default mdx and thus with placeholder examples
@@ -25,7 +25,7 @@ BeforeAll {
     $expectedMdxWithoutPlaceholders = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.WithoutPlaceholders.mdx")
 }
 
-Describe "Integration Test for PlatyPS generated placeholder examples" {
+Describe "Integration test to ensure PlatyPS placeholder examples render as expected" {
     It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
     }
