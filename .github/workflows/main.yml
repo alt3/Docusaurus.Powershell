@@ -11,6 +11,7 @@ env:
   MODULE_NAME: Alt3.Docusaurus.PowerShell
 
 jobs:
+  # compile the module
   build:
     runs-on: windows-latest
     steps:
@@ -67,6 +68,7 @@ jobs:
         name: ScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
 
+  # ensure code formatting
   lint:
     needs: build
     name: Run PSScriptAnalyzer
@@ -82,6 +84,7 @@ jobs:
         repoToken: ${{ secrets.GITHUB_TOKEN }}
         settingsPath: ScriptAnalyzer/PSScriptAnalyzerSettings.psd1
 
+  # run pester tests
   test:
     needs: build
     runs-on: ${{ matrix.os }}
@@ -116,6 +119,7 @@ jobs:
         name: PesterResults
         path: ${{github.workspace}}/*.xml
 
+  # code coverage
   coverage:
     needs: [test]
     name: Code Coverage
@@ -131,6 +135,7 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         verbose: true # optional (default = false)
+        files: ${{ github.workspace }}/PesterResults/coverage.xml, ${{ github.workspace }}/Modules # optional
 
     - name: Create code coverage PR message
       id: jacoco
