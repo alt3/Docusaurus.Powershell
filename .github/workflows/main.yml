@@ -116,6 +116,14 @@ jobs:
         name: Pester Results
         path: ${{github.workspace}}/*.xml
 
+  coverage:
+    needs: test
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Build Output
+      uses: actions/download-artifact@v2
+
     - name: Show Code Coverage in PR
       id: jacoco
       uses: madrapps/jacoco-report@v1.2
