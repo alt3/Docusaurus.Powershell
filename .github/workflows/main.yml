@@ -32,12 +32,12 @@ jobs:
       with:
         useConfigFile: true
 
-    - name: Install-RequiredModules
+    - name: Install required modules
       uses: PoshCode/Actions/install-requiredmodules@v1
       with:
         requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
-    - name: Build Module
+    - name: Build module
       id: build
       uses: PoshCode/actions/build-module@v1
       with:
@@ -81,7 +81,7 @@ jobs:
     - name: Display structure of downloaded artifacts
       run: ls -R
 
-    - name: Invoke-ScriptAnalyzer
+    - name: Run PSScriptAnalyzer
       uses: devblackops/github-action-psscriptanalyzer@master
       with:
         rootPath: Modules/${{env.MODULE_NAME}}
@@ -96,7 +96,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, ubuntu-18.04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
+        os: [windows-latest, ubuntu-18.04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
     steps:
     - name: Download artifacts
       uses: actions/download-artifact@v3
@@ -104,7 +104,7 @@ jobs:
     - name: Display structure of downloaded artifacts
       run: ls -R
 
-    - name: Install-RequiredModules
+    - name: Install required modules
       uses: PoshCode/Actions/install-requiredmodules@v1
       with:
         requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
