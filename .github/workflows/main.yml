@@ -132,12 +132,13 @@ jobs:
       with:
         verbose: true # optional (default = false)
 
-    - name: Show code coverage in PR
+    - name: Create code coverage PR message
       id: jacoco
-      uses: madrapps/jacoco-report@v1.2
+      uses: madrapps/jacoco-report@main
       with:
-        paths: PesterResults, Modules
+        paths: ${{ github.workspace }}/PesterResults/
         token: ${{ secrets.GITHUB_TOKEN }}
+        debug-mode: true
 
   # -----------------------------------------------------------------------------
   # Publishing stage:
