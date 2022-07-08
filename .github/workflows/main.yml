@@ -167,7 +167,7 @@ jobs:
       with:
         reports: ${{ github.workspace }}/PesterResults/coverage.xml # required
         targetdir: 'coveragereport' # REQUIRED # The directory where the generated report should be saved.
-        reporttypes: 'HtmlInline;lcov' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, Html_Dark, Html_Light, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlInline_AzurePipelines_Light, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MarkdownSummary, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
+        reporttypes: 'HtmlInline;Cobertura' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, Html_Dark, Html_Light, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlInline_AzurePipelines_Light, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MarkdownSummary, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
         sourcedirs: ${{github.workspace}}/Modules/${{env.MODULE_NAME}}/${{ steps.gitversion.outputs.MajorMinorPatch }}
         verbosity: 'Info' # The verbosity level of the log messages. Values: Verbose, Info, Warning, Error, Off
         title: '' # Optional title.
@@ -178,11 +178,6 @@ jobs:
         name: CodeCoverage # Artifact name
         path: coveragereport # Directory containing files to upload
 
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: coveragereport/lcov.info
 
     # - name: Create code coverage PR message
     #   id: jacoco
