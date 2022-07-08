@@ -136,7 +136,7 @@ jobs:
       id: jacoco
       uses: madrapps/jacoco-report@main
       with:
-        paths: ${{ github.workspace }}/PesterResults/
+        paths: ${{ github.workspace }}/PesterResults/coverage.xml
         token: ${{ secrets.GITHUB_TOKEN }}
         debug-mode: true
 
