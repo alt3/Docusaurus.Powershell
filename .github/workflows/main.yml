@@ -45,28 +45,28 @@ jobs:
         version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
         destination: ${{github.workspace}}/output
 
-    - name: Upload Modules artifact
+    - name: Upload artifact Modules
       uses: actions/upload-artifact@v2
       with:
         name: Modules
         path: ${{github.workspace}}/output
 
-    - name: Upload PesterTests artifact
+    - name: Upload artifact PesterTests
       uses: actions/upload-artifact@v2
       with:
         name: PesterTests
         path: ${{github.workspace}}/Tests
 
-    - name: Upload RequiredModules artifact
+    - name: Upload artifact RequiredModules
       uses: actions/upload-artifact@v2
       with:
         name: RequiredModules
         path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
-    - name: Upload ScriptAnalyzer artifact
+    - name: Upload artifact PSScriptAnalyzer
       uses: actions/upload-artifact@v2
       with:
-        name: ScriptAnalyzer
+        name: PSScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
 
   # ensure code formatting
@@ -86,7 +86,7 @@ jobs:
       with:
         rootPath: Modules/${{env.MODULE_NAME}}
         repoToken: ${{ secrets.GITHUB_TOKEN }}
-        settingsPath: ScriptAnalyzer/PSScriptAnalyzerSettings.psd1
+        settingsPath: PSScriptAnalyzer/PSScriptAnalyzerSettings.psd1
 
   # run pester tests
   test:
@@ -116,8 +116,9 @@ jobs:
         moduleUnderTest: ${{env.MODULE_NAME}}
         additionalModulePaths: ${{github.workspace}}/Modules
 
-    - name: Upload Test Results artifact
+    - name: Upload artifact PesterResults
       uses: actions/upload-artifact@v2
+      runs-on: windows-latest
       with:
         name: PesterResults
         path: ${{github.workspace}}/*.xml
@@ -156,6 +157,8 @@ jobs:
         files: ${{ github.workspace }}/PesterResults/coverage.xml
         root_dir: ${{github.workspace}}/Modules/${{env.MODULE_NAME}}/${{ steps.gitversion.outputs.MajorMinorPatch }} # sets project root, limit clutter
         verbose: true
+        fail_ci_if_error: true
+        gcov_include: ${{github.workspace}}/Modules/${{env.MODULE_NAME}}/${{ steps.gitversion.outputs.MajorMinorPatch }}
 
     - name: Setup .NET Core # Required to execute ReportGenerator
       uses: actions/setup-dotnet@v1
@@ -181,7 +184,7 @@ jobs:
         #customSettings: '' # Optional custom settings (separated by semicolon). See: https://github.com/danielpalme/ReportGenerator/wiki/Settings.
         #toolpath: 'reportgeneratortool' # Default directory for installing the dotnet tool.
 
-    - name: Upload coverage report artifact
+    - name: Upload artifact CoverageReport
       uses: actions/upload-artifact@v2.2.3
       with:
         name: CoverageReport # Artifact name
