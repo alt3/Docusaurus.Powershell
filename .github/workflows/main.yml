@@ -129,7 +129,6 @@ jobs:
     - name: CodeCov.io
       uses: codecov/codecov-action@v3
       with:
-        files: ./coverage.xml
         verbose: true # optional (default = false)
 
     - name: Show Code Coverage in PR
