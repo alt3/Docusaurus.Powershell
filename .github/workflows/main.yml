@@ -105,16 +105,33 @@ jobs:
         moduleUnderTest: ${{env.MODULE_NAME}}
         additionalModulePaths: ${{github.workspace}}/Modules
 
-    - name: Publish Test Results
+    - name: Publish Test Results artifact
       uses: zyborg/dotnet-tests-report@v1
       with:
         test_results_path: results.xml
 
-    - name: Upload Results
+    - name: Upload Test Results artifact
       uses: actions/upload-artifact@v2
       with:
         name: Pester Results
         path: ${{github.workspace}}/*.xml
+
+  coverage:
+    needs: [test]
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Pester Results
+      uses: actions/download-artifact@v2
+      with:
+        name: Pester Results
+
+    - name: Show Code Coverage in PR
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.2
+      with:
+        paths: coverage.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
 
   # -----------------------------------------------------------------------------
   # Publishing stage:
@@ -128,7 +145,7 @@ jobs:
   publish:
     name: Publish
     runs-on: windows-latest
-    needs: [lint, test]
+    needs: [lint, coverage]
     if: ${{ github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]')}}
 
     steps:
