@@ -126,6 +126,12 @@ jobs:
       with:
         name: Pester Results
 
+    - name: CodeCov.io
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.xml
+        verbose: true # optional (default = false)
+
     - name: Show Code Coverage in PR
       id: jacoco
       uses: madrapps/jacoco-report@v1.2
