@@ -78,7 +78,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v3
 
-    - name: Display structure of downloaded files
+    - name: Display structure of downloaded artifacts
       run: ls -R
 
     - name: Invoke-ScriptAnalyzer
@@ -101,7 +101,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v3
 
-    - name: Display structure of downloaded files
+    - name: Display structure of downloaded artifacts
       run: ls -R
 
     - name: Install-RequiredModules
@@ -139,7 +139,7 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v3
 
-    - name: Display structure of downloaded files
+    - name: Display structure of downloaded artifacts
       run: ls -R
 
     - name: Install GitVersion
