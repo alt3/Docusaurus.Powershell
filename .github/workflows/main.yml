@@ -118,7 +118,7 @@ jobs:
 
     - name: Upload artifact PesterResults
       uses: actions/upload-artifact@v2
-      runs-on: windows-latest
+      if: matrix.os == 'windows-latest'
       with:
         name: PesterResults
         path: ${{github.workspace}}/*.xml
