@@ -121,15 +121,18 @@ jobs:
     name: Code Coverage
     runs-on: ubuntu-latest
     steps:
-    - name: Download Artifacts
+    - name: Download artifacts
       uses: actions/download-artifact@v3
+
+    - name: Display structure of downloaded files
+      run: ls -R
 
     - name: CodeCov.io
       uses: codecov/codecov-action@v3
       with:
         verbose: true # optional (default = false)
 
-    - name: Show Code Coverage in PR
+    - name: Show code coverage in PR
       id: jacoco
       uses: madrapps/jacoco-report@v1.2
       with:
