@@ -116,11 +116,6 @@ jobs:
         moduleUnderTest: ${{env.MODULE_NAME}}
         additionalModulePaths: ${{github.workspace}}/Modules
 
-    - name: Publish Test Results artifact
-      uses: zyborg/dotnet-tests-report@v1
-      with:
-        test_results_path: results.xml
-
     - name: Upload Test Results artifact
       uses: actions/upload-artifact@v2
       with:
