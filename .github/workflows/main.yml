@@ -136,7 +136,7 @@ jobs:
       id: jacoco
       uses: madrapps/jacoco-report@v1.2
       with:
-        paths: ./PesterResults/
+        paths: PesterResults, Modules
         token: ${{ secrets.GITHUB_TOKEN }}
 
   # -----------------------------------------------------------------------------
