@@ -45,25 +45,25 @@ jobs:
         version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
         destination: ${{github.workspace}}/output
 
-    - name: Upload Build Output
+    - name: Upload Modules artifact
       uses: actions/upload-artifact@v2
       with:
         name: Modules
         path: ${{github.workspace}}/output
 
-    - name: Upload Tests
+    - name: Upload PesterTests artifact
       uses: actions/upload-artifact@v2
       with:
         name: PesterTests
         path: ${{github.workspace}}/Tests
 
-    - name: Upload RequiredModules.psd1
+    - name: Upload RequiredModules artifact
       uses: actions/upload-artifact@v2
       with:
         name: RequiredModules
         path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
-    - name: Upload PSScriptAnalyzerSettings.psd1
+    - name: Upload ScriptAnalyzer artifact
       uses: actions/upload-artifact@v2
       with:
         name: ScriptAnalyzer
