@@ -178,6 +178,12 @@ jobs:
         name: CodeCoverage # Artifact name
         path: coveragereport # Directory containing files to upload
 
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: coveragereport/lcov.info
+
     # - name: Create code coverage PR message
     #   id: jacoco
     #   uses: madrapps/jacoco-report@main
