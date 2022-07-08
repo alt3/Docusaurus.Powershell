@@ -90,6 +90,7 @@ jobs:
 
   # run pester tests
   test:
+    name: Pester Tests
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -128,10 +129,13 @@ jobs:
 
   # code coverage
   coverage:
-    needs: [test]
     name: Code Coverage
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
     - name: Download artifacts
       uses: actions/download-artifact@v3
 
