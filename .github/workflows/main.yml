@@ -97,8 +97,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-        - windows-2016 # https://github.com/actions/virtual-environments
-        - windows-2019
+        - windows-2019 # https://github.com/actions/virtual-environments
         - windows-2022
         - ubuntu-18.04
         - ubuntu-20.04
@@ -158,15 +157,6 @@ jobs:
       with:
         useConfigFile: true
 
-    - name: CodeCov.io
-      uses: codecov/codecov-action@v3
-      with:
-        files: ${{ github.workspace }}/PesterResults/coverage.xml
-        root_dir: ${{github.workspace}}/Modules/${{env.MODULE_NAME}}/${{ steps.gitversion.outputs.MajorMinorPatch }} # sets project root, limit clutter
-        verbose: true
-        fail_ci_if_error: true
-        gcov_include: ${{github.workspace}}/Modules/${{env.MODULE_NAME}}/${{ steps.gitversion.outputs.MajorMinorPatch }}
-
     - name: Setup .NET Core # Required to execute ReportGenerator
       uses: actions/setup-dotnet@v1
       with:
@@ -177,24 +167,15 @@ jobs:
       with:
         reports: ${{ github.workspace }}/PesterResults/coverage.xml # required
         targetdir: 'coveragereport' # REQUIRED # The directory where the generated report should be saved.
-        reporttypes: 'HtmlInline;Cobertura' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, Html_Dark, Html_Light, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlInline_AzurePipelines_Light, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MarkdownSummary, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
+        reporttypes: 'HtmlInline;lcov' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, Html_Dark, Html_Light, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlInline_AzurePipelines_Light, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MarkdownSummary, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
         sourcedirs: ${{github.workspace}}/Modules/${{env.MODULE_NAME}}/${{ steps.gitversion.outputs.MajorMinorPatch }}
-        #historydir: '' # Optional directory for storing persistent coverage information. Can be used in future reports to show coverage evolution.
-        #plugins: '' # Optional plugin files for custom reports or custom history storage (separated by semicolon).
-        #assemblyfilters: '+*' # Optional list of assemblies that should be included or excluded in the report. Exclusion filters take precedence over inclusion filters. Wildcards are allowed.
-        #classfilters: '+*' # Optional list of classes that should be included or excluded in the report. Exclusion filters take precedence over inclusion filters. Wildcards are allowed.
-        #filefilters: '+*' # Optional list of files that should be included or excluded in the report. Exclusion filters take precedence over inclusion filters. Wildcards are allowed.
         verbosity: 'Info' # The verbosity level of the log messages. Values: Verbose, Info, Warning, Error, Off
         title: '' # Optional title.
-        #tag: '${{ github.run_number }}_${{ github.run_id }}' # Optional tag or build version.
-        #license: '' # Optional license for PRO version. Get your license here: https://reportgenerator.io/pro
-        #customSettings: '' # Optional custom settings (separated by semicolon). See: https://github.com/danielpalme/ReportGenerator/wiki/Settings.
-        #toolpath: 'reportgeneratortool' # Default directory for installing the dotnet tool.
 
-    - name: Upload artifact CoverageReport
+    - name: Upload artifact CodeCoverage
       uses: actions/upload-artifact@v2.2.3
       with:
-        name: CoverageReport # Artifact name
+        name: CodeCoverage # Artifact name
         path: coveragereport # Directory containing files to upload
 
     # - name: Create code coverage PR message
