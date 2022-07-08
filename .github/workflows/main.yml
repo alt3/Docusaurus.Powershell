@@ -135,7 +135,8 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         verbose: true # optional (default = false)
-        files: ${{ github.workspace }}/PesterResults/coverage.xml, ${{ github.workspace }}/Modules # optional
+        files: ${{ github.workspace }}/PesterResults/coverage.xml  # optional
+        root_dir: ${{ github.workspace }}/Modules # project root
 
     - name: Create code coverage PR message
       id: jacoco
