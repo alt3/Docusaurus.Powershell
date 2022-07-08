@@ -117,7 +117,7 @@ jobs:
         path: ${{github.workspace}}/*.xml
 
   coverage:
-    needs: test
+    needs: [test, lint]
     name: Code Coverage
     runs-on: ubuntu-latest
     steps:
