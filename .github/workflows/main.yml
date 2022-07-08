@@ -72,8 +72,8 @@ jobs:
     name: Run PSScriptAnalyzer
     runs-on: ubuntu-latest
     steps:
-    - name: Download Build Output
-      uses: actions/download-artifact@v2
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
 
     - name: Invoke-ScriptAnalyzer
       uses: devblackops/github-action-psscriptanalyzer@master
@@ -90,8 +90,8 @@ jobs:
       matrix:
         os: [windows-2019, ubuntu-18.04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
     steps:
-    - name: Download Build Output
-      uses: actions/download-artifact@v2
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
 
     - name: Install-RequiredModules
       uses: PoshCode/Actions/install-requiredmodules@v1
@@ -113,7 +113,7 @@ jobs:
     - name: Upload Test Results artifact
       uses: actions/upload-artifact@v2
       with:
-        name: Pester Results
+        name: PesterResults
         path: ${{github.workspace}}/*.xml
 
   coverage:
@@ -121,10 +121,8 @@ jobs:
     name: Code Coverage
     runs-on: ubuntu-latest
     steps:
-    - name: Download Pester Results
-      uses: actions/download-artifact@v2
-      with:
-        name: Pester Results
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
 
     - name: CodeCov.io
       uses: codecov/codecov-action@v3
@@ -135,7 +133,7 @@ jobs:
       id: jacoco
       uses: madrapps/jacoco-report@v1.2
       with:
-        paths: coverage.xml
+        paths: ./PesterResults
         token: ${{ secrets.GITHUB_TOKEN }}
 
   # -----------------------------------------------------------------------------
@@ -170,8 +168,8 @@ jobs:
       with:
         useConfigFile: true
 
-    - name: Download Build Output
-      uses: actions/download-artifact@v2
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
 
     - name: Publish to PSGallery
       uses: ./.github/actions/psgallery-publisher
