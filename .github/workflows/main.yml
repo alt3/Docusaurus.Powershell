@@ -13,6 +13,7 @@ env:
 jobs:
   # compile the module
   build:
+    name: Build Module
     runs-on: windows-latest
     steps:
     - name: Checkout
@@ -70,12 +71,15 @@ jobs:
 
   # ensure code formatting
   lint:
+    name: Linting
     needs: build
-    name: Run PSScriptAnalyzer
     runs-on: ubuntu-latest
     steps:
-    - name: Download Artifacts
+    - name: Download artifacts
       uses: actions/download-artifact@v3
+
+    - name: Display structure of downloaded files
+      run: ls -R
 
     - name: Invoke-ScriptAnalyzer
       uses: devblackops/github-action-psscriptanalyzer@master
@@ -93,8 +97,11 @@ jobs:
       matrix:
         os: [windows-2019, ubuntu-18.04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
     steps:
-    - name: Download Artifacts
+    - name: Download artifacts
       uses: actions/download-artifact@v3
+
+    - name: Display structure of downloaded files
+      run: ls -R
 
     - name: Install-RequiredModules
       uses: PoshCode/Actions/install-requiredmodules@v1
@@ -131,6 +138,17 @@ jobs:
     - name: Display structure of downloaded files
       run: ls -R
 
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: '5.x'
+
+    - name: Execute GitVersion
+      id:   gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+      with:
+        useConfigFile: true
+
     - name: CodeCov.io
       uses: codecov/codecov-action@v3
       with:
@@ -149,7 +167,7 @@ jobs:
         reports: ${{ github.workspace }}/PesterResults/coverage.xml # required
         targetdir: 'coveragereport' # REQUIRED # The directory where the generated report should be saved.
         reporttypes: 'HtmlInline;Cobertura' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, Html_Dark, Html_Light, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlInline_AzurePipelines_Light, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MarkdownSummary, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
-        sourcedirs: ${{github.workspace}}/Modules
+        sourcedirs: ${{github.workspace}}/Modules/${{env.MODULE_NAME}}/${{ steps.gitversion.outputs.MajorMinorPatch }}
         #historydir: '' # Optional directory for storing persistent coverage information. Can be used in future reports to show coverage evolution.
         #plugins: '' # Optional plugin files for custom reports or custom history storage (separated by semicolon).
         #assemblyfilters: '+*' # Optional list of assemblies that should be included or excluded in the report. Exclusion filters take precedence over inclusion filters. Wildcards are allowed.
