@@ -96,7 +96,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2016, windows-2019, windows-latest, ubuntu-18.04, ubuntu-20.04, macos-11, macos-12] # https://github.com/actions/virtual-environments
+        os:
+        - windows-2016 # https://github.com/actions/virtual-environments
+        - windows-2019
+        - windows-2022
+        - ubuntu-18.04
+        - ubuntu-20.04
+        - macos-11
+        - macos-12
     steps:
     - name: Download artifacts
       uses: actions/download-artifact@v3
@@ -118,7 +125,7 @@ jobs:
 
     - name: Upload artifact PesterResults
       uses: actions/upload-artifact@v2
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2022' # only execute on this OS
       with:
         name: PesterResults
         path: ${{github.workspace}}/*.xml
