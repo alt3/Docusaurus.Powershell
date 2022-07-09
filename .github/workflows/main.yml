@@ -129,64 +129,6 @@ jobs:
         name: PesterResults
         path: ${{github.workspace}}/*.xml
 
-  # code coverage
-  coverage:
-    name: Code Coverage
-    needs: [test]
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v3
-
-    - name: Display structure of downloaded artifacts
-      run: ls -R
-
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.7
-      with:
-        versionSpec: '5.x'
-
-    - name: Execute GitVersion
-      id:   gitversion
-      uses: gittools/actions/gitversion/execute@v0.9.7
-      with:
-        useConfigFile: true
-
-    - name: Setup .NET Core # Required to execute ReportGenerator
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.300
-
-    - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.9
-      with:
-        reports: ${{ github.workspace }}/PesterResults/coverage.xml # required
-        targetdir: 'coveragereport' # REQUIRED # The directory where the generated report should be saved.
-        reporttypes: 'HtmlInline;Cobertura' # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, Html_Dark, Html_Light, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlInline_AzurePipelines_Light, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MarkdownSummary, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, Xml, XmlSummary
-        sourcedirs: ${{github.workspace}}/Modules/${{env.MODULE_NAME}}/${{ steps.gitversion.outputs.MajorMinorPatch }}
-        verbosity: 'Info' # The verbosity level of the log messages. Values: Verbose, Info, Warning, Error, Off
-        title: '' # Optional title.
-
-    - name: Upload artifact CodeCoverage
-      uses: actions/upload-artifact@v2.2.3
-      with:
-        name: CodeCoverage # Artifact name
-        path: coveragereport # Directory containing files to upload
-
-
-    # - name: Create code coverage PR message
-    #   id: jacoco
-    #   uses: madrapps/jacoco-report@main
-    #   with:
-    #     paths: ${{ github.workspace }}/PesterResults/coverage.xml
-    #     token: ${{ secrets.GITHUB_TOKEN }}
-    #     debug-mode: true
-
   # -----------------------------------------------------------------------------
   # Publishing stage:
   # - is skipped completely UNLESS on the main branch
@@ -199,7 +141,7 @@ jobs:
   publish:
     name: Publish
     runs-on: windows-latest
-    needs: [lint, coverage]
+    needs: [test, lint]
     if: ${{ github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]')}}
 
     steps:
