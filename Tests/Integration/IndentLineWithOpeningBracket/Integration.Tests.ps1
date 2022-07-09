@@ -30,7 +30,7 @@ Describe "Integration test to ensure that indentation is fixed for lines ending 
         (Get-Content -Path $test.MdxFile -Raw) -match "`r`n" | Should -Be $False
     }
 
-    It "Content of generated $($test.Name) mdx file is identical to that of expected fixture" {
+    It "Content of generated mdx file is identical to that of expected fixture" {
         $generatedMdx | Should -BeExactly $expectedMdx
     }
 }
