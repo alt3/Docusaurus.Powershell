@@ -11,7 +11,9 @@ env:
   MODULE_NAME: Alt3.Docusaurus.PowerShell
 
 jobs:
+  # compile the module
   build:
+    name: Build Module
     runs-on: windows-latest
     steps:
     - name: Checkout
@@ -30,12 +32,12 @@ jobs:
       with:
         useConfigFile: true
 
-    - name: Install-RequiredModules
+    - name: Install required modules
       uses: PoshCode/Actions/install-requiredmodules@v1
       with:
         requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
-    - name: Build Module
+    - name: Build module
       id: build
       uses: PoshCode/actions/build-module@v1
       with:
@@ -43,57 +45,72 @@ jobs:
         version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
         destination: ${{github.workspace}}/output
 
-    - name: Upload Build Output
+    - name: Upload artifact Modules
       uses: actions/upload-artifact@v2
       with:
         name: Modules
         path: ${{github.workspace}}/output
 
-    - name: Upload Tests
+    - name: Upload artifact PesterTests
       uses: actions/upload-artifact@v2
       with:
         name: PesterTests
         path: ${{github.workspace}}/Tests
 
-    - name: Upload RequiredModules.psd1
+    - name: Upload artifact RequiredModules
       uses: actions/upload-artifact@v2
       with:
         name: RequiredModules
         path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
-    - name: Upload PSScriptAnalyzerSettings.psd1
+    - name: Upload artifact PSScriptAnalyzer
       uses: actions/upload-artifact@v2
       with:
-        name: ScriptAnalyzer
+        name: PSScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
 
+  # ensure code formatting
   lint:
+    name: Linting
     needs: build
-    name: Run PSScriptAnalyzer
     runs-on: ubuntu-latest
     steps:
-    - name: Download Build Output
-      uses: actions/download-artifact@v2
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
 
-    - name: Invoke-ScriptAnalyzer
+    - name: Display structure of downloaded artifacts
+      run: ls -R
+
+    - name: Run PSScriptAnalyzer
       uses: devblackops/github-action-psscriptanalyzer@master
       with:
         rootPath: Modules/${{env.MODULE_NAME}}
         repoToken: ${{ secrets.GITHUB_TOKEN }}
-        settingsPath: ScriptAnalyzer/PSScriptAnalyzerSettings.psd1
+        settingsPath: PSScriptAnalyzer/PSScriptAnalyzerSettings.psd1
 
+  # run pester tests
   test:
+    name: Pester Tests
     needs: build
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, ubuntu-18.04, ubuntu-20.04, macOS-10.15, macos-11] # https://github.com/actions/virtual-environments
+        os:
+        - windows-2019 # https://github.com/actions/virtual-environments
+        - windows-2022
+        - ubuntu-18.04
+        - ubuntu-20.04
+        - macos-11
+        - macos-12
     steps:
-    - name: Download Build Output
-      uses: actions/download-artifact@v2
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
 
-    - name: Install-RequiredModules
+    - name: Display structure of downloaded artifacts
+      run: ls -R
+
+    - name: Install required modules
       uses: PoshCode/Actions/install-requiredmodules@v1
       with:
         requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
@@ -105,33 +122,12 @@ jobs:
         moduleUnderTest: ${{env.MODULE_NAME}}
         additionalModulePaths: ${{github.workspace}}/Modules
 
-    - name: Publish Test Results artifact
-      uses: zyborg/dotnet-tests-report@v1
-      with:
-        test_results_path: results.xml
-
-    - name: Upload Test Results artifact
+    - name: Upload artifact PesterResults
       uses: actions/upload-artifact@v2
+      if: matrix.os == 'windows-2022' # only execute on this OS
       with:
-        name: Pester Results
+        name: PesterResults
         path: ${{github.workspace}}/*.xml
-
-  coverage:
-    needs: [test]
-    name: Code Coverage
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download Pester Results
-      uses: actions/download-artifact@v2
-      with:
-        name: Pester Results
-
-    - name: Show Code Coverage in PR
-      id: jacoco
-      uses: madrapps/jacoco-report@v1.2
-      with:
-        paths: coverage.xml
-        token: ${{ secrets.GITHUB_TOKEN }}
 
   # -----------------------------------------------------------------------------
   # Publishing stage:
@@ -145,7 +141,7 @@ jobs:
   publish:
     name: Publish
     runs-on: windows-latest
-    needs: [lint, coverage]
+    needs: [test, lint]
     if: ${{ github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]')}}
 
     steps:
@@ -165,8 +161,8 @@ jobs:
       with:
         useConfigFile: true
 
-    - name: Download Build Output
-      uses: actions/download-artifact@v2
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
 
     - name: Publish to PSGallery
       uses: ./.github/actions/psgallery-publisher
