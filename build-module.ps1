@@ -61,10 +61,6 @@ $configuration.TestResult.Enabled = $true
 $configuration.TestResult.OutputPath = Join-Path -Path "Output" -ChildPath "Pester" | Join-Path -ChildPath "TestResults.xml"
 $configuration.TestResult.OutputFormat = "NUnitXml"
 
-if ($PassThru) {
-    $configuration.Run.PassThru = $true
-}
-
 if ($Coverage) {
     $configuration.CodeCoverage.Enabled = $true
     $configuration.CodeCoverage.Path = $latestModulePath
@@ -73,6 +69,10 @@ if ($Coverage) {
     $configuration.CodeCoverage.OutputFormat = 'JaCoCo'
 
     $configuration.CodeCoverage.CoveragePercentTarget = 80 # minimum threshold needed to pass
+}
+
+if ($PassThru) {
+    $configuration.Run.PassThru = $true
 }
 
 Invoke-Pester -Configuration $configuration
