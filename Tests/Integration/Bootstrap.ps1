@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    DRY helper for logic shared by all tests.
+    DRY helper for logic shared by all integration tests.
 
     .NOTES
     Every integration test follows the same logic:
