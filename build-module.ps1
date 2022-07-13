@@ -52,11 +52,10 @@ if (-not $Test) {
 $configuration = [PesterConfiguration]::Default
 
 $configuration.Run.Path = $Path
+$configuration.Output.Verbosity = $Output
 $configuration.TestResult.Enabled = $true
 $configuration.TestResult.OutputPath = "TestResults.xml"
 $configuration.TestResult.OutputFormat = "NUnitXml"
-
-$configuration.Output.Verbosity = 'Detailed'
 
 if ($Coverage) {
     $configuration.CodeCoverage.Enabled = $true
@@ -71,26 +70,3 @@ if ($Coverage) {
 
 
 Invoke-Pester -Configuration $configuration
-
-return
-
-#Invoke-Pester -Configuration $configuration | Export-CliXMl -Path "pester-object.xml"
-
-#Invoke-Pester -Configuration $configuration | Export-CliXml "pester-object.xml"
-
-#Invoke-Pester -Configuration $configuration | Set-Content -Path "missed.txt"
-#Invoke-Pester -Configuration $configuration # | Convert-CodeCoverage -SourceRoot .\Source
-
-# $res.CodeCoverage
-
-# Write-Host "Next" -BackgroundColor Magenta
-# $res.CodeCoverage.CommandsMissed
-
-
-
-# Convert-LineNumber -SourceFile D:\vscodeprojects\Powershell\Alt3.Docusaurus.PowerShell\Output\Alt3.Docusaurus.PowerShell\1.0.30\Alt3.Docusaurus.PowerShell.psm1 -SourceLineNumber 1189
-
-$res = Invoke-Pester -Configuration $configuration
-$res.CodeCoverage.CommandsMissed #.FilesAnalyzed
-#$res.CodeCoverage.CommandsMissed | Convert-LineNumber -ErrorAction 'Stop' -PassThru #| Out-Null
-
