@@ -3,7 +3,7 @@
     Use this script to rebuild and test the Alt3 module after making code changes.
 
     .NOTES
-    Newly compiled module will be created in the `Output` folder.
+    Newly compiled module and Pester results will be created in the `Output` folder.
 #>
 [cmdletbinding()]
 param(
@@ -23,10 +23,6 @@ param(
     [Parameter()]
     [switch]
     $Coverage,
-
-    [Parameter()]
-    [switch]
-    $ToFile,
 
     [Parameter()]
     [switch]
@@ -61,25 +57,22 @@ $configuration = [PesterConfiguration]::Default
 
 $configuration.Run.Path = $Path
 $configuration.Output.Verbosity = $Output
+$configuration.TestResult.Enabled = $true
+$configuration.TestResult.OutputPath = Join-Path -Path "Output" -ChildPath "Pester" | Join-Path -ChildPath "TestResults.xml"
+$configuration.TestResult.OutputFormat = "NUnitXml"
 
-if ($ToFile) {
-    $configuration.TestResult.Enabled = $true
-    $configuration.TestResult.OutputPath = "TestResults.xml"
-    $configuration.TestResult.OutputFormat = "NUnitXml"
+if ($PassThru) {
+    $configuration.Run.PassThru = $true
 }
 
 if ($Coverage) {
     $configuration.CodeCoverage.Enabled = $true
     $configuration.CodeCoverage.Path = $latestModulePath
     $configuration.CodeCoverage.UseBreakpoints = $false # use new and faster profiler-based coverage
-    $configuration.CodeCoverage.OutputPath = "CodeCoverage.xml"
+    $configuration.CodeCoverage.OutputPath = Join-Path -Path "Output" -ChildPath "Pester" | Join-Path -ChildPath "CodeCoverageResults.xml"
     $configuration.CodeCoverage.OutputFormat = 'JaCoCo'
 
     $configuration.CodeCoverage.CoveragePercentTarget = 80 # minimum threshold needed to pass
-}
-
-if ($Coverage -and $PassThru) {
-    $configuration.Run.PassThru = $true
 }
 
 Invoke-Pester -Configuration $configuration
