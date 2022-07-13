@@ -4,6 +4,18 @@
 
     .NOTES
     Newly compiled module and Pester results will be created in the `Output` folder.
+
+    .PARAMETER Test
+    Runs Pester tests against a freshly built Alt3-module.
+
+    .PARAMETER Path
+    Limit Pester tests by specifiying path to specific test(s).
+
+    .PARAMETER Coverage
+    Runs Pester code coverage.
+
+    .PARAMETER GenerateDocs
+    Generates the Docusaurus files used by the Alt3 command reference website pages.
 #>
 [cmdletbinding()]
 param(
@@ -23,6 +35,10 @@ param(
     [Parameter()]
     [switch]
     $Coverage,
+
+    [Parameter()]
+    [switch]
+    $GenerateDocs,
 
     [Parameter()]
     [switch]
@@ -48,31 +64,71 @@ $latestModulePath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersio
 Import-Module $latestManifestPath -Force -Global
 Get-Module Alt3.Docusaurus.PowerShell
 
-if (-not $Test) {
+# Pester tests and code coverage
+if ($Test) {
+    $configuration = [PesterConfiguration]::Default
+
+    $configuration.Run.Path = $Path
+    $configuration.Output.Verbosity = $Output
+    $configuration.TestResult.Enabled = $true
+    $configuration.TestResult.OutputPath = Join-Path -Path "Output" -ChildPath "Pester" | Join-Path -ChildPath "TestResults.xml"
+    $configuration.TestResult.OutputFormat = "NUnitXml"
+
+    if ($Coverage) {
+        $configuration.CodeCoverage.Enabled = $true
+        $configuration.CodeCoverage.Path = $latestModulePath
+        $configuration.CodeCoverage.UseBreakpoints = $false # use new and faster profiler-based coverage
+        $configuration.CodeCoverage.OutputPath = Join-Path -Path "Output" -ChildPath "Pester" | Join-Path -ChildPath "CodeCoverageResults.xml"
+        $configuration.CodeCoverage.OutputFormat = 'JaCoCo'
+
+        $configuration.CodeCoverage.CoveragePercentTarget = 80 # minimum threshold needed to pass
+    }
+
+    if ($PassThru) {
+        $configuration.Run.PassThru = $true
+    }
+
+    Invoke-Pester -Configuration $configuration
+}
+
+if (-not $GenerateDocs) {
     return
 }
 
-# Still here, run pester
-$configuration = [PesterConfiguration]::Default
+# Generate mdx files used for the Alt3 website
+Write-Host "Generating command reference pages" -ForegroundColor Magenta
 
-$configuration.Run.Path = $Path
-$configuration.Output.Verbosity = $Output
-$configuration.TestResult.Enabled = $true
-$configuration.TestResult.OutputPath = Join-Path -Path "Output" -ChildPath "Pester" | Join-Path -ChildPath "TestResults.xml"
-$configuration.TestResult.OutputFormat = "NUnitXml"
-
-if ($Coverage) {
-    $configuration.CodeCoverage.Enabled = $true
-    $configuration.CodeCoverage.Path = $latestModulePath
-    $configuration.CodeCoverage.UseBreakpoints = $false # use new and faster profiler-based coverage
-    $configuration.CodeCoverage.OutputPath = Join-Path -Path "Output" -ChildPath "Pester" | Join-Path -ChildPath "CodeCoverageResults.xml"
-    $configuration.CodeCoverage.OutputFormat = 'JaCoCo'
-
-    $configuration.CodeCoverage.CoveragePercentTarget = 80 # minimum threshold needed to pass
+$docusaurusOptions = @{
+    Module          = "Alt3.Docusaurus.Powershell"
+    DocsFolder      = "./website/docs"
+    SideBar         = "commands"
+    EditUrl         = "https://github.com/alt3/Docusaurus.PowerShell/edit/main/Source/Public/"
+    Exclude         = @()
+    MetaDescription = 'Help page for the Alt3.Docusaurus.PowerShell "%1" command'
+    MetaKeywords    = @(
+        "Alt3"
+        "PowerShell"
+        "Modules"
+        "Documentation"
+        "Get-Help"
+        "Docusaurus"
+        "Website"
+    )
+    AppendMarkdown  = "## ADDITIONAL INFORMATION`nThis page was auto-generated using the comment based help in Alt3.Docusaurus.PowerShell $($latestModuleVersion)."
 }
 
-if ($PassThru) {
-    $configuration.Run.PassThru = $true
+Push-Location $PSScriptRoot
+Write-Host "[i] Current directory = $(Get-Location)" -ForegroundColor DarkGreen
+
+$outputFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar | Join-Path -ChildPath "*.*"
+Write-Host "[i] Output folder = $outputFolder" -ForegroundColor DarkGreen
+
+if (Test-Path -Path $outputFolder) {
+    Write-Host "[+] Removing mdx files from existing output folder" -ForegroundColor DarkGreen
+    Remove-Item -Path $outputFolder
 }
 
-Invoke-Pester -Configuration $configuration
+Write-Host "[+] Generating new MDX files" -ForegroundColor DarkGreen
+New-DocusaurusHelp @docusaurusOptions
+
+Pop-Location
