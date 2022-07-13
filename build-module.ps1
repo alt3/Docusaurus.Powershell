@@ -3,13 +3,30 @@
     Use this script to rebuild and test the Alt3 module after making code changes.
 
     .NOTES
-    Newly compiled module will be created in the `Output` folder.
+    Newly compiled module and Pester results will be created in the `Output` folder.
 #>
 [cmdletbinding()]
 param(
-    [switch]$Test,
-    [Parameter(Mandatory = $False)][string]$Path = ".",
-    [Parameter(Mandatory = $False)][ValidateSet("Diagnostic","Detailed","Normal","Minimal","None")][string]$Output = "Normal"
+    [Parameter()]
+    [switch]
+    $Test,
+
+    [Parameter(Mandatory = $False)]
+    [string]
+    $Path = ".",
+
+    [Parameter(Mandatory = $False)]
+    [ValidateSet("Diagnostic", "Detailed", "Normal", "Minimal", "None")]
+    [string]
+    $Output = "Normal",
+
+    [Parameter()]
+    [switch]
+    $Coverage,
+
+    [Parameter()]
+    [switch]
+    $PassThru
 )
 
 # Build new Alt3 module
@@ -25,6 +42,7 @@ $latestModuleVersion = (Get-ChildItem -Path $outputFolder -Directory | Sort-Obje
 Write-Output "Importing new module $latestModuleVersion"
 
 $latestManifestPath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.PowerShell.psd1
+$latestModulePath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.PowerShell.psm1
 
 # Import latest module version
 Import-Module $latestManifestPath -Force -Global
@@ -34,5 +52,27 @@ if (-not $Test) {
     return
 }
 
-# Run pester
-Invoke-Pester -Path $Path -Output $Output
+# Still here, run pester
+$configuration = [PesterConfiguration]::Default
+
+$configuration.Run.Path = $Path
+$configuration.Output.Verbosity = $Output
+$configuration.TestResult.Enabled = $true
+$configuration.TestResult.OutputPath = Join-Path -Path "Output" -ChildPath "Pester" | Join-Path -ChildPath "TestResults.xml"
+$configuration.TestResult.OutputFormat = "NUnitXml"
+
+if ($PassThru) {
+    $configuration.Run.PassThru = $true
+}
+
+if ($Coverage) {
+    $configuration.CodeCoverage.Enabled = $true
+    $configuration.CodeCoverage.Path = $latestModulePath
+    $configuration.CodeCoverage.UseBreakpoints = $false # use new and faster profiler-based coverage
+    $configuration.CodeCoverage.OutputPath = Join-Path -Path "Output" -ChildPath "Pester" | Join-Path -ChildPath "CodeCoverageResults.xml"
+    $configuration.CodeCoverage.OutputFormat = 'JaCoCo'
+
+    $configuration.CodeCoverage.CoveragePercentTarget = 80 # minimum threshold needed to pass
+}
+
+Invoke-Pester -Configuration $configuration
