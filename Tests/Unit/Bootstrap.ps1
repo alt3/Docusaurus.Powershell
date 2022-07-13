@@ -5,7 +5,7 @@
     .NOTES
     Every unit test follows the same logic:
     - Imports the Alt-module
-    - Then uses InModuleScope testing of the function (as required for proper code coverage)
+    - Then uses InModuleScope testing of the function (as required for code coverage)
 
     .NOTES
     Each test has a correlating folder in $env:Temp named after the
