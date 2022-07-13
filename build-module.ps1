@@ -22,7 +22,15 @@ param(
 
     [Parameter()]
     [switch]
-    $Coverage
+    $Coverage,
+
+    [Parameter()]
+    [switch]
+    $ToFile,
+
+    [Parameter()]
+    [switch]
+    $PassThru
 )
 
 # Build new Alt3 module
@@ -53,20 +61,25 @@ $configuration = [PesterConfiguration]::Default
 
 $configuration.Run.Path = $Path
 $configuration.Output.Verbosity = $Output
-$configuration.TestResult.Enabled = $true
-$configuration.TestResult.OutputPath = "TestResults.xml"
-$configuration.TestResult.OutputFormat = "NUnitXml"
+
+if ($ToFile) {
+    $configuration.TestResult.Enabled = $true
+    $configuration.TestResult.OutputPath = "TestResults.xml"
+    $configuration.TestResult.OutputFormat = "NUnitXml"
+}
 
 if ($Coverage) {
     $configuration.CodeCoverage.Enabled = $true
-    $configuration.CodeCoverage.UseBreakpoints = $false # use new and faster profiler-based coverage
-    $configuration.CodeCoverage.OutputFormat = 'JaCoCo'
     $configuration.CodeCoverage.Path = $latestModulePath
-    $configuration.CodeCoverage.OutputPath = "CodeCoverageResults.xml"
-    $configuration.CodeCoverage.CoveragePercentTarget = 80 # minimum threshold needed to pass
+    $configuration.CodeCoverage.UseBreakpoints = $false # use new and faster profiler-based coverage
+    $configuration.CodeCoverage.OutputPath = "CodeCoverage.xml"
+    $configuration.CodeCoverage.OutputFormat = 'JaCoCo'
 
-    $configuration.Run.PassThru = $true
+    $configuration.CodeCoverage.CoveragePercentTarget = 80 # minimum threshold needed to pass
 }
 
+if ($Coverage -and $PassThru) {
+    $configuration.Run.PassThru = $true
+}
 
 Invoke-Pester -Configuration $configuration
