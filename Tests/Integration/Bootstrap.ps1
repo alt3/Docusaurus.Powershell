@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-    DRY helper for logic shared by all tests.
+    DRY helper for logic shared by all integration tests.
 
     .NOTES
     Every integration test follows the same logic:
@@ -8,6 +8,10 @@
     - Uses the Alt-module to generate Docusaurus files in $env:Temp
     - Makes sure the generated files exists
     - Compares the generated mdx file to the expected mdx
+
+    .NOTES
+    Each test has a correlating folder in $env:Temp named after the
+    test containing all output produced by the test (if any)
 #>
 param(
     [Parameter(Mandatory = $True)][System.IO.FileInfo]$TestFolder
