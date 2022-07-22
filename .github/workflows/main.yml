@@ -35,7 +35,7 @@ jobs:
     - name: Install required modules
       uses: alt3/install-required-modules-action@main
       with:
-        requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
+        dataFile: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - name: Build module
       id: build
@@ -113,7 +113,7 @@ jobs:
     - name: Install required modules
       uses: alt3/install-required-modules-action@main
       with:
-        requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
+        dataFile: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - uses: PoshCode/Actions/pester@v1
       with:
