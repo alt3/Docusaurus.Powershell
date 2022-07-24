@@ -33,9 +33,9 @@ jobs:
         useConfigFile: true
 
     - name: Install required modules
-      uses: PoshCode/Actions/install-requiredmodules@v1
+      uses: alt3/install-required-modules-action@main
       with:
-        requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
+        dataFile: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - name: Build module
       id: build
@@ -111,9 +111,9 @@ jobs:
       run: ls -R
 
     - name: Install required modules
-      uses: PoshCode/Actions/install-requiredmodules@v1
+      uses: alt3/install-required-modules-action@main
       with:
-        requiredModules-path: ${{github.workspace}}/Dev/RequiredModules.psd1
+        dataFile: ${{github.workspace}}/RequiredModules/RequiredModules.psd1 # downloaded artifact path
 
     - uses: PoshCode/Actions/pester@v1
       with:
