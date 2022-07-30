@@ -6,8 +6,8 @@
 
 # Docusaurus.PowerShell
 
-Documentation websites for PowerShell Modules (with auto-generated Get-Help pages).
+Feature-rich websites for PowerShell Modules.
 
-## Live Demo and Documentation
-
-[https://docusaurus-powershell.netlify.app](https://docusaurus-powershell.netlify.app)
+- [Live Demo](https://docusaurus-powershell.netlify.app)
+- [Documentation](https://docusaurus-powershell.netlify.app/docs/introduction)
+- [Contributing](https://docusaurus-powershell.netlify.app/docs/contributing)

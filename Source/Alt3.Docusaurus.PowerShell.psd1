@@ -20,7 +20,7 @@
 
     # Description of the functionality provided by this module
     Description = '
-Awesome documentation for PowerShell Modules.
+Feature-rich websites for PowerShell Modules.
 
 Live demo at https://docusaurus-powershell.netlify.app/
 '
