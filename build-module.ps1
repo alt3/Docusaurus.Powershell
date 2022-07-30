@@ -66,6 +66,10 @@ Get-Module Alt3.Docusaurus.PowerShell
 
 # Pester tests and code coverage
 if ($Test) {
+    if (-not(Get-Module Pester)) {
+        throw "Required module 'Pester' is not loaded. Run 'Import-Module -Name Pester' first."
+    }
+
     $configuration = [PesterConfiguration]::Default
 
     $configuration.Run.Path = $Path
@@ -89,6 +93,8 @@ if ($Test) {
     }
 
     Invoke-Pester -Configuration $configuration
+
+    Write-Output "Test files created in $(Join-Path -Path "Output" -ChildPath "Pester")"
 }
 
 if (-not $GenerateDocs) {
@@ -96,7 +102,7 @@ if (-not $GenerateDocs) {
 }
 
 # Generate mdx files used for the Alt3 website
-Write-Host "Generating command reference pages" -ForegroundColor Magenta
+Write-Output "Generating command reference pages" -ForegroundColor Magenta
 
 $docusaurusOptions = @{
     Module          = "Alt3.Docusaurus.Powershell"
@@ -118,17 +124,17 @@ $docusaurusOptions = @{
 }
 
 Push-Location $PSScriptRoot
-Write-Host "[i] Current directory = $(Get-Location)" -ForegroundColor DarkGreen
+Write-Ouput "[i] Current directory = $(Get-Location)" -ForegroundColor DarkGreen
 
 $outputFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar | Join-Path -ChildPath "*.*"
-Write-Host "[i] Output folder = $outputFolder" -ForegroundColor DarkGreen
+Write-Output "[i] Output folder = $outputFolder" -ForegroundColor DarkGreen
 
 if (Test-Path -Path $outputFolder) {
-    Write-Host "[+] Removing mdx files from existing output folder" -ForegroundColor DarkGreen
+    Write-Output "[+] Removing mdx files from existing output folder" -ForegroundColor DarkGreen
     Remove-Item -Path $outputFolder
 }
 
-Write-Host "[+] Generating new MDX files" -ForegroundColor DarkGreen
+Write-Output "[+] Generating new MDX files" -ForegroundColor DarkGreen
 New-DocusaurusHelp @docusaurusOptions
 
 Pop-Location
