@@ -124,7 +124,7 @@ $docusaurusOptions = @{
 }
 
 Push-Location $PSScriptRoot
-Write-Ouput "[i] Current directory = $(Get-Location)" -ForegroundColor DarkGreen
+Write-Output "[i] Current directory = $(Get-Location)" -ForegroundColor DarkGreen
 
 $outputFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar | Join-Path -ChildPath "*.*"
 Write-Output "[i] Output folder = $outputFolder" -ForegroundColor DarkGreen
