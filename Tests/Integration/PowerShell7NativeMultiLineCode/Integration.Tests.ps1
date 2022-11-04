@@ -1,5 +1,5 @@
 BeforeDiscovery {
-    if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
+    if (-not(Get-Module Alt3.Docusaurus.Powershell)) {
         throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
     }
 
@@ -11,7 +11,7 @@ BeforeAll {
     Import-Module $test.Module -Force -DisableNameChecking -Verbose:$False -Scope Global
 
     # generate and read Docusaurus files in $env:Temp
-    InModuleScope Alt3.Docusaurus.PowerShell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
+    InModuleScope Alt3.Docusaurus.Powershell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
         New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder
     }
 

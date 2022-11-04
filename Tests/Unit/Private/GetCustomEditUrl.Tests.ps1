@@ -1,5 +1,5 @@
 BeforeDiscovery {
-    if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
+    if (-not(Get-Module Alt3.Docusaurus.Powershell)) {
         throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
     }
 }

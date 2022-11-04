@@ -20,4 +20,4 @@ examples like the example below:
 
 ## Additional information:
 
-- Link to regex in function [source file](https://github.com/alt3/Docusaurus.PowerShell/blob/main/Source/Private/RemoveEmptyLinesBelowOpeningBracket.ps1#L10)
+- Link to regex in function [source file](https://github.com/alt3/Docusaurus.Powershell/blob/main/Source/Private/RemoveEmptyLinesBelowOpeningBracket.ps1#L10)
