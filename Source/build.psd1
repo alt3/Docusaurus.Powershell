@@ -6,7 +6,7 @@
 # -----------------------------------------------------------------------------
 
 @{
-    Path = "Alt3.Docusaurus.PowerShell.psd1"
+    Path = "Alt3.Docusaurus.Powershell.psd1"
     VersionedOutputDirectory = $true
     CopyDirectories = @(
         'en-US'
