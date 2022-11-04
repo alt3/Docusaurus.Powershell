@@ -8,7 +8,7 @@ on:
     - main
 
 env:
-  MODULE_NAME: Alt3.Docusaurus.PowerShell
+  MODULE_NAME: Alt3.Docusaurus.Powershell
 
 jobs:
   # compile the module
