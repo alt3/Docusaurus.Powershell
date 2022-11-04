@@ -186,7 +186,7 @@ function New-DocusaurusHelp() {
     CreateOrCleanFolder -Path $sidebarFolder
 
     # create tempfolder used for generating the PlatyPS files and creating the mdx files
-    $tempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.PowerShell" | Join-Path -ChildPath $moduleName
+    $tempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell" | Join-Path -ChildPath $moduleName
     InitializeTempFolder -Path $tempFolder
 
     # generate PlatyPs markdown files
