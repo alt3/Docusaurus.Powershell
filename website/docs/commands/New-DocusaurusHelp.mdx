@@ -1,7 +1,7 @@
 ---
 id: New-DocusaurusHelp
 title: New-DocusaurusHelp
-description: Help page for the Alt3.Docusaurus.PowerShell "New-DocusaurusHelp" command
+description: Help page for the Alt3.Docusaurus.Powershell "New-DocusaurusHelp" command
 keywords:
   - Alt3
   - PowerShell
@@ -12,7 +12,7 @@ keywords:
   - Website
 hide_title: false
 hide_table_of_contents: false
-custom_edit_url: https://github.com/alt3/Docusaurus.PowerShell/edit/main/Source/Public/New-DocusaurusHelp.ps1
+custom_edit_url: https://github.com/alt3/Docusaurus.Powershell/edit/main/Source/Public/New-DocusaurusHelp.ps1
 ---
 
 ## SYNOPSIS
@@ -41,17 +41,17 @@ Also creates a `sidebar.js` file for simplified integration into the Docusaurus 
 ### EXAMPLE 1
 
 ```powershell
-New-DocusaurusHelp -Module Alt3.Docusaurus.PowerShell
+New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell
 ```
 
 This example uses default settings to generate a Get-Help page for each command exported by
-the Alt3.Docusaurus.PowerShell module.
+the Alt3.Docusaurus.Powershell module.
 
 ### EXAMPLE 2
 
 ```powershell
 $parameters = @{
-    Module = "Alt3.Docusaurus.PowerShell"
+    Module = "Alt3.Docusaurus.Powershell"
     DocsFolder = "D:\my-project\docs"
     Sidebar = "commands"
     Exclude = @(
@@ -363,14 +363,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### System.Object
 
 ## NOTES
-For debugging purposes, Docusaurus.PowerShell creates a local temp folder with:
+For debugging purposes, Docusaurus.Powershell creates a local temp folder with:
 
 - the raw PlatyPS generated `.md` files
-- the Docusaurus.PowerShell enriched `.mdx` files
+- the Docusaurus.Powershell enriched `.mdx` files
 - a `debug.json` file containing detailed module information
 
 ```powershell
-$tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.PowerShell")
+$tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell")
 ```
 
 ## RELATED LINKS
@@ -383,4 +383,4 @@ $tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -Child
 
 ## ADDITIONAL INFORMATION
 
-This page was auto-generated using the comment based help in Alt3.Docusaurus.PowerShell 1.0.30.
+This page was auto-generated using the comment based help in Alt3.Docusaurus.Powershell 1.0.30.

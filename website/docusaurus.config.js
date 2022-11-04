@@ -6,18 +6,18 @@
  */
 
 module.exports = {
-  title: 'Docusaurus.PowerShell',
+  title: 'Docusaurus.Powershell',
   tagline: 'Documentation websites for PowerShell Modules',
   url: 'https://docusaurus-powershell.netlify.app/',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
   organizationName: 'alt3', // Usually your GitHub org/user name.
-  projectName: 'Docusaurus.PowerShell', // Usually your repo name.
+  projectName: 'Docusaurus.Powershell', // Usually your repo name.
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   themeConfig: {
     navbar: {
-      title: 'Docusaurus.PowerShell',
+      title: 'Docusaurus.Powershell',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.svg',
@@ -26,7 +26,7 @@ module.exports = {
         {to: 'docs/introduction', label: 'Docs', position: 'right'},
         {to: 'docs/commands/New-DocusaurusHelp', label: 'Get-Help', position: 'right'},
         {
-          href: 'https://github.com/alt3/Docusaurus.PowerShell',
+          href: 'https://github.com/alt3/Docusaurus.Powershell',
           label: 'GitHub',
           position: 'right',
         },
@@ -75,7 +75,7 @@ module.exports = {
           items: [
             {
               label: 'Github',
-              href: 'https://github.com/alt3/Docusaurus.PowerShell',
+              href: 'https://github.com/alt3/Docusaurus.Powershell',
             },
           ],
         },
@@ -90,7 +90,7 @@ module.exports = {
         docs: {
           path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/alt3/Docusaurus.PowerShell/edit/main/docusaurus',
+          editUrl: 'https://github.com/alt3/Docusaurus.Powershell/edit/main/docusaurus',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
