@@ -50,19 +50,19 @@ Write-Output "Building new module"
 Build-Module -SourcePath .\Source -VersionedOutputDirectory
 
 # Prevent duplicate module versions breaking PlatyPS
-Remove-Module Alt3.Docusaurus.PowerShell -Force -ErrorAction SilentlyContinue
+Remove-Module Alt3.Docusaurus.Powershell -Force -ErrorAction SilentlyContinue
 
 # Determine latest module version
-$outputFolder = ".\Output\Alt3.Docusaurus.PowerShell"
+$outputFolder = ".\Output\Alt3.Docusaurus.Powershell"
 $latestModuleVersion = (Get-ChildItem -Path $outputFolder -Directory | Sort-Object CreationTime | Select-Object -Last 1).Name
 Write-Output "Importing new module $latestModuleVersion"
 
-$latestManifestPath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.PowerShell.psd1
-$latestModulePath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.PowerShell.psm1
+$latestManifestPath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.Powershell.psd1
+$latestModulePath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.Powershell.psm1
 
 # Import latest module version
 Import-Module $latestManifestPath -Force -Global
-Get-Module Alt3.Docusaurus.PowerShell
+Get-Module Alt3.Docusaurus.Powershell
 
 # Pester tests and code coverage
 if ($Test) {
@@ -108,9 +108,9 @@ $docusaurusOptions = @{
     Module          = "Alt3.Docusaurus.Powershell"
     DocsFolder      = "./website/docs"
     SideBar         = "commands"
-    EditUrl         = "https://github.com/alt3/Docusaurus.PowerShell/edit/main/Source/Public/"
+    EditUrl         = "https://github.com/alt3/Docusaurus.Powershell/edit/main/Source/Public/"
     Exclude         = @()
-    MetaDescription = 'Help page for the Alt3.Docusaurus.PowerShell "%1" command'
+    MetaDescription = 'Help page for the Alt3.Docusaurus.Powershell "%1" command'
     MetaKeywords    = @(
         "Alt3"
         "PowerShell"
@@ -120,7 +120,7 @@ $docusaurusOptions = @{
         "Docusaurus"
         "Website"
     )
-    AppendMarkdown  = "## ADDITIONAL INFORMATION`nThis page was auto-generated using the comment based help in Alt3.Docusaurus.PowerShell $($latestModuleVersion)."
+    AppendMarkdown  = "## ADDITIONAL INFORMATION`nThis page was auto-generated using the comment based help in Alt3.Docusaurus.Powershell $($latestModuleVersion)."
 }
 
 Push-Location $PSScriptRoot
