@@ -9,7 +9,7 @@ function ReplaceExamples() {
             See link below for a detailed description of the determination process.
 
         .LINK
-            https://github.com/alt3/Docusaurus.PowerShell/issues/14#issuecomment-568552556
+            https://github.com/alt3/Docusaurus.Powershell/issues/14#issuecomment-568552556
     #>
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "NoPlaceHolderExamples",
         Justification = 'False positive as rule does not scan child scopes')]
@@ -132,14 +132,14 @@ function ReplaceExamples() {
         }
 
         # we should never reach this point
-        Write-Warning "Unsupported code block detected, please file an issue containing the error message below at https://github.com/alt3/Docusaurus.PowerShell/issues"
+        Write-Warning "Unsupported code block detected, please file an issue containing the error message below at https://github.com/alt3/Docusaurus.Powershell/issues"
         Write-Warning $example
     }
 
     # replace EXAMPLES section in content with updated examples
     # https://regex101.com/r/8OEW0w/1/
     $regex = '## EXAMPLES\n[\s\S]+## PARAMETERS'
-    $newExamples = $newExamples.Replace('$', '$$') # Escape $ characters in new examples (https://github.com/alt3/Docusaurus.PowerShell/pull/98)
+    $newExamples = $newExamples.Replace('$', '$$') # Escape $ characters in new examples (https://github.com/alt3/Docusaurus.Powershell/pull/98)
     $replacement = "## EXAMPLES`n`n$($newExamples)## PARAMETERS"
     $content = [regex]::replace($content, $regex, $replacement)
 
