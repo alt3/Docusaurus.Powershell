@@ -1,5 +1,5 @@
 BeforeDiscovery {
-    if (-not(Get-Module Alt3.Docusaurus.PowerShell)) {
+    if (-not(Get-Module Alt3.Docusaurus.Powershell)) {
         throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
     }
 }
@@ -9,7 +9,7 @@ BeforeAll {
     Import-Module $test.Module -Force -DisableNameChecking -Verbose:$False -Scope Global
 
     # generate and read default mdx and thus with placeholder examples
-    InModuleScope Alt3.Docusaurus.PowerShell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
+    InModuleScope Alt3.Docusaurus.Powershell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
         New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder
     }
 
@@ -17,7 +17,7 @@ BeforeAll {
     $expectedMdxWithPlaceholders = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.WithPlaceholders.mdx")
 
     # generate and read mdx using -NoPlaceHolders
-    InModuleScope Alt3.Docusaurus.PowerShell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
+    InModuleScope Alt3.Docusaurus.Powershell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
         New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder -NoPlaceholderExamples
     }
 

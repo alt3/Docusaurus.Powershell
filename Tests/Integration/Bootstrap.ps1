@@ -33,6 +33,6 @@ if (Get-Module -Name "TestModule") {
 }
 
 # remove any previous folders in $env:Temp
-if ((Get-Module Alt3.Docusaurus.PowerShell) -and (Test-Path -Path $test.TempFolder)) {
+if ((Get-Module Alt3.Docusaurus.Powershell) -and (Test-Path -Path $test.TempFolder)) {
     Remove-Item $test.TempFolder -Recurse -Force
 }

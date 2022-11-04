@@ -6,4 +6,4 @@ This test assures:
 
 ## Additional information:
 
-- Logic described at https://github.com/alt3/Docusaurus.PowerShell/issues/14#issuecomment-568552556
+- Logic described at https://github.com/alt3/Docusaurus.Powershell/issues/14#issuecomment-568552556

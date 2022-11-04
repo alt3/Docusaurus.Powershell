@@ -8,4 +8,4 @@ This test ensures that this function:
 ## Additional information:
 
 - [Markdownlint rule MD022](https://github.com/markdownlint/markdownlint/blob/master/docs/RULES.md#md022---headers-should-be-surrounded-by-blank-lines)
-- Link to regex in function [source file](https://github.com/alt3/Docusaurus.PowerShell/blob/main/Source/Private/SeparateMarkdownHeadings.ps1#L12)
+- Link to regex in function [source file](https://github.com/alt3/Docusaurus.Powershell/blob/main/Source/Private/SeparateMarkdownHeadings.ps1#L12)

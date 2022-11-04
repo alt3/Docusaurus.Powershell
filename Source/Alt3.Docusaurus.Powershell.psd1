@@ -1,7 +1,7 @@
 @{
 
     # Script module or binary module file associated with this manifest.
-    RootModule = 'Alt3.Docusaurus.PowerShell.psm1'
+    RootModule = 'Alt3.Docusaurus.Powershell.psm1'
 
     # Version number of this module.
     ModuleVersion = '1.0.30'
@@ -94,10 +94,10 @@ Live demo at https://docusaurus-powershell.netlify.app/
         PSData = @{
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://www.github.com/alt3/Docusaurus.PowerShell'
+            ProjectUri = 'https://www.github.com/alt3/Docusaurus.Powershell'
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/alt3/Docusaurus.PowerShell/blob/main/LICENSE.txt'
+            LicenseUri = 'https://github.com/alt3/Docusaurus.Powershell/blob/main/LICENSE.txt'
 
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags = @(
@@ -112,7 +112,7 @@ Live demo at https://docusaurus-powershell.netlify.app/
             IconUri = ''
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'https://github.com/alt3/Docusaurus.PowerShell/releases'
+            ReleaseNotes = 'https://github.com/alt3/Docusaurus.Powershell/releases'
 
             # As required by the ModuleBuilder Build-Module command
             Prerelease = ''
@@ -122,7 +122,7 @@ Live demo at https://docusaurus-powershell.netlify.app/
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI = 'https://github.com/alt3/Docusaurus.PowerShell/issues'
+    HelpInfoURI = 'https://github.com/alt3/Docusaurus.Powershell/issues'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''

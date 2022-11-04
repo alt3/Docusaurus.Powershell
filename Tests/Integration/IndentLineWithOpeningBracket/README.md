@@ -45,4 +45,4 @@ examples like the example below where the line with `It` should have been indent
 ## Additional information:
 
 - https://github.com/pester/Pester/issues/2195
-- Link to regex in function [source file](https://github.com/alt3/Docusaurus.PowerShell/blob/main/Source/Private/IndentLineWithOpeningBracket.ps1#L17)
+- Link to regex in function [source file](https://github.com/alt3/Docusaurus.Powershell/blob/main/Source/Private/IndentLineWithOpeningBracket.ps1#L17)

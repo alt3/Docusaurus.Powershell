@@ -8,7 +8,7 @@ on:
     - main
 
 env:
-  MODULE_NAME: Alt3.Docusaurus.PowerShell
+  MODULE_NAME: Alt3.Docusaurus.Powershell
 
 jobs:
   # compile the module
@@ -17,18 +17,18 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.7
+      uses: gittools/actions/gitversion/setup@v0.9.15
       with:
         versionSpec: '5.x'
 
     - name: Execute GitVersion
       id:   gitversion
-      uses: gittools/actions/gitversion/execute@v0.9.7
+      uses: gittools/actions/gitversion/execute@v0.9.15
       with:
         useConfigFile: true
 
@@ -46,25 +46,25 @@ jobs:
         destination: ${{github.workspace}}/output
 
     - name: Upload artifact Modules
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Modules
         path: ${{github.workspace}}/output
 
     - name: Upload artifact PesterTests
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: PesterTests
         path: ${{github.workspace}}/Tests
 
     - name: Upload artifact RequiredModules
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: RequiredModules
         path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - name: Upload artifact PSScriptAnalyzer
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: PSScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
@@ -99,8 +99,8 @@ jobs:
         os:
         - windows-2019 # https://github.com/actions/virtual-environments
         - windows-2022
-        - ubuntu-18.04
         - ubuntu-20.04
+        - ubuntu-22.04
         - macos-11
         - macos-12
     steps:
@@ -123,7 +123,7 @@ jobs:
         additionalModulePaths: ${{github.workspace}}/Modules
 
     - name: Upload artifact PesterResults
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       if: matrix.os == 'windows-2022' # only execute on this OS
       with:
         name: PesterResults
@@ -146,18 +146,18 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.7
+      uses: gittools/actions/gitversion/setup@v0.9.15
       with:
         versionSpec: '5.x'
 
     - name: Execute GitVersion
       id:   gitversion
-      uses: gittools/actions/gitversion/execute@v0.9.7
+      uses: gittools/actions/gitversion/execute@v0.9.15
       with:
         useConfigFile: true
 

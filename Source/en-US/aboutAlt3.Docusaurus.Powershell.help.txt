@@ -1,5 +1,5 @@
 TOPIC
-    about_Alt3.Docusaurus.PowerShell
+    about_Alt3.Docusaurus.Powershell
 
 SHORT DESCRIPTION
     Awesome documentation for PowerShell Modules.
@@ -23,7 +23,7 @@ NOTE
 TROUBLESHOOTING NOTE
 
 SEE ALSO
-  - https://github.com/alt3/Docusaurus.PowerShell
+  - https://github.com/alt3/Docusaurus.Powershell
 
 KEYWORDS
     Documentation, Docusaurus, Help, PowerShell
