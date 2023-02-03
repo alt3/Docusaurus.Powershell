@@ -22,7 +22,7 @@
     Description = '
 Feature-rich websites for PowerShell Modules.
 
-Live demo at https://docusaurus-powershell.netlify.app/
+Live demo at https://docusaurus-powershell.vercel.app/
 '
 
     # Minimum version of the Windows PowerShell engine required by this module

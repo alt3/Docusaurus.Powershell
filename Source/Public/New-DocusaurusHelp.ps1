@@ -124,7 +124,7 @@ function New-DocusaurusHelp() {
             - `docusaurus.sidebar.js` file will not be generated
 
             For more information please
-            [visit this page](https://docusaurus-powershell.netlify.app/docs/faq/vendor-agnostic).
+            [visit this page](https://docusaurus-powershell.vercel.app/docs/faq/vendor-agnostic).
 
         .NOTES
             For debugging purposes, Docusaurus.Powershell creates a local temp folder with:
@@ -138,7 +138,7 @@ function New-DocusaurusHelp() {
             ```
 
         .LINK
-            https://docusaurus-powershell.netlify.app/
+            https://docusaurus-powershell.vercel.app/
 
         .LINK
             https://docusaurus.io/
