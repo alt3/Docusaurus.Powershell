@@ -9,5 +9,5 @@
 Feature-rich websites for PowerShell Modules.
 
 - [Live Demo](https://docusaurus-powershell.netlify.app)
-- [Documentation](https://docusaurus-powershell.netlify.app/docs/introduction)
-- [Contributing](https://docusaurus-powershell.netlify.app/docs/contributing)
+- [Documentation](https://docusaurus-powershell.vercel.app/docs/introduction)
+- [Contributing](https://docusaurus-powershell.vercel.app/docs/contributing)

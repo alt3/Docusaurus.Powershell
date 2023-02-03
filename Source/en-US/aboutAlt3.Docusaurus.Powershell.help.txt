@@ -4,7 +4,7 @@ TOPIC
 SHORT DESCRIPTION
     Awesome documentation for PowerShell Modules.
 
-    Live demo at https://docusaurus-powershell.netlify.app/
+    Live demo at https://docusaurus-powershell.vercel.app/
 
 LONG DESCRIPTION
     The New-DocusaurusHelp cmdlet generates Get-Help documentation in Docusaurus
