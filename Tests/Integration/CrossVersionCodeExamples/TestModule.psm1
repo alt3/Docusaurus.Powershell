@@ -189,5 +189,21 @@ function Test-CrossVersionCodeExamples {
 
         .EXAMPLE
         "Input" | ForEach-Object {Show-Issue97 -Name $_}
+
+        .EXAMPLE
+        ```powershell
+        Write-Output "Here comes a structure of allowed options inside a codeblock"
+        ```
+
+        ```
+        Option 1: A single sentence description.
+        Default value: a good default value.
+
+        Option 2: This is more complex. It contains two sentences.
+        Default value: not as good.
+
+        Option 3: This description should really not be three sentences. I do not see why this should have three. And yet it does.
+        Default value: do not do this.
+        ```
 #>
 }
