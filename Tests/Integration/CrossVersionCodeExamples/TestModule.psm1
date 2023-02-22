@@ -191,9 +191,7 @@ function Test-CrossVersionCodeExamples {
         "Input" | ForEach-Object {Show-Issue97 -Name $_}
 
         .EXAMPLE
-        ```powershell
         Write-Output "Here comes a structure of allowed options inside a codeblock"
-        ```
 
         ```
         Option 1: A single sentence description.
