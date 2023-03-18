@@ -55,7 +55,7 @@ Remove-Module Alt3.Docusaurus.Powershell -Force -ErrorAction SilentlyContinue
 # Determine latest module version
 $outputFolder = ".\Output\Alt3.Docusaurus.Powershell"
 $latestModuleVersion = (Get-ChildItem -Path $outputFolder -Directory | Sort-Object CreationTime | Select-Object -Last 1).Name
-Write-Output "Importing new module $latestModuleVersion"
+Write-Output "Importing newly built module $latestModuleVersion"
 
 $latestManifestPath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.Powershell.psd1
 $latestModulePath = Join-Path -Path $outputFolder -ChildPath $latestModuleVersion | Join-Path -ChildPath Alt3.Docusaurus.Powershell.psm1
@@ -102,7 +102,7 @@ if (-not $GenerateDocs) {
 }
 
 # Generate mdx files used for the Alt3 website
-Write-Output "Generating command reference pages" -ForegroundColor Magenta
+Write-Output "`nGenerating command reference pages"
 
 $docusaurusOptions = @{
     Module          = "Alt3.Docusaurus.Powershell"
@@ -124,17 +124,17 @@ $docusaurusOptions = @{
 }
 
 Push-Location $PSScriptRoot
-Write-Output "[i] Current directory = $(Get-Location)" -ForegroundColor DarkGreen
+Write-Verbose "[i] Current directory = $(Get-Location)"
 
 $outputFolder = Join-Path -Path $docusaurusOptions.DocsFolder -ChildPath $docusaurusOptions.Sidebar | Join-Path -ChildPath "*.*"
-Write-Output "[i] Output folder = $outputFolder" -ForegroundColor DarkGreen
+Write-Verbose "[i] Output folder = $outputFolder"
 
 if (Test-Path -Path $outputFolder) {
-    Write-Output "[+] Removing mdx files from existing output folder" -ForegroundColor DarkGreen
+    Write-Verbose "[+] Removing mdx files from existing output folder"
     Remove-Item -Path $outputFolder
 }
 
-Write-Output "[+] Generating new MDX files" -ForegroundColor DarkGreen
+Write-Verbose "[+] Generating new MDX files"
 New-DocusaurusHelp @docusaurusOptions
 
 Pop-Location
