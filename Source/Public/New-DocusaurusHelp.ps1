@@ -180,6 +180,10 @@ function New-DocusaurusHelp() {
 
     $moduleName = [io.path]::GetFileName($module)
 
+    # get version of this module so we can e.g. add version tag to generated files
+    $alt3Version = Split-Path -Leaf $MyInvocation.MyCommand.ScriptBlock.Module.ModuleBase
+    Write-Verbose "Using Alt3 module version = $($alt3Version)"
+
     # markdown for the module will be copied into the sidebar subfolder
     Write-Verbose "Initializing sidebar folder:"
     $sidebarFolder = Join-Path -Path $DocsFolder -ChildPath $Sidebar
@@ -267,7 +271,7 @@ function New-DocusaurusHelp() {
 
     # generate the `.js` file used for the docusaurus sidebar
     if (-not($VendorAgnostic)) {
-        NewSidebarIncludeFile -MarkdownFiles $mdxFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar
+        NewSidebarIncludeFile -MarkdownFiles $mdxFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar -Alt3Version $alt3Version
     }
 
     # output Get-ChildItem so end-user can post-process generated files as they see fit
