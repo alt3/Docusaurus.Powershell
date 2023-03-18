@@ -20,12 +20,18 @@ param(
 $test = @{
     Name       = $TestFolder.Directory.Name
     Folder     = $TestFolder.Directory
-    Module     = Join-Path -Path $TestFolder.Directory -ChildPath "TestModule.psm1"
-    TempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath $TestFolder.Directory.Name
-    MdxFile    = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath $TestFolder.Directory.Name |
-    Join-Path -ChildPath "commands" |
-    Join-Path -ChildPath "Test-$($TestFolder.Directory.Name).mdx"
+    Module     = Join-Path -Path $TestFolder.Directory -ChildPath "$($TestFolder.Directory.Name).psm1"
+    TempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell" |
+        Join-Path -ChildPath $TestFolder.Directory.Name
+    MdxFile    = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell" |
+        Join-Path -ChildPath $TestFolder.Directory.Name |
+        Join-Path -ChildPath "commands" |
+        Join-Path -ChildPath "Test-$($TestFolder.Directory.Name).mdx"
 }
+
+$settings = Convertto-json $test -Depth 0
+Write-Verbose "Using bootstrap settings:"
+Write-Verbose $settings
 
 # unload the Test-Module
 if (Get-Module -Name "TestModule") {
