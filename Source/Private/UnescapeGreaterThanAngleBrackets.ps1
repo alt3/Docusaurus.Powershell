@@ -1,7 +1,7 @@
-function UnescapeClosingAngleBrackets() {
+function UnescapeGreaterThanAngleBrackets() {
     <#
         .SYNOPSIS
-            Replaces platyPS closing angle/greater-than brackets except Powershell prompts like `C:\>`.
+            Unescapes platyPS generated (&gt;) closing angle brackets except Powershell prompts like `C:\>`.
 
         .LINK
             https://regex101.com/r/T14SYa/1

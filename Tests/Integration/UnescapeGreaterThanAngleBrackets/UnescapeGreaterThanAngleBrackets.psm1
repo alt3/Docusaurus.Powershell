@@ -1,4 +1,4 @@
-function Test-UnescapeClosingAngleBrackets {
+function Test-UnescapeGreaterThanAngleBrackets {
     <#
         .SYNOPSIS
             Dummy module to ensure platyPS escaped `greater-than` angle brackets are unescaped properly.
@@ -19,4 +19,4 @@ function Test-UnescapeClosingAngleBrackets {
             test d:\>
             test d:\> again
     #>
-    }
+}
