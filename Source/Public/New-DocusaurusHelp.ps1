@@ -260,6 +260,7 @@ function New-DocusaurusHelp() {
         InsertPowerShellMonikers -MarkdownFile $mdxFile
         UnescapeSpecialChars -MarkdownFile $mdxFile
         SeparateMarkdownHeadings -MarkdownFile $mdxFile
+        UnescapeClosingAngleBrackets -MarkdownFile $mdxFile
         InsertFinalNewline -MarkdownFile $mdxFile
     }
 
