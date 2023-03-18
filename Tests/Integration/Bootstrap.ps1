@@ -29,10 +29,6 @@ $test = @{
         Join-Path -ChildPath "Test-$($TestFolder.Directory.Name).mdx"
 }
 
-$settings = Convertto-json $test -Depth 0
-Write-Verbose "Using bootstrap settings:"
-Write-Verbose $settings
-
 # unload the Test-Module
 if (Get-Module -Name "TestModule") {
     Remove-Module -Name "TestModule" -Force -Verbose:$False
