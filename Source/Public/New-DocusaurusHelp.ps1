@@ -261,6 +261,7 @@ function New-DocusaurusHelp() {
         UnescapeSpecialChars -MarkdownFile $mdxFile
         SeparateMarkdownHeadings -MarkdownFile $mdxFile
         UnescapeClosingAngleBrackets -MarkdownFile $mdxFile
+        UnescapeLessThanAngleBrackets -MarkdownFile $mdxFile
         InsertFinalNewline -MarkdownFile $mdxFile
     }
 
