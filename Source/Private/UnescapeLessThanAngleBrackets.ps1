@@ -4,7 +4,7 @@ function UnescapeLessThanAngleBrackets() {
             Unescapes platyPS generated (&lt;) opening angle brackets.
 
         .LINK
-            https://regex101.com/r/7kxcCp/1
+            https://regex101.com/r/khoBBE/1
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
@@ -12,7 +12,7 @@ function UnescapeLessThanAngleBrackets() {
 
     $content = ReadFile -MarkdownFile $MarkdownFile
 
-    $content = [regex]::replace($content, '(\\\\\\\<)', '<')
+    $content = [regex]::replace($content, '(\\\\\\\<|\\<)', '<')
 
     # replace file
     WriteFile -MarkdownFile $MarkdownFile -Content $content
