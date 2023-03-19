@@ -5,7 +5,6 @@ function HtmlEncodeLessThanBrackets() {
 
         .LINK
             https://regex101.com/r/khoBBE/1
-            https://regex101.com/r/kXRFii/1 C:\>
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile

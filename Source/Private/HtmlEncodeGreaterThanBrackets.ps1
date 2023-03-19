@@ -24,7 +24,10 @@ function HtmlEncodeGreaterThanBrackets() {
         }
 
         if ($codeblock -eq $False) {
-            $content[$i] = [regex]::replace($line, '\\\>', '&gt;')
+            $line = [regex]::replace($line, '([a-zA-Z]:)\\\>', '$1\\&gt;') # something special for C:\>
+            $line = [regex]::replace($line, '\\\>', '&gt;')
+
+            $content[$i] = $line
         }
 
         if ($codeblock -eq $True) {

@@ -13,7 +13,9 @@ function Test-HtmlEncodeGreaterThanBrackets {
             IMPORTANT: Platy will remove this first-line example code completely if you use a bracket here.
 
             \>
+
             \> should be encoded
+
             \>should be encoded
 
             ```
@@ -22,9 +24,17 @@ function Test-HtmlEncodeGreaterThanBrackets {
             unencoded C:\> again
             ```
 
-            encode\>
-            encode \>
-            encode\>this
+            C:\>
+
+            C:\> encoded with backslash
+
+            encoded C:\> with backslash
+
+            encoded\>
+
+            encoded \>
+
+            encoded\>too
 
             ```
             d:\>
