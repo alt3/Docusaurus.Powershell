@@ -5,6 +5,9 @@ function HtmlEncodeGreaterThanBrackets() {
 
         .LINK
             https://regex101.com/r/T14SYa/1
+
+        .LINK
+            https://regex101.com/r/bI0yGB/1
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
