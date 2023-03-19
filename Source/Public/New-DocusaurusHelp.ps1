@@ -260,8 +260,14 @@ function New-DocusaurusHelp() {
         InsertPowerShellMonikers -MarkdownFile $mdxFile
         UnescapeSpecialChars -MarkdownFile $mdxFile
         SeparateMarkdownHeadings -MarkdownFile $mdxFile
-        UnescapeGreaterThanAngleBrackets -MarkdownFile $mdxFile
-        UnescapeLessThanAngleBrackets -MarkdownFile $mdxFile
+
+        # Line by line changes
+        UnescapeInlineCode -MarkdownFile $mdxFile
+        HtmlEncodeLessThanBrackets -MarkdownFile $mdxFile
+        HtmlEncodeGreaterThanBrackets -MarkdownFile $mdxFile
+
+        # all done, set line endings again
+        SetLfLineEndings -MarkdownFile $mdxFile
         InsertFinalNewline -MarkdownFile $mdxFile
     }
 
