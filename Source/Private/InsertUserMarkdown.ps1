@@ -14,7 +14,7 @@ function InsertUserMarkdown() {
 
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
-    $content = ReadFile -MarkdownFile $MarkdownFile
+    $content = ReadFile -MarkdownFile $MarkdownFile -Raw
 
     # use file content as markdown
     if (Test-Path $Markdown -ErrorAction SilentlyContinue) {

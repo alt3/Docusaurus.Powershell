@@ -17,7 +17,7 @@ function IndentLineBelowOpeningBracket() {
 
     Write-Verbose "Removing blank lines above closing curly bracket"
 
-    $content = ReadFile -MarkdownFile $MarkdownFile
+    $content = ReadFile -MarkdownFile $MarkdownFile -Raw
 
     $regex = [regex]::new('({\n)([^\s+].+)')
 

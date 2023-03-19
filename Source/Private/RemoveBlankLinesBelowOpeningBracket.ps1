@@ -17,7 +17,7 @@ function RemoveBlankLinesBelowOpeningBracket() {
 
     Write-Verbose "Removing blank lines below opening curly bracket"
 
-    $content = ReadFile -MarkdownFile $MarkdownFile
+    $content = ReadFile -MarkdownFile $MarkdownFile -Raw
 
     $regex = [regex]::new('({\n+\n)')
 

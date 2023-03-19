@@ -7,7 +7,7 @@ function SetLfLineEndings() {
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
     )
 
-    $content = ReadFile -MarkdownFile $MarkdownFile
+    $content = ReadFile -MarkdownFile $MarkdownFile -Raw
 
     $content = ($content -replace "`r`n", "`n") + "`n"
 

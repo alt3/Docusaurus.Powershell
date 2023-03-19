@@ -7,7 +7,7 @@ function InsertFinalNewline() {
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
     )
 
-    $content = ReadFile -MarkdownFile $MarkdownFile
+    $content = ReadFile -MarkdownFile $MarkdownFile -Raw
 
     # replace file
     WriteFile -MarkdownFile $MarkdownFile -Content ($content + "`n")
