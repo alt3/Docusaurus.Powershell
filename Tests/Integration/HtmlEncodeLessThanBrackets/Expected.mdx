@@ -1,18 +1,18 @@
 ---
-id: Test-UnescapeLessThanAngleBrackets
-title: Test-UnescapeLessThanAngleBrackets
+id: Test-HtmlEncodeLessThanBrackets
+title: Test-HtmlEncodeLessThanBrackets
 hide_title: false
 hide_table_of_contents: false
 ---
 
 ## SYNOPSIS
 
-Dummy module to ensure platyPS `&lt;` opening angle brackets are unescaped properly.
+Dummy module to ensure proper html encoding of platyPS escaped opening '&lt;' angle brackets (except inside code blocks).
 
 ## SYNTAX
 
 ```powershell
-Test-UnescapeLessThanAngleBrackets [[-Dummy] <String>] [<CommonParameters>]
+Test-HtmlEncodeLessThanBrackets [[-Dummy] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,21 +24,35 @@ Test-UnescapeLessThanAngleBrackets [[-Dummy] <String>] [<CommonParameters>]
 ### EXAMPLE 1
 
 ```powershell
-The Dummy parameter description and all lines below should be unescaped.
+IMPORTANT: Platy will remove this first-line example code completely if you use a bracket here.
 ```
 
+&lt;
+&lt;test should be encoded
+&lt; test should be encode
+
+```
 <
-<test
-< test
-test <
-test < again
+<unencoded
+< unencoded
+<unencoded<
+```
+
+encode &lt;
+encode&lt;
+encode&lt;this
+
+```
+unencoded < unencoded
+```
+
+This &lt;example&gt; should also be &lt;encoded&gt;.
 
 ## PARAMETERS
 
 ### -Dummy
 
-Pester code use e.g.
-parameter with the syntax 'Adds numbers <A> and <B>'
+Should encode  parameter with 'numbers &lt;A&gt; and B&gt;'
 
 ```yaml
 Type: String
@@ -61,5 +75,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
+
+Invoke-DummyModule -Configuration &lt;PesterConfiguration&gt; [&lt;CommonParameters&gt;]
 
 ## RELATED LINKS
