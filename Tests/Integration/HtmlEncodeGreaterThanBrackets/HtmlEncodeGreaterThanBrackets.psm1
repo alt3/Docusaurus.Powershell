@@ -1,7 +1,7 @@
 function Test-HtmlEncodeGreaterThanBrackets {
     <#
         .SYNOPSIS
-            Dummy module to ensure proper html encoding of platyPS opening (>) and closing (<) brackets.
+            Dummy module to ensure proper html encoding of platyPS escaped '>' angle brackets (except inside code blocks).
 
         .NOTES
             Invoke-DummyModule -Configuration \<PesterConfiguration\> [\<CommonParameters\>]
@@ -18,8 +18,8 @@ function Test-HtmlEncodeGreaterThanBrackets {
 
             ```
             C:\>
-            test C:\>
-            test C:\> again
+            unencoded C:\>
+            unencoded C:\> again
             ```
 
             encode\>
@@ -28,8 +28,8 @@ function Test-HtmlEncodeGreaterThanBrackets {
 
             ```
             d:\>
-            test d:\>
-            test d:\> again
+            unencoded d:\>
+            unencoded d:\> again
             ```
 
             This <line> should be html encoded.

@@ -7,7 +7,7 @@ hide_table_of_contents: false
 
 ## SYNOPSIS
 
-Dummy module to ensure proper html encoding of platyPS opening (&gt;) and closing (&lt;) brackets.
+Dummy module to ensure proper html encoding of platyPS escaped '&gt;' angle brackets (except inside code blocks).
 
 ## SYNTAX
 
@@ -33,8 +33,8 @@ IMPORTANT: Platy will remove this first-line example code completely if you use 
 
 ```
 C:\>
-test C:\>
-test C:\> again
+unencoded C:\>
+unencoded C:\> again
 ```
 
 encode&gt;
@@ -43,8 +43,8 @@ encode&gt;this
 
 ```
 d:\>
-test d:\>
-test d:\> again
+unencoded d:\>
+unencoded d:\> again
 ```
 
 This &lt;line&gt; should be html encoded.
