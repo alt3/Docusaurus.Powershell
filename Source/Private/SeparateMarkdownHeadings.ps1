@@ -19,7 +19,7 @@ function SeparateMarkdownHeadings() {
 
     Write-Verbose "Inserting blank line beneath non-separated headers."
 
-    $content = ReadFile -MarkdownFile $MarkdownFile
+    $content = ReadFile -MarkdownFile $MarkdownFile -Raw
 
     $regex = [regex]::new('(?m)^\n^([#]#{0,5}[a-z]*\s.+)\n(.+)')
 

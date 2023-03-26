@@ -1,0 +1,72 @@
+---
+id: Test-HtmlEncodeGreaterThanBrackets
+title: Test-HtmlEncodeGreaterThanBrackets
+hide_title: false
+hide_table_of_contents: false
+---
+
+## SYNOPSIS
+
+Dummy module to ensure proper html encoding of platyPS escaped '&gt;' angle brackets (except inside code blocks).
+
+## SYNTAX
+
+```powershell
+Test-HtmlEncodeGreaterThanBrackets
+```
+
+## DESCRIPTION
+
+{{ Fill in the Description }}
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+IMPORTANT: Platy will remove this first-line example code completely if you use a bracket here.
+```
+
+&gt;
+
+&gt; should be encoded
+
+&gt;should be encoded
+
+```
+C:\>
+unencoded C:\>
+unencoded C:\> again
+```
+
+C:\\&gt;
+
+C:\\&gt; encoded with backslash
+
+encoded C:\\&gt; with backslash
+
+encoded&gt;
+
+encoded &gt;
+
+encoded&gt;too
+
+```
+d:\>
+unencoded d:\>
+unencoded d:\> again
+```
+
+This &lt;line&gt; should be html encoded.
+
+## PARAMETERS
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+Invoke-DummyModule -Configuration &lt;PesterConfiguration&gt; [&lt;CommonParameters&gt;]
+
+## RELATED LINKS

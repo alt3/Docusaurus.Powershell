@@ -47,7 +47,7 @@ function ReplaceFrontMatter() {
     $newFrontMatter = ($newFrontMatter| Out-String) -replace "`r`n", "`n"
 
     # replace front matter
-    $content = ReadFile -MarkdownFile $MarkdownFile
+    $content = ReadFile -MarkdownFile $MarkdownFile -Raw
     $regex = "(?sm)^(---)(.+)^(---).$\n"
     $content = $content -replace $regex, $newFrontMatter
 

@@ -11,7 +11,7 @@ function ReplaceHeader1() {
         [switch]$KeepHeader1
     )
 
-    $content = ReadFile -MarkdownFile $MarkdownFile
+    $content = ReadFile -MarkdownFile $MarkdownFile -Raw
 
     $regex = '(---)(\n\n|\n)(# .+)'
 

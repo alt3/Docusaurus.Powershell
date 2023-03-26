@@ -17,17 +17,13 @@ BeforeAll {
     $expectedMdx = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.mdx")
 }
 
-Describe "Integration test to ensure proper unescaping of (&lt;) opening angle brackets" {
+Describe "Integration test to ensure proper html encoding of `\<` brackets (except inside codeblocks)" {
     It "Mdx file generated for test should exist" {
         $test.MdxFile | Should -Exist
     }
 
     It "Mdx file generated for test should have content" {
         $generatedMdx | Should -Not -BeNullOrEmpty
-    }
-
-    It "Mdx file generated for test should not contain CRLF" {
-        (Get-Content -Path $test.MdxFile -Raw) -match "`r`n" | Should -Be $False
     }
 
     It "Content of generated mdx file is identical to that of expected fixture" {

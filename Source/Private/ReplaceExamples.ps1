@@ -20,7 +20,7 @@ function ReplaceExamples() {
 
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
-    $content = ReadFile -MarkdownFile $MarkdownFile
+    $content = ReadFile -MarkdownFile $MarkdownFile -Raw
     [string]$newExamples = ""
 
     # ---------------------------------------------------------------------
