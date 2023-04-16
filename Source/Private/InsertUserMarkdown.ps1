@@ -17,7 +17,7 @@ function InsertUserMarkdown() {
     $content = ReadFile -MarkdownFile $MarkdownFile -Raw
 
     # use file content as markdown
-    if (Test-Path $Markdown -ErrorAction SilentlyContinue) {
+    if ( $(try { Test-Path $Markdown.Trim() } catch { $false }) ) {
         $Markdown = Get-Content -Path $Markdown -Raw
     }
 

@@ -8,7 +8,7 @@ function UnescapeInlineCode() {
             file content. This means we have no way to support `\>` inside inline code.
 
         .LINK
-            https://regex101.com/r/kBl7v8/1
+            https://regex101.com/r/80DpiH/1
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile

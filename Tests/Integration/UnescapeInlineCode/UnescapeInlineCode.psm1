@@ -39,6 +39,11 @@ function Test-UnescapeInlineCode {
             With leading text `<inlinecode1>` and `<inlinecode2>` with trailing text
 
             `<inlinecode1>` `<inlinecode2>` `<inlinecode3>` `<inlinecode4>`
+
+            `<inlinecode1><inlinecode2>`
+            `<inlinecode1> <inlinecode2> trailing`
+            `leading <inlinecode1> <inlinecode2>`
+            `boxed <inlinecode1> <inlinecode2> boxed`
     #>
     [CmdletBinding()]
     param(
