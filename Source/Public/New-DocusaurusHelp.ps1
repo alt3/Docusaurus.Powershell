@@ -126,6 +126,11 @@ function New-DocusaurusHelp() {
             For more information please
             [visit this page](https://docusaurus-powershell.vercel.app/docs/faq/vendor-agnostic).
 
+        .PARAMETER GroupByVerb
+            Use this switch parameter to group your documentation into folders for each PowerShell approved verb.
+
+            If used, when the sidebar folder is cleaned it will be cleaned assuming it has the verb subfolder structure.
+
         .NOTES
             For debugging purposes, Docusaurus.Powershell creates a local temp folder with:
 
@@ -149,8 +154,8 @@ function New-DocusaurusHelp() {
     [cmdletbinding()]
     param(
         [Parameter(Mandatory = $True)][string]$Module,
-        [Parameter(Mandatory = $False)][string]$DocsFolder = "docusaurus/docs",
-        [Parameter(Mandatory = $False)][string]$Sidebar = "commands",
+        [Parameter(Mandatory = $False)][string]$DocsFolder = 'docusaurus/docs',
+        [Parameter(Mandatory = $False)][string]$Sidebar = 'commands',
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
         [Parameter(Mandatory = $False)][string]$EditUrl,
         [Parameter(Mandatory = $False)][string]$MetaDescription,
@@ -162,7 +167,8 @@ function New-DocusaurusHelp() {
         [switch]$HideTableOfContents,
         [switch]$NoPlaceHolderExamples,
         [switch]$Monolithic,
-        [switch]$VendorAgnostic
+        [switch]$VendorAgnostic,
+        [switch]$GroupByVerb
     )
 
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
@@ -185,35 +191,39 @@ function New-DocusaurusHelp() {
     Write-Verbose "Using Alt3 module version = $($alt3Version)"
 
     # markdown for the module will be copied into the sidebar subfolder
-    Write-Verbose "Initializing sidebar folder:"
+    Write-Verbose 'Initializing sidebar folder:'
     $sidebarFolder = Join-Path -Path $DocsFolder -ChildPath $Sidebar
-    CreateOrCleanFolder -Path $sidebarFolder
+    if ($GroupByVerb) {
+        CreateOrCleanFolder -Path $sidebarFolder -GroupByVerb
+    } else {
+        CreateOrCleanFolder -Path $sidebarFolder
+    }
 
     # create tempfolder used for generating the PlatyPS files and creating the mdx files
-    $tempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell" | Join-Path -ChildPath $moduleName
+    $tempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath 'Alt3.Docusaurus.Powershell' | Join-Path -ChildPath $moduleName
     InitializeTempFolder -Path $tempFolder
 
     # generate PlatyPs markdown files
-    Write-Verbose "Generating PlatyPS files."
+    Write-Verbose 'Generating PlatyPS files.'
     New-MarkdownHelp -Module $Module -OutputFolder $tempFolder -Force | Out-Null
 
     # remove files matching excluded commands
-    Write-Verbose "Removing excluded files:"
+    Write-Verbose 'Removing excluded files:'
     $Exclude | ForEach-Object {
         RemoveFile -Path (Join-Path -Path $tempFolder -ChildPath "$($_).md")
     }
 
     # rename PlatyPS files and create an `.mdx` copy we will transform
-    Write-Verbose "Cloning PlatyPS files."
+    Write-Verbose 'Cloning PlatyPS files.'
     Get-ChildItem -Path $tempFolder -Filter *.md | ForEach-Object {
         $platyPsFile = $_.FullName -replace '\.md$', '.PlatyPS.md'
         $mdxFile = $_.FullName -replace '\.md$', '.mdx'
         Move-Item -Path $_.FullName -Destination $platyPsFile
-        Copy-Item  -Path $platyPsFile -Destination $mdxFile
+        Copy-Item -Path $platyPsFile -Destination $mdxFile
     }
 
     # update all remaining mdx files to make them Docusaurus compatible
-    Write-Verbose "Updating mdx files."
+    Write-Verbose 'Updating mdx files.'
     $mdxFiles = Get-ChildItem -Path $tempFolder -Filter *.mdx
 
     ForEach ($mdxFile in $mdxFiles) {
@@ -223,11 +233,11 @@ function New-DocusaurusHelp() {
         $customEditUrl = GetCustomEditUrl -Module $Module -MarkdownFile $mdxFile -EditUrl $EditUrl -Monolithic:$Monolithic
 
         $frontMatterArgs = @{
-            MarkdownFile = $mdxFile
-            MetaDescription = $metaDescription
-            CustomEditUrl = $customEditUrl
-            MetaKeywords = $metaKeywords
-            HideTitle = $HideTitle
+            MarkdownFile        = $mdxFile
+            MetaDescription     = $metaDescription
+            CustomEditUrl       = $customEditUrl
+            MetaKeywords        = $metaKeywords
+            HideTitle           = $HideTitle
             HideTableOfContents = $HideTableOfContents
         }
 
@@ -241,13 +251,13 @@ function New-DocusaurusHelp() {
         ReplaceHeader1 -MarkdownFile $mdxFile -KeepHeader1:$KeepHeader1
 
         if ($PrependMarkdown) {
-            InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $PrependMarkdown -Mode "Prepend"
+            InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $PrependMarkdown -Mode 'Prepend'
         }
 
         ReplaceExamples -MarkdownFile $mdxFile -NoPlaceholderExamples:$NoPlaceholderExamples
 
         if ($AppendMarkdown) {
-            InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $AppendMarkdown -Mode "Append"
+            InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $AppendMarkdown -Mode 'Append'
         }
 
         # Post-fix complex multiline code examples (https://github.com/pester/Pester/issues/2195)
@@ -272,14 +282,43 @@ function New-DocusaurusHelp() {
     }
 
     # copy updated mdx files to the target folder
-    Write-Verbose "Copying mdx files to sidebar folder."
-    Get-ChildItem -Path $tempFolder -Filter *.mdx | ForEach-Object {
-        Copy-Item  -Path $_.FullName -Destination (Join-Path -Path $sidebarFolder -ChildPath ($_.Name))
-    }
-
-    # generate the `.js` file used for the docusaurus sidebar
-    if (-not($VendorAgnostic)) {
-        NewSidebarIncludeFile -MarkdownFiles $mdxFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar -Alt3Version $alt3Version
+    Write-Verbose 'Copying mdx files to sidebar folder.'
+    $updatedMDXFiles = Get-ChildItem -Path $tempFolder -Filter *.mdx
+    if ($GroupByVerb) {
+        $processedMDXFiles = [System.Collections.Generic.List[System.IO.FileInfo]]::new()
+        $verbs = Get-Verb
+        foreach ($verb in $verbs.Verb) {
+            Write-Verbose "Processing verb $verb"
+            $filteredMDXFiles = [System.Collections.Generic.List[System.IO.FileInfo]]::new()
+            $updatedMDXFiles | Where-Object { $_.Name.StartsWith($verb) } | ForEach-Object { $filteredMDXFiles.Add($_) }
+            if ($filteredMDXFiles.Count -gt 0) {
+                Write-Verbose "Found $($filteredMDXFiles.Count) files for verb $verb"
+                foreach ($filteredMDXFile in $filteredMDXFiles) {
+                    Write-Verbose "Processing file $($filteredMDXFile.Name)"
+                    $subfolderPath = Join-Path -Path $sidebarFolder -ChildPath $verb
+                    if (-not(Test-Path -Path $subfolderPath)) {
+                        New-Item -Path $subfolderPath -ItemType Directory | Out-Null
+                    }
+                    $OutputFile = Join-Path -Path $subfolderPath -ChildPath $filteredMDXFile.Name
+                    Copy-Item -Path $filteredMDXFile.FullName -Destination $OutputFile
+                    $processedMDXFiles.Add($OutputFile)
+                }
+            } else {
+                Write-Verbose "Found 0 files for verb $verb"
+            }
+        }
+        # generate the `.js` file used for the docusaurus sidebar
+        if (-not($VendorAgnostic)) {
+            NewSidebarIncludeFile -MarkdownFiles $processedMDXFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar -Alt3Version $alt3Version -GroupByVerb
+        }
+    } else {
+        foreach ($updatedMDXFile in $updatedMDXFiles) {
+            Copy-Item -Path $updatedMDXFile.FullName -Destination (Join-Path -Path $sidebarFolder -ChildPath ($updatedMDXFile.Name))
+        }
+        # generate the `.js` file used for the docusaurus sidebar
+        if (-not($VendorAgnostic)) {
+            NewSidebarIncludeFile -MarkdownFiles $mdxFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar -Alt3Version $alt3Version
+        }
     }
 
     # output Get-ChildItem so end-user can post-process generated files as they see fit
