@@ -21,7 +21,10 @@ function CreateOrCleanFolder() {
     # otherwise remove it's contents
     Write-Verbose "=> cleaning folder $($Path)"
     if ($GroupByVerb) {
-        Remove-Item -Path (Join-Path -Path $Path -ChildPath */*.*)
+        # remove all files except the category files, start with verb subfolders
+        Remove-Item -Path (Join-Path -Path $Path -ChildPath */*.*) -Exclude @('_category_.yaml', '_category_.json')
+        # now remove all files in the root folder except the category files
+        Remove-Item -Path (Join-Path -Path $Path -ChildPath *.*) -Exclude @('_category_.yaml', '_category_.json')
     } else {
         Remove-Item -Path (Join-Path -Path $Path -ChildPath *.*)
     }

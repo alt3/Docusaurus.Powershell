@@ -309,18 +309,18 @@ function New-DocusaurusHelp() {
         }
         # generate the `.js` file used for the docusaurus sidebar
         if (-not($VendorAgnostic)) {
-            NewSidebarIncludeFile -MarkdownFiles $processedMDXFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar -Alt3Version $alt3Version -GroupByVerb
+            NewSidebarIncludeFile -MarkdownFiles $processedMDXFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar -Alt3Version $alt3Version -GroupByVerb -UsedVerbs $usedVerbs
+        } else {
+            foreach ($updatedMDXFile in $updatedMDXFiles) {
+                Copy-Item -Path $updatedMDXFile.FullName -Destination (Join-Path -Path $sidebarFolder -ChildPath ($updatedMDXFile.Name))
+            }
+            # generate the `.js` file used for the docusaurus sidebar
+            if (-not($VendorAgnostic)) {
+                NewSidebarIncludeFile -MarkdownFiles $mdxFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar -Alt3Version $alt3Version
+            }
         }
-    } else {
-        foreach ($updatedMDXFile in $updatedMDXFiles) {
-            Copy-Item -Path $updatedMDXFile.FullName -Destination (Join-Path -Path $sidebarFolder -ChildPath ($updatedMDXFile.Name))
-        }
-        # generate the `.js` file used for the docusaurus sidebar
-        if (-not($VendorAgnostic)) {
-            NewSidebarIncludeFile -MarkdownFiles $mdxFiles -TempFolder $tempFolder -OutputFolder $sidebarFolder -Sidebar $Sidebar -Alt3Version $alt3Version
-        }
-    }
 
-    # output Get-ChildItem so end-user can post-process generated files as they see fit
-    Get-ChildItem -Path $sidebarFolder
+        # output Get-ChildItem so end-user can post-process generated files as they see fit
+        Get-ChildItem -Path $sidebarFolder
+    }
 }
