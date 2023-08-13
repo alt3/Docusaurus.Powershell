@@ -265,6 +265,8 @@ function New-DocusaurusHelp() {
         UnescapeInlineCode -MarkdownFile $mdxFile
         HtmlEncodeLessThanBrackets -MarkdownFile $mdxFile
         HtmlEncodeGreaterThanBrackets -MarkdownFile $mdxFile
+        EscapeOpeningCurlyBrackets -MarkdownFile $mdxFile
+        EscapeClosingCurlyBrackets -MarkdownFile $mdxFile
 
         # all done, set line endings again
         SetLfLineEndings -MarkdownFile $mdxFile
