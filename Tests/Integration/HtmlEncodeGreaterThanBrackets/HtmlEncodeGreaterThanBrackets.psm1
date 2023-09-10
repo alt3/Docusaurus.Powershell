@@ -1,3 +1,5 @@
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
+param()
 function Test-HtmlEncodeGreaterThanBrackets {
     <#
         .SYNOPSIS
