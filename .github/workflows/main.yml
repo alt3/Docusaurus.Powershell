@@ -72,7 +72,7 @@ jobs:
   # enforce code quality
   lint:
     name: PSScriptAnalyzer
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     steps:
     - name: Checkout sources
@@ -83,16 +83,27 @@ jobs:
     - name: Display folder structure
       run: ls -R
 
-    - name: Run PSScriptAnalyzer
-      id:   analyze
-      uses: microsoft/psscriptanalyzer-action@v1.0
-      with:
-        path: .\
-        settings: .\PSScriptAnalyzerSettings.psd1
-        severity: '"Error", "Warning"'
-        recurse: true
-        enableExit: true
-        output: results.sarif
+    -name : Run PSScriptAnalyzer
+     id: analyze
+     shell: pwsh
+     run: |
+       $fails = Invoke-ScriptAnalyzer . -Recurse | Select-Object -Property RuleName, Severity, ScriptPath, Line, Column
+       if (-not $fails) {
+        exit 0
+       }
+       $fails
+       exit $fails.count
+
+
+    # - name: Run PSScriptAnalyzer
+    #   id:   analyze
+    #   uses: microsoft/psscriptanalyzer-action@v1.0
+    #   with:
+    #     path: .\
+    #     settings: .\PSScriptAnalyzerSettings.psd1
+    #     recurse: true
+    #     enableExit: true
+    #     output: results.sarif
 
     # - name: List PSSscriptAnalyzer errors
     #   if: failure() && steps.analyze.outcome == 'failure'
