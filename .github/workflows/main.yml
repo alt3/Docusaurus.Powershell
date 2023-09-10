@@ -88,8 +88,10 @@ jobs:
       with:
         path: .\
         settings: .\PSScriptAnalyzerSettings.psd1
+        ignorePattern: 'Alt3' # do not scan the compiled module
         recurse: true
         enableExit: true
+        output: results.sarif
 
   # run pester tests
   test:
