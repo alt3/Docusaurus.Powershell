@@ -1,4 +1,4 @@
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "")]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Scope = "Function")]
 param()
 
 function Test-HtmlEncodeLessThanBrackets {
