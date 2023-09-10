@@ -1,3 +1,6 @@
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns", "", Scope = "Function")]
+param()
+
 function Test-SeparateMarkdownHeadings {
     <#
         .SYNOPSIS
