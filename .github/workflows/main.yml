@@ -94,7 +94,7 @@ jobs:
         output: results.sarif
 
     - name: List failing code
-      if: steps.lint.outcome == 'error'
+      if: steps.lint.outcome != 'success'
       run: cat results.sarif
 
   # run pester tests
