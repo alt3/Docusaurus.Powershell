@@ -69,24 +69,29 @@ jobs:
         name: PSScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
 
-  # ensure code formatting
+  # enforce code quality
   lint:
-    name: Linting
+    name: PSScriptAnalyzer
     needs: build
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout sources
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
     - name: Download artifacts
       uses: actions/download-artifact@v3
 
-    - name: Display structure of downloaded artifacts
+    - name: Display folder structure
       run: ls -R
 
     - name: Run PSScriptAnalyzer
-      uses: devblackops/github-action-psscriptanalyzer@master
-      with:
-        rootPath: Modules/${{env.MODULE_NAME}}
-        repoToken: ${{ secrets.GITHUB_TOKEN }}
-        settingsPath: PSScriptAnalyzer/PSScriptAnalyzerSettings.psd1
+        uses: microsoft/psscriptanalyzer-action@v1.0
+        with:
+            path: .\ # sources from git repo
+            recurse: true
+            settings: PSScriptAnalyzer/PSScriptAnalyzerSettings.psd1 # settings from artifacts
 
   # run pester tests
   test:
