@@ -87,7 +87,7 @@ jobs:
       with:
         path: .\
         recurse: true
-        settings: PSScriptAnalyzer/PSScriptAnalyzerSettings.psd1
+        settings: .\PSScriptAnalyzerSettings.psd1
 
   # run pester tests
   test:
