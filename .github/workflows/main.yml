@@ -95,28 +95,6 @@ jobs:
         Write-Output "PSScriptAnalyzer failed with $($fails.count) errors"
         exit 1
 
-    # - name: Run PSScriptAnalyzer
-    #   id:   analyze
-    #   uses: microsoft/psscriptanalyzer-action@v1.0
-    #   with:
-    #     path: .\
-    #     settings: .\PSScriptAnalyzerSettings.psd1
-    #     recurse: true
-    #     enableExit: true
-    #     output: results.sarif
-
-    # - name: List PSSscriptAnalyzer errors
-    #   if: failure() && steps.analyze.outcome == 'failure'
-    #   shell: pwsh
-    #   run: Get-Content .\output.sarif | ConvertFrom-Json | ConvertTo-Json -Depth 100
-
-    # - name: Run PSScriptAnalyzer
-    #   uses: devblackops/github-action-psscriptanalyzer@master
-    #   with:
-    #     rootPath: ./
-    #     repoToken: ${{ secrets.GITHUB_TOKEN }}
-    #     settingsPath: ./PSScriptAnalyzerSettings.psd1
-
   # run pester tests
   test:
     name: Pester Tests
