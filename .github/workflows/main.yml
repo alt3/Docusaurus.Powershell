@@ -96,7 +96,8 @@ jobs:
 
     - name: List failing code
       if: failure() && steps.analyze.outcome == 'failure'
-      run: cat results.sarif
+      shell: pwsh
+      run: Get-Content .\output.sarif | ConvertFrom-Json | ConvertTo-Json -depth 100
 
   # run pester tests
   test:
