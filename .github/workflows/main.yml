@@ -87,12 +87,12 @@ jobs:
       id: analyze
       shell: pwsh
       run: |
-        $fails = Invoke-ScriptAnalyzer -Settings ./PSScriptAnalyzerSettings.psd1 -Path . -Recurse | Select-Object -Property RuleName, Severity, ScriptPath, Line, Column
-        if (-not $fails) {
+        $result = Invoke-ScriptAnalyzer -Settings ./PSScriptAnalyzerSettings.psd1 -Path . -Recurse | Select-Object -Property RuleName, Severity, ScriptPath, Line, Column
+        if (-not $result) {
           exit 0
         }
-        $fails
-        Write-Output "PSScriptAnalyzer failed with $($fails.count) errors"
+        $result
+        Write-Output "PSScriptAnalyzer failed with $($result.count) errors"
         exit 1
 
   # run pester tests
