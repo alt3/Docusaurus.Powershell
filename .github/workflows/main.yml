@@ -83,11 +83,11 @@ jobs:
       run: ls -R
 
     - name: Run PSScriptAnalyzer
-        uses: microsoft/psscriptanalyzer-action@v1.0
-        with:
-          path: .\
-          recurse: true
-          settings: PSScriptAnalyzer/PSScriptAnalyzerSettings.psd1
+      uses: microsoft/psscriptanalyzer-action@v1.0
+      with:
+        path: .\
+        recurse: true
+        settings: PSScriptAnalyzer/PSScriptAnalyzerSettings.psd1
 
   # run pester tests
   test:
