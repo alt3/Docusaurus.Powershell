@@ -69,30 +69,37 @@ jobs:
         name: PSScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
 
-  # ensure code formatting
+  # enforce code quality
   lint:
-    name: Linting
+    name: PSScriptAnalyzer
+    runs-on: windows-latest
     needs: build
-    runs-on: ubuntu-latest
     steps:
-    - name: Download artifacts
-      uses: actions/download-artifact@v3
+    - name: Checkout sources
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
-    - name: Display structure of downloaded artifacts
+    - name: Display folder structure
       run: ls -R
 
-    - name: Run PSScriptAnalyzer
-      uses: devblackops/github-action-psscriptanalyzer@master
-      with:
-        rootPath: Modules/${{env.MODULE_NAME}}
-        repoToken: ${{ secrets.GITHUB_TOKEN }}
-        settingsPath: PSScriptAnalyzer/PSScriptAnalyzerSettings.psd1
+    - name : Run PSScriptAnalyzer
+      id: analyze
+      shell: pwsh
+      run: |
+        $result = Invoke-ScriptAnalyzer -Settings ./PSScriptAnalyzerSettings.psd1 -Path . -Recurse | Select-Object -Property RuleName, Severity, ScriptPath, Line, Column
+        if (-not $result) {
+          exit 0
+        }
+        $result
+        Write-Output "PSScriptAnalyzer failed with $($result.count) errors"
+        exit 1
 
   # run pester tests
   test:
     name: Pester Tests
-    needs: build
     runs-on: ${{ matrix.os }}
+    needs: build
     strategy:
       fail-fast: false
       matrix:

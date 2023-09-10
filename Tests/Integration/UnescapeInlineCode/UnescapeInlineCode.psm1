@@ -50,4 +50,6 @@ function Test-UnescapeInlineCode {
         [Parameter(Mandatory = $false)]
         [string] $Dummy
     )
+
+    Write-Output $Dummy
 }

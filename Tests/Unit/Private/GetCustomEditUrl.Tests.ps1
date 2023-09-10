@@ -7,7 +7,10 @@ BeforeDiscovery {
 BeforeAll {
     . "$((Get-Item -Path $PSCommandPath).Directory.Parent.FullName)/Bootstrap.ps1" -TestFolder (Get-Item -Path $PSCommandPath)
 
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $DummyMarkdownFile = New-Item -Path (Join-Path $test.TempFolder -ChildPath "Get-DummyCommand.md") -Force
+
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $DummyModuleFile = New-Item -Path (Join-Path $test.TempFolder -ChildPath "DummyModule.md") -Force
 }
 

@@ -3,6 +3,7 @@ BeforeDiscovery {
         throw "Required module 'Alt3.Docusaurus.Powershell' is not loaded."
     }
 
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     [bool]$isPS7 = $PSVersionTable.PSVersion.Major -eq 7 # -Skip tests if not on PowerShell 7
 }
 
@@ -15,7 +16,10 @@ BeforeAll {
         New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder
     }
 
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $generatedMdx = Get-Content -Path $test.MdxFile
+
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $expectedMdx = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.mdx")
 }
 

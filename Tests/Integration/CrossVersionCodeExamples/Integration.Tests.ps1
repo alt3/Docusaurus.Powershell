@@ -13,7 +13,10 @@ BeforeAll {
         New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder
     }
 
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $generatedMdx = Get-Content -Path $test.MdxFile
+
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $expectedMdx = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.mdx")
 }
 
