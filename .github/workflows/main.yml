@@ -93,6 +93,10 @@ jobs:
         enableExit: true
         output: results.sarif
 
+    - name: List failing code
+      if: steps.lint.outcome == 'error'
+      run: cat results.sarif
+
   # run pester tests
   test:
     name: Pester Tests
