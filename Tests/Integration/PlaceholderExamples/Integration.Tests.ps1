@@ -13,7 +13,10 @@ BeforeAll {
         New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder
     }
 
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $generatedMdxWithPlaceholders = Get-Content -Path $test.MdxFile
+
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $expectedMdxWithPlaceholders = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.WithPlaceholders.mdx")
 
     # generate and read mdx using -NoPlaceHolders
@@ -21,7 +24,10 @@ BeforeAll {
         New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder -NoPlaceholderExamples
     }
 
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $generatedMdxWithoutPlaceholders = Get-Content -Path $test.MdxFile
+
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $expectedMdxWithoutPlaceholders = Get-Content (Join-Path -Path $test.Folder -ChildPath "Expected.WithoutPlaceholders.mdx")
 }
 

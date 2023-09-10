@@ -92,7 +92,7 @@ jobs:
           exit 0
         }
         $fails
-        Write-Output "$($fails.count) failures"
+        Write-Output "PSScriptAnalyzer failed with $($fails.count) errors"
         exit 1
 
     # - name: Run PSScriptAnalyzer

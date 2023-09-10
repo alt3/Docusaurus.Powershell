@@ -12,6 +12,7 @@ BeforeAll {
     InModuleScope Alt3.Docusaurus.Powershell -Parameters @{testModule = $test.Module; tempFolder = $test.TempFolder } {
         New-DocusaurusHelp -Module $testModule -DocsFolder $tempFolder
     }
+
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUserDeclaredVarsMoreThanAssignments', '', Scope='Function')]
     $generatedMdx = Get-Content -Path $test.MdxFile
 
