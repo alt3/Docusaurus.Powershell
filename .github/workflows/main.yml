@@ -84,6 +84,7 @@ jobs:
       run: ls -R
 
     - name: Run PSScriptAnalyzer
+      id:   analyze
       uses: microsoft/psscriptanalyzer-action@v1.0
       with:
         path: .\
@@ -94,7 +95,7 @@ jobs:
         output: results.sarif
 
     - name: List failing code
-      if: failure() && steps.'Run PSScriptAnalyzer'.outcome == 'failure'
+      if: failure() && steps.analyze.outcome == 'failure'
       run: cat results.sarif
 
   # run pester tests
