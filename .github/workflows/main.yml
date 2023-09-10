@@ -87,13 +87,13 @@ jobs:
       id: analyze
       shell: pwsh
       run: |
-        $fails = Invoke-ScriptAnalyzer . -Recurse | Select-Object -Property RuleName, Severity, ScriptPath, Line, Column
+        $fails = Invoke-ScriptAnalyzer -Settings ./PSScriptAnalyzerSettings.psd1 -Path . -Recurse | Select-Object -Property RuleName, Severity, ScriptPath, Line, Column
         if (-not $fails) {
           exit 0
         }
         $fails
-        exit $fails.count
-
+        Write-Output "$($fails.count) failures"
+        exit 1
 
     # - name: Run PSScriptAnalyzer
     #   id:   analyze
