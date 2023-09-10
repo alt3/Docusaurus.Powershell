@@ -94,7 +94,7 @@ jobs:
         output: results.sarif
 
     - name: List failing code
-      if: failure() && steps.PSScriptAnalyzer.outcome == 'failure'
+      if: failure() && steps.'Run PSScriptAnalyzer'.outcome == 'failure'
       run: cat results.sarif
 
   # run pester tests
