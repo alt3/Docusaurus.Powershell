@@ -73,6 +73,7 @@ jobs:
   lint:
     name: PSScriptAnalyzer
     runs-on: windows-latest
+    needs: build
     steps:
     - name: Checkout sources
       uses: actions/checkout@v3
@@ -92,8 +93,8 @@ jobs:
   # run pester tests
   test:
     name: Pester Tests
-    needs: build
     runs-on: ${{ matrix.os }}
+    needs: build
     strategy:
       fail-fast: false
       matrix:
