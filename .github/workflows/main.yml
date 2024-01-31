@@ -16,13 +16,12 @@ jobs:
     name: Build Module
     runs-on: windows-latest
     steps:
-    - name: PowerShell Version
-      uses: ./.github/actions/powershell-version
-
     - name: Checkout
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+
+    - uses: ./.github/actions/powershell-version
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.10.2
