@@ -50,7 +50,7 @@ jobs:
         destination: ${{github.workspace}}/output
 
     - name: Upload artifact Modules
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Modules
         path: ${{github.workspace}}/output
