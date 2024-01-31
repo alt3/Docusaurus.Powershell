@@ -79,13 +79,14 @@ jobs:
     runs-on: windows-latest
     needs: build
     steps:
+    - name: Show Powershell Version
+      shell: pwsh
+      run: $PSVersionTable.PSVersion
+
     - name: Checkout sources
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-
-    - name: Show Powershell Version
-      uses: ./.github/actions/powershell-version
 
     - name: Display folder structure
       run: ls -R
@@ -119,11 +120,12 @@ jobs:
         - macos-12
         - macos-13
     steps:
+    - name: Show Powershell Version
+      shell: pwsh
+      run: $PSVersionTable.PSVersion
+
     - name: Download artifacts
       uses: actions/download-artifact@v3
-
-    - name: Show Powershell Version
-      uses: ./.github/actions/powershell-version
 
     - name: Display structure of downloaded artifacts
       run: ls -R
@@ -163,13 +165,14 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]')}}
 
     steps:
+    - name: Show Powershell Version
+      shell: pwsh
+      run: $PSVersionTable.PSVersion
+
     - name: Checkout
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-
-    - name: Show Powershell Version
-      uses: ./.github/actions/powershell-version
 
     - name: Install GitVersion
       uses: gittools/actions/gitversion/setup@v0.10.2

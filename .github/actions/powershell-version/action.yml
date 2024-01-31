@@ -1,9 +1,0 @@
-name: Powershell Version
-description: "Display $PSVersionTable"
-
-runs:
-  using: composite
-  steps:
-    - name: Display PowerShell Version
-      shell: pwsh
-      run: $PSVersionTable.PSVersion
