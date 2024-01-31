@@ -17,7 +17,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -46,25 +46,25 @@ jobs:
         destination: ${{github.workspace}}/output
 
     - name: Upload artifact Modules
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Modules
         path: ${{github.workspace}}/output
 
     - name: Upload artifact PesterTests
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: PesterTests
         path: ${{github.workspace}}/Tests
 
     - name: Upload artifact RequiredModules
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: RequiredModules
         path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - name: Upload artifact PSScriptAnalyzer
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: PSScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
@@ -76,7 +76,7 @@ jobs:
     needs: build
     steps:
     - name: Checkout sources
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -130,7 +130,7 @@ jobs:
         additionalModulePaths: ${{github.workspace}}/Modules
 
     - name: Upload artifact PesterResults
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: matrix.os == 'windows-2022' # only execute on this OS
       with:
         name: PesterResults
@@ -153,7 +153,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
