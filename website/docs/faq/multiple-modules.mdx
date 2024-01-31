@@ -19,7 +19,8 @@ After that, `docusaurus/sidebars.js` would need to be updated to include both si
 const moduleA = require('./docs/ModuleA/docusaurus.sidebar.js');
 const moduleB = require('./docs/ModuleB/docusaurus.sidebar.js');
 
-module.exports = {
+
+export default {
   docs: {
     Docusaurus: ['doc1', 'doc2', 'doc3'],
     ModuleA: moduleA,
