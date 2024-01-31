@@ -21,7 +21,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: List Powershell Version
+    - name: Show Powershell Version
       uses: ./.github/actions/powershell-version
 
     - name: Install GitVersion
@@ -113,6 +113,7 @@ jobs:
         - ubuntu-22.04
         - macos-11
         - macos-12
+        - macos-13
     steps:
     - name: Download artifacts
       uses: actions/download-artifact@v3
