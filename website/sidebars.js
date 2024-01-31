@@ -6,7 +6,7 @@
  */
 import commands from "./docs/commands/docusaurus.sidebar.js";
 
-module.exports = {
+export default {
   docs: {
     'Docs': [
       'introduction',
