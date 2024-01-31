@@ -51,6 +51,7 @@ jobs:
 
     - name: Upload artifact Modules
       uses: actions/upload-artifact@v4
+      id: upload-artifact-modules
       with:
         name: Modules
         path: ${{github.workspace}}/output
