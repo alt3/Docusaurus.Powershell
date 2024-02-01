@@ -12,6 +12,8 @@
     test containing all output produced by the test (if any)
 
 #>
+#Requires -Version 7.4.1
+
 param(
     [Parameter(Mandatory = $True)][System.IO.FileInfo]$TestFolder
 )
