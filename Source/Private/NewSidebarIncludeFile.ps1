@@ -35,7 +35,7 @@ function NewSidebarIncludeFile() {
  * Licensed under the MIT license.
  */
 
-export default [
+module.exports = [
     $($commands -Join ",`n    ")
 ];
 "@

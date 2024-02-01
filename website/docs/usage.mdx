@@ -33,7 +33,7 @@ By default, Docusaurus will automatically generate a sidebar from the docs folde
 If you want to change the layout of the sidebar, update `docusaurus/sidebar.js` so it looks like this:
 
 ```js
-import commands from "./docs/commands/docusaurus.sidebar.js";
+const commands = require('./docs/commands/docusaurus.sidebar.js');
 
 // @ts-check
 
