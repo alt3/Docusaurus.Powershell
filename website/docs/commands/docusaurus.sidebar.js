@@ -8,6 +8,6 @@
  * Licensed under the MIT license.
  */
 
-export default [
+module.exports = [
     'commands/New-DocusaurusHelp'
 ];
