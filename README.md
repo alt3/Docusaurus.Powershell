@@ -10,5 +10,3 @@ Feature-rich websites for PowerShell Modules.
 - [Live Demo](https://docusaurus-powershell.vercel.app)
 - [Documentation](https://docusaurus-powershell.vercel.app/docs/introduction)
 - [Contributing](https://docusaurus-powershell.vercel.app/docs/contributing)
-
-Force
