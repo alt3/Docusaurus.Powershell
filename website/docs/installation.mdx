@@ -11,7 +11,17 @@ title: Installation
 
 ## Installation
 
+Open a PowerShell Core
+
+Install the required PowerShell modules once:
+
 ```powershell
 Install-Module Alt3.Docusaurus.Powershell -Scope CurrentUser
 Install-Module PlatyPS -Scope CurrentUser
+```
+
+Install the Docusaurus website once:
+
+```powershell
+npx create-docusaurus@latest docusaurus classic
 ```

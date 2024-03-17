@@ -16,8 +16,12 @@ jobs:
     name: Build Module
     runs-on: windows-latest
     steps:
+    - name: Show Powershell Version
+      shell: pwsh
+      run: $PSVersionTable.PSVersion
+
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -46,25 +50,26 @@ jobs:
         destination: ${{github.workspace}}/output
 
     - name: Upload artifact Modules
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
+      id: upload-artifact-modules
       with:
         name: Modules
         path: ${{github.workspace}}/output
 
     - name: Upload artifact PesterTests
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: PesterTests
         path: ${{github.workspace}}/Tests
 
     - name: Upload artifact RequiredModules
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: RequiredModules
         path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - name: Upload artifact PSScriptAnalyzer
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: PSScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
@@ -75,8 +80,12 @@ jobs:
     runs-on: windows-latest
     needs: build
     steps:
+    - name: Show Powershell Version
+      shell: pwsh
+      run: $PSVersionTable.PSVersion
+
     - name: Checkout sources
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -110,9 +119,14 @@ jobs:
         - ubuntu-22.04
         - macos-11
         - macos-12
+        - macos-13
     steps:
+    - name: Show Powershell Version
+      shell: pwsh
+      run: $PSVersionTable.PSVersion
+
     - name: Download artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
 
     - name: Display structure of downloaded artifacts
       run: ls -R
@@ -130,7 +144,7 @@ jobs:
         additionalModulePaths: ${{github.workspace}}/Modules
 
     - name: Upload artifact PesterResults
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: matrix.os == 'windows-2022' # only execute on this OS
       with:
         name: PesterResults
@@ -152,8 +166,12 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]')}}
 
     steps:
+    - name: Show Powershell Version
+      shell: pwsh
+      run: $PSVersionTable.PSVersion
+
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
@@ -169,7 +187,7 @@ jobs:
         useConfigFile: true
 
     - name: Download Artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
 
     - name: Publish to PSGallery
       uses: ./.github/actions/psgallery-publisher

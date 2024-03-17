@@ -13,6 +13,8 @@
     Each test has a correlating folder in $env:Temp named after the
     test containing all output produced by the test (if any)
 #>
+#Requires -Version 7.4
+
 param(
     [Parameter(Mandatory = $True)][System.IO.FileInfo]$TestFolder
 )

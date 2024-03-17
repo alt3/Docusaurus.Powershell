@@ -3,39 +3,9 @@ id: usage
 title: Usage
 ---
 
-Adding Docusaurus to a PowerShell Module project requires three steps:
+Adding auto-generated Get-Help pages to to your Docusaurus website only requires two steps:
 
-1. Adding the Docusaurus website skeleton
-2. Generating Module documentation
-3. Starting the Website
-
-## Adding Docusaurus
-
-Open a PowerShell (Core).
-
-Cd into your project's root folder.
-
-Add the Docusaurus website skeleton by running:
-
-```powershell
-npx @docusaurus/init@next init docusaurus classic
-```
-
-Modify newly created file `docusaurus/sidebars.js` so it looks like this:
-
-```js
-const commands = require('./docs/commands/docusaurus.sidebar.js');
-
-module.exports = {
-  docs: {
-    Docusaurus: ['doc1', 'doc2', 'doc3'],
-    Features: ['mdx'],
-    "Command Reference": commands
-  },
-};
-```
-
-## Generating Module Documentation
+## Generate PowerShell Module Documentation
 
 To generate Get-Help pages for any PowerShell module run the following command.
 
@@ -48,10 +18,40 @@ New-DocusaurusHelp -Module "YourModuleName"
 After the command has completed, the `docusaurus/docs/commands` folder
 should contain one `.mdx` file for each command exported by the PowerShell module.
 
-## Starting the Website
+## Start the Website
 
 To start your website, cd into the `docusaurus` folder and run:
 
 ```powershell
-yarn start
+npm start
 ```
+
+## Sidebar layout
+
+By default, Docusaurus will automatically generate a sidebar from the docs folder structure.
+
+If you want to change the layout of the sidebar, update `docusaurus/sidebar.js` so it looks like this:
+
+```js
+const commands = require('./docs/commands/docusaurus.sidebar.js');
+
+// @ts-check
+
+/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
+const sidebars = {
+  tutorialSidebar: [
+    'intro',
+    {
+        type: 'category',
+        label: 'Command Reference',
+        items: [
+            commands
+        ],
+      },
+  ],
+};
+
+export default sidebars;
+```
+
+For more information about configuring the sidebar please visit https://docusaurus.io/docs/sidebar.
