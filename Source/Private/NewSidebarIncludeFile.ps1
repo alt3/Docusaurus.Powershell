@@ -6,22 +6,37 @@ function NewSidebarIncludeFile() {
         .LINK
             https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-powershell-1.0/ff730948(v=technet.10)
     #>
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "Sidebar",
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'Sidebar',
         Justification = 'False positive as rule does not scan child scopes')]
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $True)][string]$TempFolder,
         [Parameter(Mandatory = $True)][string]$OutputFolder,
         [Parameter(Mandatory = $True)][string]$Sidebar,
         [Parameter(Mandatory = $True)][Object]$MarkdownFiles,
-        [Parameter(Mandatory = $True)][Version]$Alt3Version
+        [Parameter(Mandatory = $True)][Version]$Alt3Version,
+        [switch]$GroupByVerb
     )
 
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
-    Write-Verbose "Generating docusaurus.sidebar.js"
+    Write-Verbose 'Generating docusaurus.sidebar.js'
 
-    # generate a list of PowerShell commands by stripping .md from the generated PlatyPs files
-    [array]$commands = $MarkdownFiles | Select-Object @{ Name = "PowerShellCommand"; Expression = { "'$Sidebar/" + [System.IO.Path]::GetFileNameWithoutExtension($_) + "'" } } | Select-Object  -Expand PowerShellCommand
+    # generate a list of PowerShell commands by stripping .md from the generated PlatyPs files then group by verb if needed
+    $commands = [System.Collections.Generic.List[string]]::new()
+    foreach ($MarkdownFile in $MarkdownFiles) {
+        if ($GroupByVerb) {
+            $parentPath = Split-Path $MarkdownFile -Parent
+            $verbFolder = Split-Path $parentPath -Leaf
+            $docParentPath = "'$Sidebar/" + $verbFolder
+            $docPath = "$docParentPath/" + [System.IO.Path]::GetFileNameWithoutExtension($MarkdownFile) + "'"
+        } else {
+            $docPath = "'$Sidebar/" + [System.IO.Path]::GetFileNameWithoutExtension($MarkdownFile) + "'"
+        }
+        $commands.Add($docPath)
+    }
+
+    Write-Verbose "=> $($commands.Count) commands found"
 
     # generate content using Here-String block
     $content = @"
@@ -41,7 +56,7 @@ module.exports = [
 "@
 
     # create the temp file
-    $fileName = "docusaurus.sidebar.js"
+    $fileName = 'docusaurus.sidebar.js'
     $tempFile = Join-Path -Path $tempFolder -ChildPath $fileName
     $fileEncoding = New-Object System.Text.UTF8Encoding $False
     [System.IO.File]::WriteAllLines($tempFile, $content, $fileEncoding)
@@ -50,6 +65,7 @@ module.exports = [
     if (-Not([System.IO.Path]::IsPathRooted($OutputFolder))) {
         $outputFolder = Join-Path "$(Get-Location)" -ChildPath $OutputFolder
     }
-
-    Copy-Item -Path $tempFile -Destination (Join-Path -Path $outputFolder -ChildPath $fileName)
+    $sidebarFile = Join-Path -Path $outputFolder -ChildPath $fileName
+    Write-Verbose "=> writing sidebar to $($sidebarFile)"
+    Copy-Item -Path $tempFile -Destination $sidebarFile
 }
