@@ -12,7 +12,7 @@ No matter how much we :heart: Docusaurus, we realize it will not be the right so
 
 ## TL;DR
 
-I want the markdown produced by this module **but I do not want to use Docusaurus**.
+If you want to produce enriched markdown files for your Get-Help documentation **but do not want to use Docusaurus** simply run:
 
 ```powershell
 New-DocusaurusHelp -Module "YourModule" -VendorAgnostic
@@ -31,8 +31,8 @@ markdown as always but will skip two Docusaurs-specific steps during the process
 The PlatyPS generated markdown front matter:
 
 - Will not be touched
-- Will need to updated/replaced (by you) to fit your needs
 - Will look similar to the example below
+- Will need to be post-processed (by you) to match your needs
 
 ```yml
 ---

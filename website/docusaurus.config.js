@@ -24,7 +24,7 @@ module.exports = {
       },
       items: [
         {to: 'docs/introduction', label: 'Docs', position: 'right'},
-        {to: 'docs/commands/New-DocusaurusHelp', label: 'Get-Help', position: 'right'},
+        {to: 'docs/commands/New-DocusaurusHelp', label: 'Commands', position: 'right'},
         {
           href: 'https://github.com/alt3/Docusaurus.Powershell',
           label: 'GitHub',
@@ -56,7 +56,7 @@ module.exports = {
               to: 'docs/usage',
             },
             {
-              label: 'Get-Help',
+              label: 'Command Reference',
               to: 'docs/commands/New-DocusaurusHelp',
             },
           ],

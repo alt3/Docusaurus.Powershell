@@ -23,6 +23,6 @@ module.exports = {
       'faq/ci-cd',
       'faq/vendor-agnostic',
     ],
-    "Get-Help": commands,
+    "Command Reference": commands,
   },
 };
