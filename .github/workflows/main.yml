@@ -43,7 +43,7 @@ jobs:
 
     - name: Build module
       id: build
-      uses: PoshCode/actions/build-module@v1
+      uses: PoshCode/actions/build-module@main
       with:
         path: ${{github.workspace}}/Source
         version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
@@ -136,7 +136,7 @@ jobs:
       with:
         dataFile: ${{github.workspace}}/RequiredModules/RequiredModules.psd1 # downloaded artifact path
 
-    - uses: PoshCode/Actions/pester@v1
+    - uses: PoshCode/Actions/pester@main
       with:
         pesterVersion: 5.6.0
         codeCoveragePath: Modules/${{env.MODULE_NAME}}
