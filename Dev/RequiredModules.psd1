@@ -1,6 +1,6 @@
 @{
     ModuleBuilder    = "2.*"
-    Pester           = "5.5.0" # pinned until poshcode GA handles wildcards
+    Pester           = "5.6.0" # pinned until poshcode GA handles wildcards
     PSScriptAnalyzer = "1.*"
     PlatyPS          = "0.*"
 }
