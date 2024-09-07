@@ -138,7 +138,6 @@ jobs:
 
     - uses: PoshCode/Actions/pester@main
       with:
-        pesterVersion: 5.6.0
         codeCoveragePath: Modules/${{env.MODULE_NAME}}
         moduleUnderTest: ${{env.MODULE_NAME}}
         additionalModulePaths: ${{github.workspace}}/Modules
