@@ -36,10 +36,10 @@ jobs:
       with:
         useConfigFile: true
 
-    - name: Install required modules
-      uses: alt3/install-required-modules-action@main
+    - name: Install required PowerShell modules
+      uses: JustinGrote/ModuleFast-action@main
       with:
-        dataFile: ${{github.workspace}}/Dev/RequiredModules.psd1
+        path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - name: Build module
       id: build
@@ -131,10 +131,10 @@ jobs:
     - name: Display structure of downloaded artifacts
       run: ls -R
 
-    - name: Install required modules
-      uses: alt3/install-required-modules-action@main
+    - name: Install required PowerShell modules
+      uses: JustinGrote/ModuleFast-action@main
       with:
-        dataFile: ${{github.workspace}}/RequiredModules/RequiredModules.psd1 # downloaded artifact path
+        path: ${{github.workspace}}/RequiredModules/RequiredModules.psd1 # downloaded artifact path
 
     - uses: PoshCode/Actions/pester@main
       with:
