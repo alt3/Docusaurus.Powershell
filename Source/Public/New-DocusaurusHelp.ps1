@@ -157,6 +157,7 @@ function New-DocusaurusHelp() {
         [Parameter(Mandatory = $False)][array]$MetaKeywords,
         [Parameter(Mandatory = $False)][string]$PrependMarkdown,
         [Parameter(Mandatory = $False)][string]$AppendMarkdown,
+        [Parameter(Mandatory = $False)][string]$MarkdownCachePath,
         [switch]$KeepHeader1,
         [switch]$HideTitle,
         [switch]$HideTableOfContents,
@@ -168,14 +169,17 @@ function New-DocusaurusHelp() {
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
     # make sure the passed module is valid
-    if (Test-Path($Module)) {
-        Import-Module $Module -Force -Global
-        $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
-    }
+    if (!$PSBoundParameters.ContainsKey('MarkdownCachePath'))
+    {
+        if (Test-Path($Module)) {
+            Import-Module $Module -Force -Global
+            $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
+        }
 
-    if (-Not(Get-Module -Name $Module)) {
-        $Module = $Module
-        throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
+        if (-Not(Get-Module -Name $Module)) {
+            $Module = $Module
+            throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
+        }
     }
 
     $moduleName = [io.path]::GetFileName($module)
@@ -194,8 +198,16 @@ function New-DocusaurusHelp() {
     InitializeTempFolder -Path $tempFolder
 
     # generate PlatyPs markdown files
-    Write-Verbose "Generating PlatyPS files."
-    New-MarkdownHelp -Module $Module -OutputFolder $tempFolder -Force | Out-Null
+    if (!$PSBoundParameters.ContainsKey('MarkdownCachePath'))
+    {
+        Write-Verbose "Generating PlatyPS files."
+        New-MarkdownHelp -Module $Module -OutputFolder $tempFolder -Force | Out-Null
+    }
+    else
+    {
+        Write-Verbose "Copying cached markdown files to temp folder."
+        Copy-Item -Path $MarkdownCachePath\*.md -Destination $tempFolder -Force -Confirm:$false
+    }
 
     # remove files matching excluded commands
     Write-Verbose "Removing excluded files:"
