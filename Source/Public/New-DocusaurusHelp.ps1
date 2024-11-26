@@ -154,7 +154,7 @@ function New-DocusaurusHelp() {
     [cmdletbinding()]
     param(
         [Parameter(Mandatory = $True, ParameterSetName = 'Module')][string]$Module,
-        [Parameter(Mandatory = $False, ParameterSetName = 'PlatyPSMarkdownPath')]
+        [Parameter(Mandatory = $True, ParameterSetName = 'PlatyPSMarkdownPath')]
         [ValidateScript({ [System.IO.Directory]::Exists($_) })]
         [string]$PlatyPSMarkdownPath,
         [Parameter(Mandatory = $False)][string]$DocsFolder = "docusaurus/docs",
