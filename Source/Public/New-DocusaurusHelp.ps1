@@ -180,7 +180,7 @@ function New-DocusaurusHelp() {
     {
         # Get the module's name from the supplied markdown files.
         $moduleName = Get-ChildItem -LiteralPath $PlatyPSMarkdownPath -Filter *.md |
-            ForEach-Object { [System.IO.File]::ReadAllLines($_.FullName) -match '^Module Name: ' } |
+            ForEach-Object { [System.IO.File]::ReadAllLines($_.FullName) -match '^Module Name: ' -replace '^Module Name:\s+' } |
             Select-Object -Unique
 
         # Throw if null or we've got more than one item.
@@ -208,7 +208,7 @@ function New-DocusaurusHelp() {
         }
 
         # Trim off the leading characters before continuing.
-        $Module = $moduleName = $moduleName -replace '^Module Name: '
+        $Module = $moduleName
     }
 
     # make sure the passed module is valid
