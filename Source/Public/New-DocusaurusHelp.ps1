@@ -211,23 +211,25 @@ function New-DocusaurusHelp() {
         # Trim off the leading characters before continuing.
         $Module = $moduleName
     }
-
-    # make sure the passed module is valid
-    if (!(Get-Module -Name $Module))
+    else
     {
-        if (Test-Path -LiteralPath $Module) {
-            Import-Module $Module -Force -Global
-            $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
+        # make sure the passed module is valid
+        if (!(Get-Module -Name $Module))
+        {
+            if (Test-Path -LiteralPath $Module) {
+                Import-Module $Module -Force -Global
+                $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
+            }
+            else {
+                $Module = $Module
+                throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
+            }
         }
-        else {
-            $Module = $Module
-            throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
-        }
-    }
 
-    if (!(Test-Path -LiteralPath Microsoft.PowerShell.Core\Variable::moduleName))
-    {
-        $moduleName = [io.path]::GetFileName($module)
+        if (!(Test-Path -LiteralPath Microsoft.PowerShell.Core\Variable::moduleName))
+        {
+            $moduleName = [io.path]::GetFileName($module)
+        }
     }
 
     # get version of this module so we can e.g. add version tag to generated files
