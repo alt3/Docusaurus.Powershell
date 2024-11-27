@@ -47,13 +47,13 @@ param(
 
 # Build new Alt3 module
 Write-Output "Building new module"
-Build-Module -SourcePath .\Source -VersionedOutputDirectory
+Build-Module -SourcePath $PSScriptRoot\Source -VersionedOutputDirectory
 
 # Prevent duplicate module versions breaking PlatyPS
 Remove-Module Alt3.Docusaurus.Powershell -Force -ErrorAction SilentlyContinue
 
 # Determine latest module version
-$outputFolder = ".\Output\Alt3.Docusaurus.Powershell"
+$outputFolder = "$PSScriptRoot\Output\Alt3.Docusaurus.Powershell"
 $latestModuleVersion = (Get-ChildItem -Path $outputFolder -Directory | Sort-Object CreationTime | Select-Object -Last 1).Name
 Write-Output "Importing newly built module $latestModuleVersion"
 

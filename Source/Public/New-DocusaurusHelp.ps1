@@ -49,6 +49,11 @@ function New-DocusaurusHelp() {
 
             You may specify a module name, a `.psd1` file or a `.psm1` file.
 
+        .PARAMETER PlatyPSMarkdownPath
+            Specifies a path containing already prepared PlatyPS markdown files for processing.
+
+            If not provided, this function will generate the necessary files as required.
+
         .PARAMETER DocsFolder
             Specifies the absolute or relative **path** to the Docusaurus `docs` folder.
 
@@ -148,7 +153,10 @@ function New-DocusaurusHelp() {
     #>
     [cmdletbinding()]
     param(
-        [Parameter(Mandatory = $True)][string]$Module,
+        [Parameter(Mandatory = $True, ParameterSetName = 'Module')][string]$Module,
+        [Parameter(Mandatory = $True, ParameterSetName = 'PlatyPSMarkdownPath')]
+        [ValidateScript({ [System.IO.Directory]::Exists($_) })]
+        [string]$PlatyPSMarkdownPath,
         [Parameter(Mandatory = $False)][string]$DocsFolder = "docusaurus/docs",
         [Parameter(Mandatory = $False)][string]$Sidebar = "commands",
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
@@ -167,18 +175,57 @@ function New-DocusaurusHelp() {
 
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
-    # make sure the passed module is valid
-    if (Test-Path($Module)) {
-        Import-Module $Module -Force -Global
-        $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
-    }
+    # Get the module's name fromn the supplied markdown files.
+    if ($PSCmdlet.ParameterSetName.Equals('PlatyPSMarkdownPath'))
+    {
+        # Get the module's name from the supplied markdown files.
+        $moduleName = Get-ChildItem -LiteralPath $PlatyPSMarkdownPath -Filter *.md |
+            Get-Content -ReadCount 10 -TotalCount 10 |
+            ForEach-Object { $_ -match '^Module Name: ' -replace '^Module Name:\s+' } |
+            Select-Object -Unique
 
-    if (-Not(Get-Module -Name $Module)) {
-        $Module = $Module
-        throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
-    }
+        # Throw if null or we've got more than one item.
+        if ($null -eq $moduleName)
+        {
+            $errSentence1 = 'Unable to determine the module name from the supplied markdown files.'
+            $errSentence2 = 'Please confirm their validity and try again.'
+            $PSCmdlet.ThrowTerminatingError([System.Management.Automation.ErrorRecord]::new(
+                    [System.ArgumentException]::new("$errSentence1 $errSentence2", 'PlatyPSMarkdownPath'),
+                    'ModuleNameIndeterminateError',
+                    [System.Management.Automation.ErrorCategory]::InvalidResult,
+                    $moduleName
+                ))
+        }
+        elseif ($moduleName -isnot [System.String])
+        {
+            $errSentence1 = "More than one module name was found within the supplied markdown files ('$([System.String]::Join("', '", $moduleName))')."
+            $errSentence2 = 'Please supply unique markdown files for a single module and try again.'
+            $PSCmdlet.ThrowTerminatingError([System.Management.Automation.ErrorRecord]::new(
+                    [System.ArgumentException]::new("$errSentence1 $errSentence2", 'PlatyPSMarkdownPath'),
+                    'DuplicateModuleNameError',
+                    [System.Management.Automation.ErrorCategory]::InvalidResult,
+                    $moduleName
+                ))
+        }
 
-    $moduleName = [io.path]::GetFileName($module)
+        # Trim off the leading characters before continuing.
+        $Module = $moduleName
+    }
+    else
+    {
+        # make sure the passed module is valid
+        if (Test-Path($Module)) {
+            Import-Module $Module -Force -Global
+            $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
+        }
+
+        if (-Not(Get-Module -Name $Module)) {
+            $Module = $Module
+            throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
+        }
+
+        $moduleName = [io.path]::GetFileName($module)
+    }
 
     # get version of this module so we can e.g. add version tag to generated files
     $alt3Version = Split-Path -Leaf $MyInvocation.MyCommand.ScriptBlock.Module.ModuleBase
@@ -194,8 +241,16 @@ function New-DocusaurusHelp() {
     InitializeTempFolder -Path $tempFolder
 
     # generate PlatyPs markdown files
-    Write-Verbose "Generating PlatyPS files."
-    New-MarkdownHelp -Module $Module -OutputFolder $tempFolder -Force | Out-Null
+    if ($PSCmdlet.ParameterSetName.Equals('Module'))
+    {
+        Write-Verbose "Generating PlatyPS files."
+        New-MarkdownHelp -Module $Module -OutputFolder $tempFolder -Force | Out-Null
+    }
+    else
+    {
+        Write-Verbose "Copying cached markdown files to temp folder."
+        Copy-Item -Path $PlatyPSMarkdownPath\*.md -Destination $tempFolder -Force -Confirm:$false
+    }
 
     # remove files matching excluded commands
     Write-Verbose "Removing excluded files:"

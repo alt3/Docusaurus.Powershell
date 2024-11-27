@@ -21,11 +21,22 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 
 ## SYNTAX
 
+### Module
+
 ```powershell
-New-DocusaurusHelp [-Module] <String> [[-DocsFolder] <String>] [[-Sidebar] <String>] [[-Exclude] <Array>]
- [[-EditUrl] <String>] [[-MetaDescription] <String>] [[-MetaKeywords] <Array>] [[-PrependMarkdown] <String>]
- [[-AppendMarkdown] <String>] [-KeepHeader1] [-HideTitle] [-HideTableOfContents] [-NoPlaceHolderExamples]
- [-Monolithic] [-VendorAgnostic] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+New-DocusaurusHelp -Module <String> [-DocsFolder <String>] [-Sidebar <String>] [-Exclude <Array>]
+ [-EditUrl <String>] [-MetaDescription <String>] [-MetaKeywords <Array>] [-PrependMarkdown <String>]
+ [-AppendMarkdown <String>] [-KeepHeader1] [-HideTitle] [-HideTableOfContents] [-NoPlaceHolderExamples]
+ [-Monolithic] [-VendorAgnostic] [<CommonParameters>]
+```
+
+### PlatyPSMarkdownPath
+
+```powershell
+New-DocusaurusHelp -PlatyPSMarkdownPath <String> [-DocsFolder <String>] [-Sidebar <String>] [-Exclude <Array>]
+ [-EditUrl <String>] [-MetaDescription <String>] [-MetaKeywords <Array>] [-PrependMarkdown <String>]
+ [-AppendMarkdown <String>] [-KeepHeader1] [-HideTitle] [-HideTableOfContents] [-NoPlaceHolderExamples]
+ [-Monolithic] [-VendorAgnostic] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -83,11 +94,29 @@ You may specify a module name, a `.psd1` file or a `.psm1` file.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Module
 Aliases:
 
 Required: True
-Position: 1
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PlatyPSMarkdownPath
+
+Specifies a path containing already prepared PlatyPS markdown files for processing.
+
+If not provided, this function will generate the necessary files as required.
+
+```yaml
+Type: String
+Parameter Sets: PlatyPSMarkdownPath
+Aliases:
+
+Required: True
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -105,7 +134,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: Named
 Default value: Docusaurus/docs
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -123,7 +152,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: Named
 Default value: Commands
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -139,7 +168,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: Named
 Default value: @()
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -157,7 +186,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -175,7 +204,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -191,7 +220,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -209,7 +238,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -227,7 +256,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -352,22 +381,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ProgressAction
-
-\{\{ Fill ProgressAction Description \}\}
-
-```yaml
-Type: ActionPreference
-Parameter Sets: (All)
-Aliases: proga
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -399,4 +412,4 @@ $tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -Child
 
 ## ADDITIONAL INFORMATION
 
-This page was auto-generated using the comment based help in Alt3.Docusaurus.Powershell 1.0.35.
+This page was auto-generated using the comment based help in Alt3.Docusaurus.Powershell 1.0.36.
