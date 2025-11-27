@@ -23,8 +23,8 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
-        {to: 'docs/introduction', label: 'Docs', position: 'right'},
-        {to: 'docs/commands/New-DocusaurusHelp', label: 'Commands', position: 'right'},
+        { to: 'docs/introduction', label: 'Docs', position: 'right' },
+        { to: 'docs/commands/New-DocusaurusHelp', label: 'Commands', position: 'right' },
         {
           href: 'https://github.com/alt3/Docusaurus.Powershell',
           label: 'GitHub',
@@ -98,4 +98,10 @@ module.exports = {
       },
     ],
   ],
+  future: {
+    experimental_faster: true, // Use new @docusaurus/faster features for faster build
+    v4: {
+      removeLegacyPostBuildHeadAttribute: true, // To support SSG worker threads (experimental_faster.ssgWorkerThreads)
+    },
+  }
 };
