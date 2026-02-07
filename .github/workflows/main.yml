@@ -117,8 +117,8 @@ jobs:
         - windows-2025
         - ubuntu-22.04
         - ubuntu-24.04
-        - macos-13
         - macos-14
+        - macos-15
     steps:
     - name: Show Powershell Version
       shell: pwsh
