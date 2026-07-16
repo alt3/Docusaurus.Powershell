@@ -23,6 +23,10 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
+        {
+          type: 'docsVersionDropdown',
+          position: 'left',
+        },
         { to: 'docs/introduction', label: 'Docs', position: 'right' },
         { to: 'docs/commands/New-DocusaurusHelp', label: 'Commands', position: 'right' },
         {
@@ -39,6 +43,7 @@ module.exports = {
       appId: 'J6HI8PLPVO',
       apiKey: '7da5313674c5bdc00c7af45eda989ae2',
       indexName: 'docusaurus-powershell',
+      contextualSearch: true, // prefer search results for the active docs version
       algoliaOptions: {}, // Optional, if provided by Algolia
     },
     footer: {
@@ -91,6 +96,20 @@ module.exports = {
           path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/alt3/Docusaurus.Powershell/edit/main/website',
+          // The `docs` folder always holds the active version (v2), served at
+          // unversioned /docs/... URIs. Older versions are frozen snapshots in
+          // `versioned_docs` and are never touched by `build-module.ps1 -GenerateDocs`.
+          lastVersion: 'current',
+          includeCurrentVersion: true,
+          versions: {
+            current: {
+              label: 'v2',
+              path: '', // active version uses unversioned URIs
+            },
+            v1: {
+              label: 'v1', // frozen, served at /docs/v1/...
+            },
+          },
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

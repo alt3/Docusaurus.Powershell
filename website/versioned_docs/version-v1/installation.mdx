@@ -1,0 +1,27 @@
+---
+id: installation
+title: Installation
+---
+
+## Requirements
+
+- [PowerShell](https://docs.microsoft.com/en-us/powershell/) (version 5, 6 or 7)
+- [Node.js](https://nodejs.org/en/download/)
+- [Yarn](https://yarnpkg.com/en/)
+
+## Installation
+
+Open a PowerShell Core
+
+Install the required PowerShell modules once:
+
+```powershell
+Install-Module Alt3.Docusaurus.Powershell -Scope CurrentUser
+Install-Module PlatyPS -Scope CurrentUser
+```
+
+Install the Docusaurus website once:
+
+```powershell
+npx create-docusaurus@latest docusaurus classic
+```

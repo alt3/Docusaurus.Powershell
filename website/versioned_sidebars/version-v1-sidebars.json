@@ -1,0 +1,22 @@
+{
+  "docs": {
+    "Docs": [
+      "introduction",
+      "installation",
+      "usage",
+      "contributing",
+      "gallery"
+    ],
+    "F.A.Q.": [
+      "faq/multi-line-examples",
+      "faq/multiple-modules",
+      "faq/monolithic-modules",
+      "faq/search",
+      "faq/ci-cd",
+      "faq/vendor-agnostic"
+    ],
+    "Command Reference": [
+      "commands/New-DocusaurusHelp"
+    ]
+  }
+}
