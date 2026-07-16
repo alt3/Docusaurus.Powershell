@@ -24,19 +24,28 @@ Generates Get-Help documentation in Docusaurus compatible `.mdx` format.
 ### Module
 
 ```powershell
-New-DocusaurusHelp -Module <String> [-DocsFolder <String>] [-Sidebar <String>] [-Exclude <Array>]
- [-EditUrl <String>] [-MetaDescription <String>] [-MetaKeywords <Array>] [-PrependMarkdown <String>]
- [-AppendMarkdown <String>] [-KeepHeader1] [-HideTitle] [-HideTableOfContents] [-NoPlaceHolderExamples]
- [-Monolithic] [-VendorAgnostic] [<CommonParameters>]
+New-DocusaurusHelp -Module <string> [-DocsFolder <string>] [-Sidebar <string>] [-Exclude <array>]
+ [-EditUrl <string>] [-MetaDescription <string>] [-MetaKeywords <array>] [-PrependMarkdown <string>]
+ [-AppendMarkdown <string>] [-KeepHeader1] [-HideTitle] [-HideTableOfContents]
+ [-NoPlaceHolderExamples] [-Monolithic] [-VendorAgnostic]
+```
+
+### CommandHelp
+
+```powershell
+New-DocusaurusHelp -CommandHelp <Object[]> [-DocsFolder <string>] [-Sidebar <string>]
+ [-Exclude <array>] [-EditUrl <string>] [-MetaDescription <string>] [-MetaKeywords <array>]
+ [-PrependMarkdown <string>] [-AppendMarkdown <string>] [-KeepHeader1] [-HideTitle]
+ [-HideTableOfContents] [-NoPlaceHolderExamples] [-Monolithic] [-VendorAgnostic]
 ```
 
 ### PlatyPSMarkdownPath
 
 ```powershell
-New-DocusaurusHelp -PlatyPSMarkdownPath <String> [-DocsFolder <String>] [-Sidebar <String>] [-Exclude <Array>]
- [-EditUrl <String>] [-MetaDescription <String>] [-MetaKeywords <Array>] [-PrependMarkdown <String>]
- [-AppendMarkdown <String>] [-KeepHeader1] [-HideTitle] [-HideTableOfContents] [-NoPlaceHolderExamples]
- [-Monolithic] [-VendorAgnostic] [<CommonParameters>]
+New-DocusaurusHelp -PlatyPSMarkdownPath <string> [-DocsFolder <string>] [-Sidebar <string>]
+ [-Exclude <array>] [-EditUrl <string>] [-MetaDescription <string>] [-MetaKeywords <array>]
+ [-PrependMarkdown <string>] [-AppendMarkdown <string>] [-KeepHeader1] [-HideTitle]
+ [-HideTableOfContents] [-NoPlaceHolderExamples] [-Monolithic] [-VendorAgnostic]
 ```
 
 ## DESCRIPTION
@@ -86,40 +95,58 @@ See the list of Parameters below for all available overrides.
 
 ## PARAMETERS
 
-### -Module
+### -AppendMarkdown
 
-Specifies the module this cmdlet will generate Docusaurus documentation for.
+Optional string containing raw markdown **OR** path to a markdown file.
 
-You may specify a module name, a `.psd1` file or a `.psm1` file.
+Markdown will be inserted in all pages, directly below the PlatyPS generated markdown.
 
 ```yaml
-Type: String
-Parameter Sets: Module
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -PlatyPSMarkdownPath
+### -CommandHelp
 
-Specifies a path containing already prepared PlatyPS markdown files for processing.
+Specifies one or more `Microsoft.PowerShell.PlatyPS.Model.CommandHelp` objects, as produced
+by the PlatyPS cmdlets `New-CommandHelp`, `Import-MarkdownCommandHelp` or `Import-YamlCommandHelp`.
 
-If not provided, this function will generate the necessary files as required.
+Use this parameter if you want to pre-process the help objects before this module
+transforms them into Docusaurus pages, e.g.:
+
+```
+$commandHelp = New-CommandHelp -CommandInfo (Get-Command -Module MyModule)
+$commandHelp[0].Synopsis = "An updated synopsis"
+New-DocusaurusHelp -CommandHelp $commandHelp
+```
 
 ```yaml
-Type: String
-Parameter Sets: PlatyPSMarkdownPath
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Object[]
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: CommandHelp
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -DocsFolder
@@ -129,49 +156,20 @@ Specifies the absolute or relative **path** to the Docusaurus `docs` folder.
 Optional, defaults to `docusaurus/docs`, case sensitive.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: Docusaurus/docs
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Sidebar
-
-Specifies the **name** of the docs subfolder in which the `.mdx` files will be created.
-
-Optional, defaults to `commands`, case sensitive.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: Commands
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -Exclude
-
-Optional array with command names to exclude.
-
-```yaml
-Type: Array
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: @()
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: docusaurus/docs
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -EditUrl
@@ -181,85 +179,87 @@ Specifies the URL prefixed to all Docusaurus `custom_edit_url` front matter vari
 Optional, defaults to `null`.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -MetaDescription
+### -Exclude
 
-Optional string that will be inserted into Docusaurus front matter to be used as html meta tag 'description'.
-
-If placeholder `%1` is detected in the string, it will be replaced by the command name.
+Optional array with command names to exclude.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Array
+DefaultValue: '@()'
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -MetaKeywords
+### -HideTableOfContents
 
-Optional array of keywords inserted into Docusaurus front matter to be used as html meta tag `keywords`.
+Sets the Docusaurus front matter variable `hide_table_of_contents`.
+
+Optional, defaults to `false`.
 
 ```yaml
-Type: Array
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -PrependMarkdown
+### -HideTitle
 
-Optional string containing raw markdown **OR** path to a markdown file.
+Sets the Docusaurus front matter variable `hide_title`.
 
-Markdown will be inserted in all pages, directly above the PlatyPS generated markdown.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -AppendMarkdown
-
-Optional string containing raw markdown **OR** path to a markdown file.
-
-Markdown will be inserted in all pages, directly below the PlatyPS generated markdown.
+Optional, defaults to `false`.
 
 ```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -KeepHeader1
@@ -271,51 +271,110 @@ You may use this switch parameter to keep the markdown `H1` element, most likely
 combination with the `HideTitle` parameter.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -HideTitle
+### -MetaDescription
 
-Sets the Docusaurus front matter variable `hide_title`.
+Optional string that will be inserted into Docusaurus front matter to be used as html meta tag 'description'.
 
-Optional, defaults to `false`.
+If placeholder `%1` is detected in the string, it will be replaced by the command name.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -HideTableOfContents
+### -MetaKeywords
 
-Sets the Docusaurus front matter variable `hide_table_of_contents`.
-
-Optional, defaults to `false`.
+Optional array of keywords inserted into Docusaurus front matter to be used as html meta tag `keywords`.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.Array
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -Module
+
+Specifies the module this cmdlet will generate Docusaurus documentation for.
+
+You may specify a module name, a `.psd1` file or a `.psm1` file.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: Module
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Monolithic
+
+Use this optional parameter if the PowerShell module source is monolithic.
+
+Will point all `custom_edit_url` front matter variables to the `.psm1` file.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -NoPlaceHolderExamples
@@ -326,33 +385,93 @@ definition does not contain any `EXAMPLE` nodes.
 You can use this switch to disable that behavior which will result in an empty `EXAMPLES` section.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
-### -Monolithic
+### -PlatyPSMarkdownPath
 
-Use this optional parameter if the PowerShell module source is monolithic.
+Specifies a path containing already prepared PlatyPS markdown files for processing.
 
-Will point all `custom_edit_url` front matter variables to the `.psm1` file.
+The files must use the Microsoft.PowerShell.PlatyPS markdown schema (`2024-05-01`).
+Markdown files generated by the deprecated platyPS 0.x module are not supported and
+will produce a terminating error.
+
+If not provided, this function will generate the necessary files as required.
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: PlatyPSMarkdownPath
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
 
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+### -PrependMarkdown
+
+Optional string containing raw markdown **OR** path to a markdown file.
+
+Markdown will be inserted in all pages, directly above the PlatyPS generated markdown.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Sidebar
+
+Specifies the **name** of the docs subfolder in which the `.mdx` files will be created.
+
+Optional, defaults to `commands`, case sensitive.
+
+```yaml
+Type: System.String
+DefaultValue: commands
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### -VendorAgnostic
@@ -370,20 +489,28 @@ For more information please
 [visit this page](https://docusaurus-powershell.vercel.app/docs/faq/vendor-agnostic).
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
 ```
 
 ### CommonParameters
 
-This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
@@ -391,7 +518,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.Object
 
+\{\{ Fill in the Description \}\}
+
 ## NOTES
+
 For debugging purposes, Docusaurus.Powershell creates a local temp folder with:
 
 - the raw PlatyPS generated `.md` files
@@ -404,12 +534,10 @@ $tempFolder = Get-Item (Join-Path -Path ([System.IO.Path]::GetTempPath()) -Child
 
 ## RELATED LINKS
 
-[https://docusaurus-powershell.vercel.app/](https://docusaurus-powershell.vercel.app/)
-
-[https://docusaurus.io/](https://docusaurus.io/)
-
-[https://github.com/PowerShell/platyPS](https://github.com/PowerShell/platyPS)
+- [](https://docusaurus-powershell.vercel.app/)
+- [](https://docusaurus.io/)
+- [](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.platyps/)
 
 ## ADDITIONAL INFORMATION
 
-This page was auto-generated using the comment based help in Alt3.Docusaurus.Powershell 1.0.36.
+This page was auto-generated using the comment based help in Alt3.Docusaurus.Powershell 1.0.37.

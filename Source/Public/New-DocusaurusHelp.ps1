@@ -214,7 +214,12 @@ function New-DocusaurusHelp() {
             }
 
             Write-Verbose "Generating PlatyPS CommandHelp objects."
-            $commandHelpObjects = foreach ($moduleCommand in Get-Command -Module $Module -CommandType Cmdlet, Function, Filter) {
+            # use ExportedCommands because Get-Command -Module would also return private
+            # functions when a module (like this one) generates its own documentation
+            $moduleCommands = (Get-Module -Name $Module).ExportedCommands.Values |
+                Where-Object { $_.CommandType -in 'Cmdlet', 'Function', 'Filter' }
+
+            $commandHelpObjects = foreach ($moduleCommand in $moduleCommands) {
                 try {
                     # child scope disables StrictMode which breaks PlatyPS (https://github.com/PowerShell/platyPS/issues/800)
                     $newCommandHelp = & {
