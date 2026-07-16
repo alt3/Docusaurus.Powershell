@@ -5,20 +5,24 @@ title: Installation
 
 ## Requirements
 
-- [PowerShell](https://docs.microsoft.com/en-us/powershell/) (version 5, 6 or 7)
+- [Windows PowerShell](https://docs.microsoft.com/en-us/powershell/) 5.1 **or** [PowerShell](https://docs.microsoft.com/en-us/powershell/) 7.4 and higher
 - [Node.js](https://nodejs.org/en/download/)
 - [Yarn](https://yarnpkg.com/en/)
+
+> PowerShell 7.0 - 7.3 are [end-of-life](https://learn.microsoft.com/en-us/powershell/scripting/install/powershell-support-lifecycle) and therefore not supported.
 
 ## Installation
 
 Open a PowerShell Core
 
-Install the required PowerShell modules once:
+Install the required PowerShell module once:
 
 ```powershell
 Install-Module Alt3.Docusaurus.Powershell -Scope CurrentUser
-Install-Module PlatyPS -Scope CurrentUser
 ```
+
+> [Microsoft.PowerShell.PlatyPS](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.platyps/)
+> is installed automatically as a dependency.
 
 Install the Docusaurus website once:
 

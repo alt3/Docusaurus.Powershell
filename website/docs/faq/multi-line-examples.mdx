@@ -58,38 +58,29 @@ Code fencing ensures identical rendering across all PowerShell versions and look
 > and [the markdown](https://github.com/alt3/Docusaurus.Powershell/blob/main/Tests/Integration/CrossVersionCodeExamples/Expected.mdx)
 > it renders.
 
-## PowerShell 7 Native Multi-Lines
+## Native Multi-Lines
 
-Even though PowerShell 7 ships with
+PowerShell also ships with
 [native support for multi-line code examples](https://github.com/PowerShell/platyPS/issues/180#issuecomment-569119138)
-it only supports a single use-case as can be seen in this example:
+but it only supports a single use-case as can be seen in this example:
 
 ```
 .EXAMPLE
-    $exampleType = 'PowerShell 7+ multi-line example with a description'
-    $info = 'PS7 will treat all adjecent lines as code'
+    $exampleType = 'Native multi-line example with a description'
+    $info = 'Get-Help will treat all adjacent lines as code'
     $info = 'The code block will end at the first double-newline`
 
-    PS7 will thus use this line, and everything below it, as the description
+    Get-Help will thus use this line, and everything below it, as the description
 ```
 
-You could consider using PS7 multi-lines instead of Code Fence Detection if:
-
-- You will (only) use PowerShell 7 to generate your documentation
-- Your example code does not contain any blank lines
-
-> Do not use native PS7 multi-lines if you intend to generate/test documentation using other PowerShell versions!
+You could consider using native multi-lines instead of Code Fence Detection if
+your example code does not contain any blank lines.
 
 ## Default Fallback
 
-Docusuarus.PowerShell will fall back to using the unaltered PlatyPS generated code blocks
-if code fencing is not detected.
-
-This is intentional behavior and is done because:
-
-- It would be impossible to "guess" where the code ends and the description begins
-- We can redirect (and fix) bugs in the right place (PlatyPS repository)
-- It will automatically support the multi-line examples that ships with PowerShell 7
+If code fencing is not detected, Docusaurus.Powershell will treat the first paragraph
+of the example (all lines up to the first blank line) as code and everything below it
+as the description, exactly matching the native Get-Help behavior described above.
 
 ## Unexpected Results
 

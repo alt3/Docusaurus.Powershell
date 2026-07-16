@@ -3,9 +3,11 @@ on:
   push:
     branches:
     - main
+    - v2
   pull_request:
     branches:
     - main
+    - v2
 
 env:
   MODULE_NAME: Alt3.Docusaurus.Powershell
@@ -150,7 +152,7 @@ jobs:
 
   # -----------------------------------------------------------------------------
   # Publishing stage:
-  # - is skipped completely UNLESS on the main branch
+  # - is skipped completely UNLESS on the main branch (or v2 for prereleases)
   # - is skipped completely UNLESS the commit message contains "[release]"
   # - the psgallery published manifest already contains the bumped module version
   # - the bump-main step bumps copies the artifact manifest to main to match
@@ -161,7 +163,7 @@ jobs:
     name: Publish
     runs-on: windows-latest
     needs: [ test, lint ]
-    if: ${{ github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, '[release]')}}
+    if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/v2') && contains(github.event.head_commit.message, '[release]')}}
 
     steps:
     - name: Show Powershell Version
@@ -187,6 +189,13 @@ jobs:
     - name: Download Artifacts
       uses: actions/download-artifact@v4
 
+    # Publish-Module validates the manifest which requires the modules
+    # listed in RequiredModules to be present on this runner
+    - name: Install required PowerShell modules
+      uses: JustinGrote/ModuleFast-action@main
+      with:
+        path: ${{github.workspace}}/Dev/RequiredModules.psd1
+
     - name: Publish to PSGallery
       uses: ./.github/actions/psgallery-publisher
       env:
@@ -196,6 +205,7 @@ jobs:
 
     - name: Bump Manifest Version on Main
       id: bumpMain
+      if: ${{ github.ref == 'refs/heads/main' }}
       uses: ./.github/actions/bump-main
       with:
         artifactPath: Modules/${{env.MODULE_NAME}}
@@ -205,7 +215,7 @@ jobs:
       with:
         name: Release ${{ steps.gitversion.outputs.LegacySemVerPadded }}
         tag_name: ${{ env.GitVersion_LegacySemVerPadded }}
-        target_commitish: main
+        target_commitish: ${{ github.ref_name }}
         draft: false
-        prerelease: false
+        prerelease: ${{ contains(steps.gitversion.outputs.LegacySemVerPadded, '-') }}
         generate_release_notes: true

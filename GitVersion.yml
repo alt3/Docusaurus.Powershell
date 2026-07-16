@@ -8,3 +8,8 @@ no-bump-message: '\+?semver:\s?(none|skip)'
 branches:
   main:
     increment: Patch
+  v2:
+    regex: ^v2$
+    tag: rc
+    increment: Patch
+    source-branches: ['main']
