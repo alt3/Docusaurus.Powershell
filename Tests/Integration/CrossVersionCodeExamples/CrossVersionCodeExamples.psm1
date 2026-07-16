@@ -6,6 +6,9 @@ function Test-CrossVersionCodeExamples {
     .SYNOPSIS
         Dummy module to ensure all supported Get-Help example variations render identically on all PowerShell versions.
 
+    .DESCRIPTION
+        Required because PlatyPS will not generate help for commands using an .EXAMPLE without a .DESCRIPTION.
+
     .EXAMPLE
         $exampleType = 'Native single-line example without description'
 

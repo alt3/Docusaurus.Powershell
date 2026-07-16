@@ -1,0 +1,123 @@
+---
+id: Test-ParameterYamlBlocks
+title: Test-ParameterYamlBlocks
+hide_title: false
+hide_table_of_contents: false
+---
+
+## SYNOPSIS
+
+Dummy module to ensure PlatyPS generated parameter yaml blocks and named parameter set headings render as expected.
+
+## SYNTAX
+
+### ByName (Default)
+
+```powershell
+Test-ParameterYamlBlocks -Name <string> [-Force]
+```
+
+### ByLimit
+
+```powershell
+Test-ParameterYamlBlocks [-Limit <int>] [-Force]
+```
+
+## DESCRIPTION
+
+Ensures that:
+
+- the yaml code blocks are not touched by the markdown transformations
+- the SYNTAX section keeps a heading for each named parameter set
+- parameter descriptions are transformed like any other markdown (encoding
+  raw &lt;brackets&gt; and \{curly\} brackets but not `<inline code>`)
+
+## EXAMPLES
+
+### Example 1
+
+```powershell
+PS C:\> {{ Add example code here }}
+```
+
+\{\{ Add example description here \}\}
+
+## PARAMETERS
+
+### -Force
+
+A switch parameter available in all parameter sets.
+
+```yaml
+Type: System.Management.Automation.SwitchParameter
+DefaultValue: False
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: (All)
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Limit
+
+An integer parameter with a default value.
+
+```yaml
+Type: System.Int32
+DefaultValue: 10
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: ByLimit
+  Position: Named
+  IsRequired: false
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### -Name
+
+Parameter description with `<inline code>`, raw &lt;brackets&gt; and \{curly\} brackets.
+
+```yaml
+Type: System.String
+DefaultValue: ''
+SupportsWildcards: false
+Aliases: []
+ParameterSets:
+- Name: ByName
+  Position: Named
+  IsRequired: true
+  ValueFromPipeline: false
+  ValueFromPipelineByPropertyName: false
+  ValueFromRemainingArguments: false
+DontShow: false
+AcceptedValues: []
+HelpMessage: ''
+```
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS

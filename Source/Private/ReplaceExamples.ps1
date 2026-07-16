@@ -1,15 +1,19 @@
 function ReplaceExamples() {
     <#
         .SYNOPSIS
-            Replace PlatyPS generated code block examples.
+            Replaces PlatyPS generated example sections with Docusaurus compatible markdown examples.
 
         .DESCRIPTION
-            Replaces custom fenced code blocks and placeholder examples, otherwise uses PlatyPS generated defaults.
+            PlatyPS preserves the authored example help almost verbatim which means we need to:
 
-            See link below for a detailed description of the determination process.
+            - wrap "native" examples (not using a code fence) in a powershell fenced code block
+            - normalize the language moniker of fenced examples (```, ```ps and ```posh all become ```powershell)
+            - replace the PlatyPS placeholder example (generated for commands without Get-Help
+              definitions) with a Docusaurus friendly variant
+            - insert a placeholder example when the command has no examples at all
 
-        .LINK
-            https://github.com/alt3/Docusaurus.Powershell/issues/14#issuecomment-568552556
+            The `-NoPlaceholderExamples` switch drops placeholder examples instead, resulting
+            in an empty `EXAMPLES` section.
     #>
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSReviewUnusedParameter", "NoPlaceHolderExamples",
         Justification = 'False positive as rule does not scan child scopes')]
@@ -21,126 +25,80 @@ function ReplaceExamples() {
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
     $content = ReadFile -MarkdownFile $MarkdownFile -Raw
-    [string]$newExamples = ""
+    $newExamples = [System.Collections.Generic.List[string]]::new()
 
     # ---------------------------------------------------------------------
     # extract all EXAMPLE nodes
-    # https://regex101.com/r/y4UxP8/7
     # ---------------------------------------------------------------------
-    $regexExtractExamples = [regex]'### (EXAMPLE|Example) [0-9][\s\S]*?(?=\n### EXAMPLE|\n## PARAMETERS|$)'
+    $regexExtractExamples = [regex]'### (EXAMPLE|Example) [0-9]+[\s\S]*?(?=\n### (EXAMPLE|Example) [0-9]+|\n## PARAMETERS|$)'
     $examples = $regexExtractExamples.Matches($content)
-
-    if ($examples.Count -eq 0) {
-        Write-Warning "Unable to find any EXAMPLE nodes. Please check your Get-Help definitions before filing an issue!"
-    }
 
     # process each EXAMPLE node
     $examples | ForEach-Object {
-        $example = $_
+        $example = $_.Value.Trim([char]10)
+
+        # split the markdown header from the example body
+        $header, $body = $example -split "`n", 2
+        $header = $header.Trim()
+        $body = "$body".Trim([char]10)
 
         # ---------------------------------------------------------------------
-        # do not modify if it's a PlatyPS placeholder example
-        # https://regex101.com/r/WOQL0l/4
+        # PlatyPS placeholder example, generated for commands without a Get-Help
+        # definition => replace with Docusaurus friendly variant (or drop)
         # ---------------------------------------------------------------------
-        $regexPlatyPlaceholderExample = [regex]::new('{{ Add example code here }}')
-        if ($example -match $regexPlatyPlaceholderExample) {
-
+        if ($body -match '{{ Add example description here }}' -and $body -notmatch '```') {
             if ($NoPlaceHolderExamples) {
-                Write-Verbose "=> Example 1: PlatyPS Placeholder (dropping)"
+                Write-Verbose "=> $($header): PlatyPS Placeholder (dropping)"
                 return
             }
 
-            Write-Verbose "=> Example 1: PlatyPS Placeholder (keeping)"
-            $newExamples += "$example`n"
+            Write-Verbose "=> $($header): PlatyPS Placeholder (keeping)"
+            $newExamples.Add((NewMarkdownExample -Header "### Example 1" -Code 'PS C:\> {{ Add example code here }}' -Description '{{ Add example description here }}'))
             return
         }
 
         # ---------------------------------------------------------------------
-        # PowerShell 6: re-construct Code Fenced example
-        # - https://regex101.com/r/lHdZHM/6 => without a description
-        # - https://regex101.com/r/CGjQco/3 => with a description
+        # code fenced example => normalize the moniker of the leading code fence
+        # (all other code fences are left untouched)
         # ---------------------------------------------------------------------
-        $regexPowerShell6TripleCodeFence = [regex]::new('(### EXAMPLE ([0-9|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n```\n)\n([\s\S]*?)\\`\\`\\`(\n\n|\n)([\s\S]*|\n)')
+        $regexLeadingFence = [regex]'^```(ps|posh|powershell)?[ \t]*\n'
 
-        if ($example -match $regexPowerShell6TripleCodeFence) {
-            $header = $matches[1]
-            $code = $matches[5]
-            $description = $matches[7]
+        if ($body -match $regexLeadingFence) {
+            Write-Verbose "=> $($header): Code Fenced example"
 
-            Write-Verbose "=> $($header): Triple Code Fence (PowerShell 6 and lower)"
-
-            $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
-            $newExamples += $newExample
+            $body = $regexLeadingFence.Replace($body, '```powershell' + "`n", 1)
+            $newExamples.Add("$header`n`n$body")
             return
         }
 
         # ---------------------------------------------------------------------
-        # PowerShell 7: re-construct PlatyPS Paired Code Fences example
-        # - https://regex101.com/r/FRA139/1 => without a description
-        # - https://regex101.com/r/YIIwUs/5 => with a description
+        # native example (no code fence) => Get-Help treats the first paragraph
+        # as code so we wrap it in a powershell fenced code block
         # ---------------------------------------------------------------------
-        $regexPowerShell7PairedCodeFences = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?)```\n```(\n\n|\n)([\s\S]*|\n)')
+        Write-Verbose "=> $($header): Native example"
 
-        if ($example -match $regexPowerShell7PairedCodeFences) {
-            $header = $matches[1]
-            $code = $matches[5]
-            $description = $matches[7]
+        $code, $description = $body -split "`n`r?`n", 2
+        $newExamples.Add((NewMarkdownExample -Header $header -Code $code -Description "$description"))
+    }
 
-            Write-Verbose "=> $($header): Paired Code Fences (PowerShell 7)"
-
-            $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
-            $newExamples += $newExample
-            return
-        }
-
-        # ---------------------------------------------------------------------
-        # PowerShell 7:  re-construct non-adjacent Code Fenced example
-        # - https://regex101.com/r/kLr98l/3 => without a description
-        # - https://regex101.com/r/eJH4cQ/6 => with a complex description
-        # ---------------------------------------------------------------------
-        $regexPowerShell7NonAdjacentCodeBlock = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n(```\n(```|```ps|```posh|```powershell)\n)([\s\S]*?)\\`\\`\\`(\n\n([\s\S]*)|\n)')
-
-        if ($example -match $regexPowerShell7NonAdjacentCodeBlock) {
-            $header = $matches[1]
-            $code = $matches[5] -replace ('```' + "`n"), ''
-            $description = $matches[7]
-
-            Write-Verbose "=> $($header): Non-Adjacent Code Block (PowerShell 7)"
-
-            $newExample = NewMarkdownExample -Header $header -Code $code -Description $description
-
-            $newExamples += $newExample
-            return
-        }
-
-        # ---------------------------------------------------------------------
-        # no matches so we simply use the unaltered PlatyPS generated example
-        # - https://regex101.com/r/rllmTj/1 => without a decription
-        # - https://regex101.com/r/kTH75U/1 => with a description
-        # ---------------------------------------------------------------------
-        $regexPlatyPsDefaults = [regex]::new('(### EXAMPLE ([0-9]|[0-9]+))\n```\n([\s\S]*)```\n([\s\S]*)')
-
-        if ($example -match $regexPlatyPsDefaults) {
-            $header = $matches[1]
-            $code = $matches[5] -replace ('```' + "`n"), ''
-            $description = $matches[7]
-
-            Write-Verbose "=> $($header): PlatyPS Default (all PowerShell versions)"
-
-            $newExamples += "$example`n"
-            return
-        }
-
-        # we should never reach this point
-        Write-Warning "Unsupported code block detected, please file an issue containing the error message below at https://github.com/alt3/Docusaurus.Powershell/issues"
-        Write-Warning $example
+    # ---------------------------------------------------------------------
+    # no examples at all => insert a placeholder example (or leave empty)
+    # ---------------------------------------------------------------------
+    if ($examples.Count -eq 0 -and -not $NoPlaceHolderExamples) {
+        Write-Verbose "=> No examples found: inserting placeholder example"
+        $newExamples.Add((NewMarkdownExample -Header "### Example 1" -Code 'PS C:\> {{ Add example code here }}' -Description '{{ Add example description here }}'))
     }
 
     # replace EXAMPLES section in content with updated examples
-    # https://regex101.com/r/8OEW0w/1/
-    $regex = '## EXAMPLES\n[\s\S]+## PARAMETERS'
-    $newExamples = $newExamples.Replace('$', '$$') # Escape $ characters in new examples (https://github.com/alt3/Docusaurus.Powershell/pull/98)
-    $replacement = "## EXAMPLES`n`n$($newExamples)## PARAMETERS"
+    $regex = '## EXAMPLES\n[\s\S]+?## PARAMETERS'
+    $joinedExamples = ($newExamples -join "`n`n").Replace('$', '$$') # Escape regex replacement $-substitutions (https://github.com/alt3/Docusaurus.Powershell/pull/98)
+
+    if ($newExamples.Count -eq 0) {
+        $replacement = "## EXAMPLES`n`n## PARAMETERS"
+    } else {
+        $replacement = "## EXAMPLES`n`n$($joinedExamples)`n`n## PARAMETERS"
+    }
+
     $content = [regex]::replace($content, $regex, $replacement)
 
     # replace file

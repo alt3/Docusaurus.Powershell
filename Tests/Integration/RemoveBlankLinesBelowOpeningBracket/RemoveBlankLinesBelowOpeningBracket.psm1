@@ -4,6 +4,9 @@ function Test-RemoveBlankLinesBelowOpeningBracket {
     Dummy module to ensure that blank lines BELOW a line ending with an
     opening curly bracket are removed.
 
+    .DESCRIPTION
+    Required because PlatyPS will not generate help for commands using an .EXAMPLE without a .DESCRIPTION.
+
     .EXAMPLE
     ```powershell
     function SomeFunction

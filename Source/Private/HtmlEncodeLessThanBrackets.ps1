@@ -1,10 +1,12 @@
 function HtmlEncodeLessThanBrackets() {
     <#
         .SYNOPSIS
-            Html encode platyPS generated `\<` brackets (except inside codeblocks).
+            Html encode `<` brackets, both raw and backslash-escaped (except inside code
+            blocks and inline code).
 
-        .LINK
-            https://regex101.com/r/khoBBE/1
+        .NOTES
+            Required because MDX treats raw `<` brackets as JSX component tags which
+            would break the Docusaurus build.
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
@@ -23,11 +25,19 @@ function HtmlEncodeLessThanBrackets() {
         }
 
         if ($codeblock -eq $False) {
-            $content[$i] = [regex]::replace($line, '(\\\\\\\<|\\\<)', '&lt;')
-        }
+            # transform the line except for inline code segments
+            $segments = [regex]::Split($line, '(`[^`]*`)')
 
-        if ($codeblock -eq $True) {
-            $content[$i] = [regex]::replace($line, '(\\\\\\\<|\\\<)', '<')
+            for ($s = 0; $s -lt $segments.Count; $s++) {
+                if ($segments[$s].StartsWith('`')) {
+                    continue
+                }
+
+                $segments[$s] = [regex]::replace($segments[$s], '(\\\\\\\<|\\\<)', '&lt;') # backslash-escaped brackets
+                $segments[$s] = [regex]::replace($segments[$s], '\<', '&lt;') # raw brackets
+            }
+
+            $content[$i] = $segments -join ''
         }
 
         $i++

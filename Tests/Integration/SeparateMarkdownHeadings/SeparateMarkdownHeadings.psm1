@@ -6,6 +6,9 @@ function Test-SeparateMarkdownHeadings {
         .SYNOPSIS
             Dummy module to test PowerShell 7 NATIVE multi-line code examples
 
+        .DESCRIPTION
+            Required because PlatyPS will not generate help for commands using an .EXAMPLE without a .DESCRIPTION.
+
         .EXAMPLE
             $shouldInsertBlankLine
 

@@ -217,10 +217,22 @@ function New-DocusaurusHelp() {
             $commandHelpObjects = foreach ($moduleCommand in Get-Command -Module $Module -CommandType Cmdlet, Function, Filter) {
                 try {
                     # child scope disables StrictMode which breaks PlatyPS (https://github.com/PowerShell/platyPS/issues/800)
-                    & {
+                    $newCommandHelp = & {
                         Set-StrictMode -Off
                         New-CommandHelp -CommandInfo $moduleCommand -ErrorAction Stop
                     }
+
+                    # restore the synopsis discarded by PlatyPS for commands with a Get-Help
+                    # definition without .DESCRIPTION and .EXAMPLE nodes
+                    if ($newCommandHelp.Synopsis -eq '{{ Fill in the Synopsis }}') {
+                        $helpSynopsis = (Get-Help -Name $moduleCommand.Name).Synopsis
+
+                        if ($helpSynopsis -notmatch "^\s*$([regex]::Escape($moduleCommand.Name))") {
+                            $newCommandHelp.Synopsis = $helpSynopsis.Trim()
+                        }
+                    }
+
+                    $newCommandHelp
                 } catch {
                     Write-Warning "Unable to generate help for command '$($moduleCommand.Name)': $($_.Exception.Message)"
                     Write-Warning "Known PlatyPS limitation: commands using an .EXAMPLE without a .DESCRIPTION in their comment-based help will fail."
@@ -330,9 +342,10 @@ function New-DocusaurusHelp() {
     } | Out-Null
 
     # PlatyPS exports into a module-named subfolder, flatten it into the temp folder
-    Get-ChildItem -Path $tempFolder -Directory | ForEach-Object {
-        Get-ChildItem -Path $_.FullName -Filter *.md | Move-Item -Destination $tempFolder -Force
-        Remove-Item -Path $_.FullName -Recurse -Force
+    $moduleSubFolder = Join-Path -Path $tempFolder -ChildPath $moduleName
+    if (Test-Path -Path $moduleSubFolder) {
+        Get-ChildItem -Path $moduleSubFolder -Filter *.md | Move-Item -Destination $tempFolder -Force
+        Remove-Item -Path $moduleSubFolder -Recurse -Force
     }
 
     if (-not (Get-ChildItem -Path $tempFolder -Filter *.md)) {
@@ -376,6 +389,11 @@ function New-DocusaurusHelp() {
 
         ReplaceHeader1 -MarkdownFile $mdxFile -KeepHeader1:$KeepHeader1
 
+        # remove PlatyPS generated noise
+        RemoveAliasesSection -MarkdownFile $mdxFile
+        RemoveDefaultParameterSetHeading -MarkdownFile $mdxFile
+        RemoveSectionPlaceholders -MarkdownFile $mdxFile
+
         if ($PrependMarkdown) {
             InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $PrependMarkdown -Mode "Prepend"
         }
@@ -394,15 +412,14 @@ function New-DocusaurusHelp() {
 
         ## Continue with general enrichment
         InsertPowerShellMonikers -MarkdownFile $mdxFile
-        UnescapeSpecialChars -MarkdownFile $mdxFile
         SeparateMarkdownHeadings -MarkdownFile $mdxFile
 
         # Line by line changes
-        UnescapeInlineCode -MarkdownFile $mdxFile
         HtmlEncodeLessThanBrackets -MarkdownFile $mdxFile
         HtmlEncodeGreaterThanBrackets -MarkdownFile $mdxFile
         EscapeOpeningCurlyBrackets -MarkdownFile $mdxFile
         EscapeClosingCurlyBrackets -MarkdownFile $mdxFile
+        RemoveRedundantBlankLines -MarkdownFile $mdxFile
 
         # all done, set line endings again
         SetLfLineEndings -MarkdownFile $mdxFile

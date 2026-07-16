@@ -4,6 +4,9 @@ function Test-IndentLineWithOpeningBracket {
     Dummy module to ensure that indentation is fixed correctly (but only for lines that
     are ending with an opening curly bracket AND with first char at position 0).
 
+    .DESCRIPTION
+    Required because PlatyPS will not generate help for commands using an .EXAMPLE without a .DESCRIPTION.
+
     .EXAMPLE
     ```powershell
     InModuleScope MyModule {
