@@ -13,6 +13,16 @@ function Test-ParameterYamlBlocks {
             - the SYNTAX section keeps a heading for each named parameter set
             - parameter descriptions are transformed like any other markdown (encoding
               raw <brackets> and {curly} brackets but not `<inline code>`)
+            - INPUTS and OUTPUTS render the type description when provided and no
+              placeholder when omitted
+
+        .INPUTS
+            System.String
+
+        .OUTPUTS
+            System.IO.FileInfo
+
+            A described output type should render this text without a placeholder.
 
         .PARAMETER Name
             Parameter description with `<inline code>`, raw <brackets> and {curly} brackets.

@@ -17,7 +17,9 @@ function New-DocusaurusHelp() {
             - `PlatyPSMarkdownPath`: generates documentation for already prepared PlatyPS markdown files
 
         .OUTPUTS
-            System.Object
+            System.IO.FileInfo
+
+            One file object for each generated file so the results are ready for further processing.
 
         .EXAMPLE
             New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell

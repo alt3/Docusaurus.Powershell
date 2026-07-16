@@ -31,6 +31,8 @@ Ensures that:
 - the SYNTAX section keeps a heading for each named parameter set
 - parameter descriptions are transformed like any other markdown (encoding
   raw &lt;brackets&gt; and \{curly\} brackets but not `<inline code>`)
+- INPUTS and OUTPUTS render the type description when provided and no
+  placeholder when omitted
 
 ## EXAMPLES
 
@@ -116,7 +118,13 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
+### System.String
+
 ## OUTPUTS
+
+### System.IO.FileInfo
+
+A described output type should render this text without a placeholder.
 
 ## NOTES
 
