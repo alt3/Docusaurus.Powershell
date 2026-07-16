@@ -1,0 +1,54 @@
+---
+id: Test-RelatedLinks
+title: Test-RelatedLinks
+hide_title: false
+hide_table_of_contents: false
+---
+
+## SYNOPSIS
+
+Dummy module to ensure RELATED LINKS render as clickable links (or plain text).
+
+## SYNTAX
+
+```powershell
+Test-RelatedLinks
+```
+
+## DESCRIPTION
+
+PlatyPS renders .LINK help entries as markdown list items but generates
+links without clickable text for bare urls and links without a target
+for text entries.
+Both should be repaired.
+
+## EXAMPLES
+
+### Example 1
+
+```powershell
+PS C:\> {{ Add example code here }}
+```
+
+\{\{ Add example description here \}\}
+
+## PARAMETERS
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS
+
+- [https://example.com/bare-url-should-become-clickable](https://example.com/bare-url-should-become-clickable)
+- Text entries should render as plain text
+- about_CommonParameters

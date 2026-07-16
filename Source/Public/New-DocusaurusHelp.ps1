@@ -404,6 +404,7 @@ function New-DocusaurusHelp() {
         RemoveAliasesSection -MarkdownFile $mdxFile
         RemoveDefaultParameterSetHeading -MarkdownFile $mdxFile
         RemoveSectionPlaceholders -MarkdownFile $mdxFile
+        RepairRelatedLinks -MarkdownFile $mdxFile
 
         if ($PrependMarkdown) {
             InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $PrependMarkdown -Mode "Prepend"
