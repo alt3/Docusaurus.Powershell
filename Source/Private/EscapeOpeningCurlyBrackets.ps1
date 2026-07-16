@@ -1,18 +1,17 @@
 function EscapeOpeningCurlyBrackets() {
     <#
         .SYNOPSIS
-            Escape opening curly brackets so `{` becomes `\{` (except inside codeblocks).
+            Escape opening curly brackets so `{` becomes `\{` (except inside code blocks
+            and inline code).
 
-        .LINK
-            https://regex101.com/r/T14SYa/1
-
-        .LINK
-            https://regex101.com/r/bI0yGB/1
+        .NOTES
+            Required because MDX treats curly brackets as JSX expressions which would
+            break the Docusaurus build. Code blocks and inline code need no escaping
+            (and would render the backslashes literally).
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
     )
-
 
     $content = ReadFile -MarkdownFile $MarkdownFile
 
@@ -27,9 +26,18 @@ function EscapeOpeningCurlyBrackets() {
         }
 
         if ($codeblock -eq $False) {
-            $line = [regex]::replace($line, '{', '\{')
+            # transform the line except for inline code segments
+            $segments = [regex]::Split($line, '(`[^`]*`)')
 
-            $content[$i] = $line
+            for ($s = 0; $s -lt $segments.Count; $s++) {
+                if ($segments[$s].StartsWith('`')) {
+                    continue
+                }
+
+                $segments[$s] = [regex]::replace($segments[$s], '{', '\{')
+            }
+
+            $content[$i] = $segments -join ''
         }
 
         $i++
