@@ -10,6 +10,12 @@ function New-DocusaurusHelp() {
 
             Also creates a `sidebar.js` file for simplified integration into the Docusaurus sidebar menu.
 
+            Supports three input modes, matching the SYNTAX sections shown above:
+
+            - `Module`: generates documentation for all commands exported by the given module
+            - `CommandHelp`: generates documentation for the given PlatyPS `CommandHelp` objects, allowing you to pre-process them first
+            - `PlatyPSMarkdownPath`: generates documentation for already prepared PlatyPS markdown files
+
         .OUTPUTS
             System.Object
 
