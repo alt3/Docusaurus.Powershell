@@ -155,9 +155,10 @@ jobs:
   # - is skipped completely UNLESS on the main branch (or v2 for prereleases)
   # - is skipped completely UNLESS the commit message contains "[release]"
   # - the psgallery published manifest already contains the bumped module version
-  # - the bump-main step bumps copies the artifact manifest to main to match
-  #   the PSGallery-published version (without adding [release] to the commit
-  #   message)
+  # - the bump-main step copies the artifact manifest to main to match the
+  #   PSGallery-published version and regenerates the website command reference
+  #   so the page footers show the released version (without adding [release]
+  #   to the commit message)
   # -----------------------------------------------------------------------------
   publish:
     name: Publish

@@ -1,6 +1,8 @@
 <#
     .SYNOPSIS
-    Replaces module manifest on main with bumped manifest in the artifact, then creates the commit.
+    Replaces module manifest on main with bumped manifest in the artifact, regenerates the
+    website command reference (so the page footer shows the released version), then creates
+    the commit.
 
     .PARAMETER ArtifactFolder
     Path to the artifact holding the newly built module (e.g. Modules/Alt3.Docusaurus.Powershell)
@@ -31,7 +33,7 @@ Write-Output "=> artifact manifest = $artifactManifestPath"
 $mainManifestPath = Join-Path $MainFolder -ChildPath "Source" | Join-Path -ChildPath "$moduleName.psd1"
 Write-Output "=> main manifest     = $mainManifestPath"
 
-$commitMessage = "Bump manifest to $artifactVersion"
+$commitMessage = "Bump manifest to $artifactVersion and regenerate command reference"
 Write-Output "=> commit message    = $commitMessage"
 
 $artifactManifest = Get-Item -Path $artifactManifestPath -Verbose
@@ -42,6 +44,10 @@ Write-Output "Replacing manifest on main:"
 Copy-Item -Path $artifactManifest -Destination $mainManifest -Force -Verbose
 Write-Output "Updated manifest on main:"
 Get-Content -Path $mainManifest.FullName
+
+Write-Output "========================================================================================================================"
+Write-Output "Regenerating website command reference (so the page footer shows the released version):"
+& (Join-Path $MainFolder -ChildPath "build-module.ps1") -GenerateDocs
 
 Write-Output "========================================================================================================================"
 Write-Output "Switch working directory"
@@ -72,6 +78,7 @@ git status
 Write-Output "========================================================================================================================"
 Write-Output "Git commit:"
 git add $mainManifest.FullName
+git add website/docs/commands
 git commit -m $commitMessage
 git status
 

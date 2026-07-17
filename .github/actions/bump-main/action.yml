@@ -1,5 +1,5 @@
 name: Bump Module Manifest Version
-description: "Replaces module manifest on main with bumped version, then commits the change to main"
+description: "Replaces module manifest on main with bumped version, regenerates the website command reference, then commits the changes to main"
 
 inputs:
   artifactPath:
