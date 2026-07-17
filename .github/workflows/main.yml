@@ -23,20 +23,33 @@ jobs:
       run: $PSVersionTable.PSVersion
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v1.1.1
+      uses: gittools/actions/gitversion/setup@v4.7.0
       with:
-        versionSpec: '5.x'
+        versionSpec: '6.x'
 
     - name: Execute GitVersion
       id: gitversion
-      uses: gittools/actions/gitversion/execute@v1.1.1
+      uses: gittools/actions/gitversion/execute@v4.7.0
       with:
         useConfigFile: true
+
+    # replicates the GitVersion 5 LegacySemVerPadded format (e.g. 2.0.0-rc0001)
+    # because PSGallery prerelease strings must be alphanumeric-only
+    - name: Compose PSGallery compatible version
+      id: version
+      shell: pwsh
+      run: |
+        $version = '${{ steps.gitversion.outputs.majorMinorPatch }}'
+        if ('${{ steps.gitversion.outputs.preReleaseLabel }}') {
+          $version += '-{0}{1:d4}' -f '${{ steps.gitversion.outputs.preReleaseLabel }}', [int]'${{ steps.gitversion.outputs.preReleaseNumber }}'
+        }
+        Write-Output "PSGallery version = $version"
+        "version=$version" >> $env:GITHUB_OUTPUT
 
     - name: Install required PowerShell modules
       uses: JustinGrote/ModuleFast-action@main
@@ -48,30 +61,30 @@ jobs:
       uses: PoshCode/actions/build-module@main
       with:
         path: ${{github.workspace}}/Source
-        version: ${{ steps.gitversion.outputs.LegacySemVerPadded }}
+        version: ${{ steps.version.outputs.version }}
         destination: ${{github.workspace}}/output
 
     - name: Upload artifact Modules
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       id: upload-artifact-modules
       with:
         name: Modules
         path: ${{github.workspace}}/output
 
     - name: Upload artifact PesterTests
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: PesterTests
         path: ${{github.workspace}}/Tests
 
     - name: Upload artifact RequiredModules
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: RequiredModules
         path: ${{github.workspace}}/Dev/RequiredModules.psd1
 
     - name: Upload artifact PSScriptAnalyzer
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: PSScriptAnalyzer
         path: ${{github.workspace}}/PSScriptAnalyzerSettings.psd1
@@ -87,7 +100,7 @@ jobs:
       run: $PSVersionTable.PSVersion
 
     - name: Checkout sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
@@ -127,7 +140,7 @@ jobs:
       run: $PSVersionTable.PSVersion
 
     - name: Download artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
 
     - name: Display structure of downloaded artifacts
       run: ls -R
@@ -144,7 +157,7 @@ jobs:
         additionalModulePaths: ${{github.workspace}}/Modules
 
     - name: Upload artifact PesterResults
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: matrix.os == 'windows-2022' # only execute on this OS
       with:
         name: PesterResults
@@ -172,23 +185,36 @@ jobs:
       run: $PSVersionTable.PSVersion
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v1.1.1
+      uses: gittools/actions/gitversion/setup@v4.7.0
       with:
-        versionSpec: '5.x'
+        versionSpec: '6.x'
 
     - name: Execute GitVersion
       id: gitversion
-      uses: gittools/actions/gitversion/execute@v1.1.1
+      uses: gittools/actions/gitversion/execute@v4.7.0
       with:
         useConfigFile: true
 
+    # replicates the GitVersion 5 LegacySemVerPadded format (e.g. 2.0.0-rc0001)
+    # because PSGallery prerelease strings must be alphanumeric-only
+    - name: Compose PSGallery compatible version
+      id: version
+      shell: pwsh
+      run: |
+        $version = '${{ steps.gitversion.outputs.majorMinorPatch }}'
+        if ('${{ steps.gitversion.outputs.preReleaseLabel }}') {
+          $version += '-{0}{1:d4}' -f '${{ steps.gitversion.outputs.preReleaseLabel }}', [int]'${{ steps.gitversion.outputs.preReleaseNumber }}'
+        }
+        Write-Output "PSGallery version = $version"
+        "version=$version" >> $env:GITHUB_OUTPUT
+
     - name: Download Artifacts
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
 
     # Publish-Module validates the manifest which requires the modules
     # listed in RequiredModules to be present on this runner
@@ -212,11 +238,11 @@ jobs:
         artifactPath: Modules/${{env.MODULE_NAME}}
 
     - name: Create Github Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v3
       with:
-        name: Release ${{ steps.gitversion.outputs.LegacySemVerPadded }}
-        tag_name: ${{ env.GitVersion_LegacySemVerPadded }}
+        name: Release ${{ steps.version.outputs.version }}
+        tag_name: ${{ steps.version.outputs.version }}
         target_commitish: ${{ github.ref_name }}
         draft: false
-        prerelease: ${{ contains(steps.gitversion.outputs.LegacySemVerPadded, '-') }}
+        prerelease: ${{ contains(steps.version.outputs.version, '-') }}
         generate_release_notes: true
