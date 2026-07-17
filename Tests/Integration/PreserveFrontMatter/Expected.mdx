@@ -1,0 +1,55 @@
+---
+id: Test-PreserveFrontMatter
+title: Test-PreserveFrontMatter
+description: 'User-enriched description: with yaml-hostile characters'
+hide_title: false
+hide_table_of_contents: false
+image: https://example.com/social-card.png
+---
+
+## SYNOPSIS
+
+Dummy module to ensure user-enriched front matter keys are preserved (https://github.com/alt3/Docusaurus.Powershell/issues/185).
+
+## SYNTAX
+
+```powershell
+Test-PreserveFrontMatter
+```
+
+## DESCRIPTION
+
+Users can enrich the front matter by adding keys to `CommandHelp.Metadata`
+before passing the objects to `New-DocusaurusHelp -CommandHelp`, so:
+
+- user-added keys (like `description`) must survive the front matter replacement
+- preserved keys must win over generated values (`-MetaDescription` must not
+  overwrite an existing `description` key)
+- the PlatyPS-native keys must still be replaced with the Docusaurus variables
+
+## EXAMPLES
+
+### Example 1
+
+```powershell
+PS C:\> {{ Add example code here }}
+```
+
+\{\{ Add example description here \}\}
+
+## PARAMETERS
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS

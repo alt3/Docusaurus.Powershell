@@ -70,6 +70,9 @@ function New-DocusaurusHelp() {
             New-DocusaurusHelp -CommandHelp $commandHelp
             ```
 
+            Keys added to the `Metadata` property (e.g. `description`) will appear in the
+            Docusaurus front matter and always win over the generated variables.
+
         .PARAMETER PlatyPSMarkdownPath
             Specifies a path containing already prepared PlatyPS markdown files for processing.
 
@@ -96,6 +99,9 @@ function New-DocusaurusHelp() {
             Optional string that will be inserted into Docusaurus front matter to be used as html meta tag 'description'.
 
             If placeholder `%1` is detected in the string, it will be replaced by the command name.
+
+            Will not overwrite an existing `description` front matter key (e.g. added
+            via the CommandHelp `Metadata` property).
 
         .PARAMETER MetaKeywords
             Optional array of keywords inserted into Docusaurus front matter to be used as html meta tag `keywords`.
