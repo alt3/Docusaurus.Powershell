@@ -9,9 +9,11 @@ BeforeAll {
     Import-Module $test.Module -Force -DisableNameChecking -Verbose:$False -Scope Global
 
     # enrich the CommandHelp front matter like the advanced user workflow described
-    # in https://github.com/alt3/Docusaurus.Powershell/issues/185
+    # in https://github.com/alt3/Docusaurus.Powershell/issues/185. The multi-line
+    # description forces a yaml folded block scalar (>-) and contains characters
+    # that must NOT be html-encoded/escaped inside the front matter
     $commandHelp = New-CommandHelp -CommandInfo (Get-Command Test-PreserveFrontMatter)
-    $commandHelp.Metadata['description'] = 'User-enriched description: with yaml-hostile characters'
+    $commandHelp.Metadata['description'] = "User-enriched description: with yaml-hostile characters, <angle> and {curly} brackets`nand a second line so PlatyPS renders a folded block scalar."
     $commandHelp.Metadata['image'] = 'https://example.com/social-card.png'
 
     # generate and read Docusaurus files in $env:Temp, -MetaDescription MUST NOT

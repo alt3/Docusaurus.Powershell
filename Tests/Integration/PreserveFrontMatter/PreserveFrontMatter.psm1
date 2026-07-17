@@ -14,6 +14,8 @@ function Test-PreserveFrontMatter {
             - preserved keys must win over generated values (`-MetaDescription` must not
               overwrite an existing `description` key)
             - the PlatyPS-native keys must still be replaced with the Docusaurus variables
+            - front matter content must not be html-encoded/escaped (it is yaml data,
+              MDX escaping requirements do not apply)
     #>
     [CmdletBinding()]
     param()

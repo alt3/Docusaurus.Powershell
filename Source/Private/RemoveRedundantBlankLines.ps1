@@ -16,8 +16,22 @@ function RemoveRedundantBlankLines() {
     $newContent = [System.Collections.Generic.List[string]]::new()
     [bool]$codeblock = $False
     [bool]$previousLineBlank = $False
+    [bool]$frontmatter = $content[0] -eq '---'
+    $i = 0
 
     foreach($line in $content) {
+        # skip the front matter, blank lines inside multi-line yaml values are data
+        if ($frontmatter) {
+            if ($i -gt 0 -and $line -eq '---') {
+                $frontmatter = $False
+            }
+
+            $i++
+            $newContent.Add($line)
+            continue
+        }
+        $i++
+
         if ($line -match '```') {
             $codeblock = -not $codeblock
         }

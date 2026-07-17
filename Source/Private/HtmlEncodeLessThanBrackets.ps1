@@ -16,8 +16,19 @@ function HtmlEncodeLessThanBrackets() {
 
     $i = 0
     [bool]$codeblock = $False
+    [bool]$frontmatter = $content[0] -eq '---'
 
     foreach($line in $content) {
+        # skip the front matter, it is yaml data without MDX escaping requirements
+        if ($frontmatter) {
+            if ($i -gt 0 -and $line -eq '---') {
+                $frontmatter = $False
+            }
+
+            $i++
+            continue
+        }
+
         if ($line -match '```' -and $codeblock -eq $False) {
             $codeblock = $True
         } elseif ($line -match '```' -and $codeblock -eq $True) {

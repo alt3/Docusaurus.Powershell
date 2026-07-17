@@ -1,7 +1,9 @@
 ---
 id: Test-PreserveFrontMatter
 title: Test-PreserveFrontMatter
-description: 'User-enriched description: with yaml-hostile characters'
+description: >-
+  User-enriched description: with yaml-hostile characters, <angle> and {curly} brackets
+  and a second line so PlatyPS renders a folded block scalar.
 hide_title: false
 hide_table_of_contents: false
 image: https://example.com/social-card.png
@@ -26,6 +28,8 @@ before passing the objects to `New-DocusaurusHelp -CommandHelp`, so:
 - preserved keys must win over generated values (`-MetaDescription` must not
   overwrite an existing `description` key)
 - the PlatyPS-native keys must still be replaced with the Docusaurus variables
+- front matter content must not be html-encoded/escaped (it is yaml data,
+  MDX escaping requirements do not apply)
 
 ## EXAMPLES
 
