@@ -1,6 +1,4 @@
 mode: ContinuousDelivery
-assembly-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILDCOUNT ?? 0}'
-assembly-informational-format: '{NuGetVersionV2}+Build.{env:BUILDCOUNT ?? 0}.Date.{CommitDate}.Branch.{env:SAFEBRANCHNAME ?? unknown}.Sha.{Sha}'
 major-version-bump-message: '\+?semver:\s?(breaking|major)'
 minor-version-bump-message: '\+?semver:\s?(feature|minor)'
 patch-version-bump-message: '\+?semver:\s?(fix|patch)'
@@ -8,8 +6,9 @@ no-bump-message: '\+?semver:\s?(none|skip)'
 branches:
   main:
     increment: Patch
+    label: ''
   v2:
     regex: ^v2$
-    tag: rc
+    label: rc
     increment: Patch
     source-branches: ['main']
