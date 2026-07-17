@@ -7,12 +7,18 @@ Adding auto-generated Get-Help pages to to your Docusaurus website only requires
 
 ## Generate PowerShell Module Documentation
 
-To generate Get-Help pages for any PowerShell module run the following command.
+To generate Get-Help pages for any PowerShell module run one of the following commands.
 
 > For demo data, replace `YourModuleName` with e.g. `Microsoft.PowerShell.Management`
 
 ```powershell
 New-DocusaurusHelp -Module "YourModuleName"
+```
+
+```powershell
+# advanced use case supporting CommandHelp object pre-processing
+$commandHelp = New-CommandHelp -CommandInfo (Get-Command -Module "YourModuleName")
+New-DocusaurusHelp -CommandHelp $commandHelp
 ```
 
 After the command has completed, the `docusaurus/docs/commands` folder
