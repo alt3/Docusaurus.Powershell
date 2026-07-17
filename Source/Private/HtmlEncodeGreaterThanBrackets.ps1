@@ -1,25 +1,34 @@
 function HtmlEncodeGreaterThanBrackets() {
     <#
         .SYNOPSIS
-            Html encode platyPS generated `\>` brackets (except inside codeblocks).
+            Html encode `>` brackets, both raw and backslash-escaped (except inside code
+            blocks and inline code).
 
-        .LINK
-            https://regex101.com/r/T14SYa/1
-
-        .LINK
-            https://regex101.com/r/bI0yGB/1
+        .NOTES
+            Ensures brackets render as-authored because MDX/markdown would otherwise
+            swallow the backslash (or render a blockquote).
     #>
     param(
         [Parameter(Mandatory = $True)][System.IO.FileSystemInfo]$MarkdownFile
     )
 
-
     $content = ReadFile -MarkdownFile $MarkdownFile
 
     $i = 0
     [bool]$codeblock = $False
+    [bool]$frontmatter = $content[0] -eq '---'
 
     foreach($line in $content) {
+        # skip the front matter, it is yaml data without MDX escaping requirements
+        if ($frontmatter) {
+            if ($i -gt 0 -and $line -eq '---') {
+                $frontmatter = $False
+            }
+
+            $i++
+            continue
+        }
+
         if ($line -match '```' -and $codeblock -eq $False) {
             $codeblock = $True
         } elseif ($line -match '```' -and $codeblock -eq $True) {
@@ -27,14 +36,20 @@ function HtmlEncodeGreaterThanBrackets() {
         }
 
         if ($codeblock -eq $False) {
-            $line = [regex]::replace($line, '([a-zA-Z]:)\\\>', '$1\\&gt;') # something special for C:\>
-            $line = [regex]::replace($line, '\\\>', '&gt;')
+            # transform the line except for inline code segments
+            $segments = [regex]::Split($line, '(`[^`]*`)')
 
-            $content[$i] = $line
-        }
+            for ($s = 0; $s -lt $segments.Count; $s++) {
+                if ($segments[$s].StartsWith('`')) {
+                    continue
+                }
 
-        if ($codeblock -eq $True) {
-            $content[$i] = [regex]::replace($line, '(?<![a-zA-Z|\`]:)\\\>', '>')
+                $segments[$s] = [regex]::replace($segments[$s], '([a-zA-Z]:)\\\>', '$1\\&gt;') # something special for C:\>
+                $segments[$s] = [regex]::replace($segments[$s], '\\\>', '&gt;') # backslash-escaped brackets
+                $segments[$s] = [regex]::replace($segments[$s], '\>', '&gt;') # raw brackets
+            }
+
+            $content[$i] = $segments -join ''
         }
 
         $i++

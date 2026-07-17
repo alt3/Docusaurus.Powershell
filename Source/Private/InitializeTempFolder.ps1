@@ -33,6 +33,11 @@ function InitializeTempFolder() {
             return
         }
 
+        if ($_ -eq 'CommandHelp' -and $null -ne $variable.Value) { # log command names instead of the deep CommandHelp objects
+            $parameterHash.Add($_, @($variable.Value | ForEach-Object { $_.Title }))
+            return
+        }
+
         $parameterHash.Add($_, $variable.Value)
     }
 

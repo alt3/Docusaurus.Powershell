@@ -2,9 +2,6 @@ function NewMarkdownExample() {
     <#
         .SYNOPSIS
             Generates a new markdown example block.
-
-        .NOTES
-            PowerShell language monicker inserted by the SetPowerShellMoniker function.
     #>
     param(
         [Parameter(Mandatory = $True)][string]$Header,
@@ -12,15 +9,13 @@ function NewMarkdownExample() {
         [Parameter(Mandatory = $False)][string]$Description = $null
     )
 
-    $example = "$Header`n"
-    $example += '```' + "`n"
-    $example += $Code
-    $example += '```' + "`n"
+    $example = "$Header`n`n"
+    $example += '```powershell' + "`n"
+    $example += "$($Code.Trim([char]10))`n"
+    $example += '```'
 
-    if ([string]::IsNullOrEmpty($Description)) {
-        $example += "`n"
-    } else {
-        $example += "`n$Description`n"
+    if (-not [string]::IsNullOrWhiteSpace($Description)) {
+        $example += "`n`n$($Description.Trim([char]10))"
     }
 
     return $example

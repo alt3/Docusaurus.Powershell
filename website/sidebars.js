@@ -19,6 +19,7 @@ module.exports = {
       'faq/multi-line-examples',
       'faq/multiple-modules',
       'faq/monolithic-modules',
+      'faq/front-matter',
       'faq/search',
       'faq/ci-cd',
       'faq/vendor-agnostic',

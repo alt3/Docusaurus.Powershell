@@ -14,7 +14,11 @@ module.exports = {
   organizationName: 'alt3', // Usually your GitHub org/user name.
   projectName: 'Docusaurus.Powershell', // Usually your repo name.
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
   themeConfig: {
     navbar: {
       title: 'Docusaurus.Powershell',
@@ -23,6 +27,10 @@ module.exports = {
         src: 'img/logo.svg',
       },
       items: [
+        {
+          type: 'docsVersionDropdown',
+          position: 'left',
+        },
         { to: 'docs/introduction', label: 'Docs', position: 'right' },
         { to: 'docs/commands/New-DocusaurusHelp', label: 'Commands', position: 'right' },
         {
@@ -39,6 +47,7 @@ module.exports = {
       appId: 'J6HI8PLPVO',
       apiKey: '7da5313674c5bdc00c7af45eda989ae2',
       indexName: 'docusaurus-powershell',
+      contextualSearch: true, // prefer search results for the active docs version
       algoliaOptions: {}, // Optional, if provided by Algolia
     },
     footer: {
@@ -90,7 +99,25 @@ module.exports = {
         docs: {
           path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/alt3/Docusaurus.Powershell/edit/main/website',
+          // no edit links for frozen versions (editing a frozen snapshot is pointless)
+          editUrl: ({ version, versionDocsDirPath, docPath }) =>
+            version === 'current'
+              ? `https://github.com/alt3/Docusaurus.Powershell/edit/main/website/${versionDocsDirPath}/${docPath}`
+              : undefined,
+          // The `docs` folder always holds the active version (v2), served at
+          // unversioned /docs/... URIs. Older versions are frozen snapshots in
+          // `versioned_docs` and are never touched by `build-module.ps1 -GenerateDocs`.
+          lastVersion: 'current',
+          includeCurrentVersion: true,
+          versions: {
+            current: {
+              label: 'v2',
+              path: '', // active version uses unversioned URIs
+            },
+            v1: {
+              label: 'v1', // frozen, served at /docs/v1/...
+            },
+          },
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -99,9 +126,9 @@ module.exports = {
     ],
   ],
   future: {
-    experimental_faster: true, // Use new @docusaurus/faster features for faster build
+    faster: true, // Use new @docusaurus/faster features for faster build
     v4: {
-      removeLegacyPostBuildHeadAttribute: true, // To support SSG worker threads (experimental_faster.ssgWorkerThreads)
+      removeLegacyPostBuildHeadAttribute: true, // To support SSG worker threads (faster.ssgWorkerThreads)
     },
   }
 };

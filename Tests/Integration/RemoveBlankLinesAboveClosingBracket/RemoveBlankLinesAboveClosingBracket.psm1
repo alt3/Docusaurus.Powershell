@@ -4,6 +4,9 @@ function Test-RemoveBlankLinesAboveClosingBracket {
     Dummy module to ensure that black lines ABOVE a line ending with
     a closing curly bracket are removed.
 
+    .DESCRIPTION
+    Required because PlatyPS will not generate help for commands using an .EXAMPLE without a .DESCRIPTION.
+
     .EXAMPLE
     ```powershell
     function SomeFunction {

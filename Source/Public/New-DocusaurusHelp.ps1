@@ -10,8 +10,15 @@ function New-DocusaurusHelp() {
 
             Also creates a `sidebar.js` file for simplified integration into the Docusaurus sidebar menu.
 
+            **Supports two input modes**, matching the SYNTAX sections shown above:
+
+            - `Module`: generates documentation for all commands exported by the given module
+            - `CommandHelp`: generates documentation for the given PlatyPS `CommandHelp` objects, allowing you to pre-process them first
+
         .OUTPUTS
-            System.Object
+            System.IO.FileInfo
+
+            One file object for each generated file so the results are ready for further processing.
 
         .EXAMPLE
             New-DocusaurusHelp -Module Alt3.Docusaurus.Powershell
@@ -49,10 +56,24 @@ function New-DocusaurusHelp() {
 
             You may specify a module name, a `.psd1` file or a `.psm1` file.
 
-        .PARAMETER PlatyPSMarkdownPath
-            Specifies a path containing already prepared PlatyPS markdown files for processing.
+        .PARAMETER CommandHelp
+            Specifies one or more `Microsoft.PowerShell.PlatyPS.Model.CommandHelp` objects, as produced
+            by the PlatyPS cmdlets `New-CommandHelp`, `Import-MarkdownCommandHelp` or `Import-YamlCommandHelp`.
 
-            If not provided, this function will generate the necessary files as required.
+            Use this parameter if you want to pre-process the help objects before this module
+            transforms them into Docusaurus pages, e.g.:
+
+            ```
+            $commandHelp = New-CommandHelp -CommandInfo (Get-Command -Module MyModule)
+            $commandHelp[0].Synopsis = "An updated synopsis"
+            New-DocusaurusHelp -CommandHelp $commandHelp
+            ```
+
+            Keys added to the `Metadata` property (e.g. `description`) will appear in the
+            Docusaurus front matter and always win over the generated variables.
+
+            Also use this parameter if you have already prepared PlatyPS markdown files,
+            e.g. `New-DocusaurusHelp -CommandHelp (Import-MarkdownCommandHelp -Path $files)`.
 
         .PARAMETER DocsFolder
             Specifies the absolute or relative **path** to the Docusaurus `docs` folder.
@@ -71,6 +92,9 @@ function New-DocusaurusHelp() {
             Optional string that will be inserted into Docusaurus front matter to be used as html meta tag 'description'.
 
             If placeholder `%1` is detected in the string, it will be replaced by the command name.
+
+            Will not overwrite an existing `description` front matter key (e.g. added
+            via the CommandHelp `Metadata` property).
 
         .PARAMETER MetaKeywords
             Optional array of keywords inserted into Docusaurus front matter to be used as html meta tag `keywords`.
@@ -149,14 +173,19 @@ function New-DocusaurusHelp() {
             https://docusaurus.io/
 
         .LINK
-            https://github.com/PowerShell/platyPS
+            https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.platyps/
     #>
     [cmdletbinding()]
     param(
         [Parameter(Mandatory = $True, ParameterSetName = 'Module')][string]$Module,
-        [Parameter(Mandatory = $True, ParameterSetName = 'PlatyPSMarkdownPath')]
-        [ValidateScript({ [System.IO.Directory]::Exists($_) })]
-        [string]$PlatyPSMarkdownPath,
+        [Parameter(Mandatory = $True, ParameterSetName = 'CommandHelp')]
+        [ValidateScript({
+            if ($_.GetType().FullName -ne 'Microsoft.PowerShell.PlatyPS.Model.CommandHelp') {
+                throw "Expected a Microsoft.PowerShell.PlatyPS.Model.CommandHelp object but received '$($_.GetType().FullName)'. Use e.g. New-CommandHelp or Import-MarkdownCommandHelp to create CommandHelp objects."
+            }
+            $true
+        })]
+        [object[]]$CommandHelp,
         [Parameter(Mandatory = $False)][string]$DocsFolder = "docusaurus/docs",
         [Parameter(Mandatory = $False)][string]$Sidebar = "commands",
         [Parameter(Mandatory = $False)][array]$Exclude = @(),
@@ -175,56 +204,100 @@ function New-DocusaurusHelp() {
 
     GetCallerPreference -Cmdlet $PSCmdlet -SessionState $ExecutionContext.SessionState
 
-    # Get the module's name fromn the supplied markdown files.
-    if ($PSCmdlet.ParameterSetName.Equals('PlatyPSMarkdownPath'))
+    # normalize all parameter sets into PlatyPS CommandHelp objects
+    switch ($PSCmdlet.ParameterSetName) {
+        'Module' {
+            # make sure the passed module is valid
+            if (Test-Path($Module)) {
+                Import-Module $Module -Force -Global
+                $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
+            }
+
+            if (-Not(Get-Module -Name $Module)) {
+                throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
+            }
+
+            Write-Verbose "Generating PlatyPS CommandHelp objects."
+            # use ExportedCommands because Get-Command -Module would also return private
+            # functions when a module (like this one) generates its own documentation
+            $moduleCommands = (Get-Module -Name $Module).ExportedCommands.Values |
+                Where-Object { $_.CommandType -in 'Cmdlet', 'Function', 'Filter' }
+
+            $commandHelpObjects = foreach ($moduleCommand in $moduleCommands) {
+                try {
+                    # child scope disables StrictMode which breaks PlatyPS (https://github.com/PowerShell/platyPS/issues/800)
+                    $newCommandHelp = & {
+                        Set-StrictMode -Off
+                        New-CommandHelp -CommandInfo $moduleCommand -ErrorAction Stop
+                    }
+
+                    # restore the synopsis discarded by PlatyPS for commands with a Get-Help
+                    # definition without .DESCRIPTION and .EXAMPLE nodes
+                    if ($newCommandHelp.Synopsis -eq '{{ Fill in the Synopsis }}') {
+                        $helpSynopsis = (Get-Help -Name $moduleCommand.Name).Synopsis
+
+                        if ($helpSynopsis -notmatch "^\s*$([regex]::Escape($moduleCommand.Name))") {
+                            $newCommandHelp.Synopsis = $helpSynopsis.Trim()
+                        }
+                    }
+
+                    $newCommandHelp
+                } catch {
+                    Write-Warning "Unable to generate help for command '$($moduleCommand.Name)': $($_.Exception.Message)"
+                    Write-Warning "Known PlatyPS limitation: commands using an .EXAMPLE without a .DESCRIPTION in their comment-based help will fail."
+                }
+            }
+        }
+        'CommandHelp' {
+            $commandHelpObjects = $CommandHelp
+        }
+    }
+
+    if (-not $commandHelpObjects) {
+        throw "New-DocusaurusHelp: no command help could be generated, unable to continue"
+    }
+
+    # remove excluded commands
+    if ($Exclude.Count -gt 0) {
+        $commandHelpObjects = @($commandHelpObjects | Where-Object { $Exclude -notcontains $_.Title })
+    }
+
+    # determine the module name
+    if ($PSCmdlet.ParameterSetName.Equals('Module'))
     {
-        # Get the module's name from the supplied markdown files.
-        $moduleName = Get-ChildItem -LiteralPath $PlatyPSMarkdownPath -Filter *.md |
-            Get-Content -ReadCount 10 -TotalCount 10 |
-            ForEach-Object { $_ -match '^Module Name: ' -replace '^Module Name:\s+' } |
-            Select-Object -Unique
+        $moduleName = [io.path]::GetFileName($module)
+    }
+    else
+    {
+        # get the module's name from the supplied CommandHelp objects
+        $moduleName = @($commandHelpObjects.ModuleName | Select-Object -Unique)
 
         # Throw if null or we've got more than one item.
-        if ($null -eq $moduleName)
+        if ($moduleName.Count -eq 0 -or [string]::IsNullOrEmpty($moduleName[0]))
         {
-            $errSentence1 = 'Unable to determine the module name from the supplied markdown files.'
-            $errSentence2 = 'Please confirm their validity and try again.'
+            $errSentence1 = 'Unable to determine the module name from the supplied command help.'
+            $errSentence2 = 'Please confirm its validity and try again.'
             $PSCmdlet.ThrowTerminatingError([System.Management.Automation.ErrorRecord]::new(
-                    [System.ArgumentException]::new("$errSentence1 $errSentence2", 'PlatyPSMarkdownPath'),
+                    [System.ArgumentException]::new("$errSentence1 $errSentence2", $PSCmdlet.ParameterSetName),
                     'ModuleNameIndeterminateError',
                     [System.Management.Automation.ErrorCategory]::InvalidResult,
                     $moduleName
                 ))
         }
-        elseif ($moduleName -isnot [System.String])
+        elseif ($moduleName.Count -gt 1)
         {
-            $errSentence1 = "More than one module name was found within the supplied markdown files ('$([System.String]::Join("', '", $moduleName))')."
-            $errSentence2 = 'Please supply unique markdown files for a single module and try again.'
+            $errSentence1 = "More than one module name was found within the supplied command help ('$([System.String]::Join("', '", $moduleName))')."
+            $errSentence2 = 'Please supply command help for a single module and try again.'
             $PSCmdlet.ThrowTerminatingError([System.Management.Automation.ErrorRecord]::new(
-                    [System.ArgumentException]::new("$errSentence1 $errSentence2", 'PlatyPSMarkdownPath'),
+                    [System.ArgumentException]::new("$errSentence1 $errSentence2", $PSCmdlet.ParameterSetName),
                     'DuplicateModuleNameError',
                     [System.Management.Automation.ErrorCategory]::InvalidResult,
                     $moduleName
                 ))
         }
 
-        # Trim off the leading characters before continuing.
+        $moduleName = $moduleName[0]
         $Module = $moduleName
-    }
-    else
-    {
-        # make sure the passed module is valid
-        if (Test-Path($Module)) {
-            Import-Module $Module -Force -Global
-            $Module = [System.IO.Path]::GetFileNameWithoutExtension($Module)
-        }
-
-        if (-Not(Get-Module -Name $Module)) {
-            $Module = $Module
-            throw "New-DocusaurusHelp: Specified module '$Module' is not loaded"
-        }
-
-        $moduleName = [io.path]::GetFileName($module)
     }
 
     # get version of this module so we can e.g. add version tag to generated files
@@ -240,22 +313,23 @@ function New-DocusaurusHelp() {
     $tempFolder = Join-Path -Path ([System.IO.Path]::GetTempPath()) -ChildPath "Alt3.Docusaurus.Powershell" | Join-Path -ChildPath $moduleName
     InitializeTempFolder -Path $tempFolder
 
-    # generate PlatyPs markdown files
-    if ($PSCmdlet.ParameterSetName.Equals('Module'))
-    {
-        Write-Verbose "Generating PlatyPS files."
-        New-MarkdownHelp -Module $Module -OutputFolder $tempFolder -Force | Out-Null
-    }
-    else
-    {
-        Write-Verbose "Copying cached markdown files to temp folder."
-        Copy-Item -Path $PlatyPSMarkdownPath\*.md -Destination $tempFolder -Force -Confirm:$false
+    # generate PlatyPS markdown files
+    Write-Verbose "Generating PlatyPS markdown files."
+    & {
+        # child scope disables StrictMode which breaks PlatyPS (https://github.com/PowerShell/platyPS/issues/800)
+        Set-StrictMode -Off
+        $commandHelpObjects | Export-MarkdownCommandHelp -OutputFolder $tempFolder -Force
+    } | Out-Null
+
+    # PlatyPS exports into a module-named subfolder, flatten it into the temp folder
+    $moduleSubFolder = Join-Path -Path $tempFolder -ChildPath $moduleName
+    if (Test-Path -Path $moduleSubFolder) {
+        Get-ChildItem -Path $moduleSubFolder -Filter *.md | Move-Item -Destination $tempFolder -Force
+        Remove-Item -Path $moduleSubFolder -Recurse -Force
     }
 
-    # remove files matching excluded commands
-    Write-Verbose "Removing excluded files:"
-    $Exclude | ForEach-Object {
-        RemoveFile -Path (Join-Path -Path $tempFolder -ChildPath "$($_).md")
+    if (-not (Get-ChildItem -Path $tempFolder -Filter *.md)) {
+        throw "New-DocusaurusHelp: PlatyPS did not generate any markdown files for module '$moduleName'"
     }
 
     # rename PlatyPS files and create an `.mdx` copy we will transform
@@ -295,6 +369,12 @@ function New-DocusaurusHelp() {
 
         ReplaceHeader1 -MarkdownFile $mdxFile -KeepHeader1:$KeepHeader1
 
+        # remove PlatyPS generated noise
+        RemoveAliasesSection -MarkdownFile $mdxFile
+        RemoveDefaultParameterSetHeading -MarkdownFile $mdxFile
+        RemoveSectionPlaceholders -MarkdownFile $mdxFile
+        RepairRelatedLinks -MarkdownFile $mdxFile
+
         if ($PrependMarkdown) {
             InsertUserMarkdown -MarkdownFile $mdxFile -Markdown $PrependMarkdown -Mode "Prepend"
         }
@@ -313,15 +393,14 @@ function New-DocusaurusHelp() {
 
         ## Continue with general enrichment
         InsertPowerShellMonikers -MarkdownFile $mdxFile
-        UnescapeSpecialChars -MarkdownFile $mdxFile
         SeparateMarkdownHeadings -MarkdownFile $mdxFile
 
         # Line by line changes
-        UnescapeInlineCode -MarkdownFile $mdxFile
         HtmlEncodeLessThanBrackets -MarkdownFile $mdxFile
         HtmlEncodeGreaterThanBrackets -MarkdownFile $mdxFile
         EscapeOpeningCurlyBrackets -MarkdownFile $mdxFile
         EscapeClosingCurlyBrackets -MarkdownFile $mdxFile
+        RemoveRedundantBlankLines -MarkdownFile $mdxFile
 
         # all done, set line endings again
         SetLfLineEndings -MarkdownFile $mdxFile

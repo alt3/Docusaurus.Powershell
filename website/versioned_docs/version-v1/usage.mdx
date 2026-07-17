@@ -1,0 +1,57 @@
+---
+id: usage
+title: Usage
+---
+
+Adding auto-generated Get-Help pages to to your Docusaurus website only requires two steps:
+
+## Generate PowerShell Module Documentation
+
+To generate Get-Help pages for any PowerShell module run the following command.
+
+> For demo data, replace `YourModuleName` with e.g. `Microsoft.PowerShell.Management`
+
+```powershell
+New-DocusaurusHelp -Module "YourModuleName"
+```
+
+After the command has completed, the `docusaurus/docs/commands` folder
+should contain one `.mdx` file for each command exported by the PowerShell module.
+
+## Start the Website
+
+To start your website, cd into the `docusaurus` folder and run:
+
+```powershell
+npm start
+```
+
+## Sidebar layout
+
+By default, Docusaurus will automatically generate a sidebar from the docs folder structure.
+
+If you want to change the layout of the sidebar, update `docusaurus/sidebar.js` so it looks like this:
+
+```js
+const commands = require('./docs/commands/docusaurus.sidebar.js');
+
+// @ts-check
+
+/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
+const sidebars = {
+  tutorialSidebar: [
+    'intro',
+    {
+        type: 'category',
+        label: 'Command Reference',
+        items: [
+            commands
+        ],
+      },
+  ],
+};
+
+export default sidebars;
+```
+
+For more information about configuring the sidebar please visit https://docusaurus.io/docs/sidebar.

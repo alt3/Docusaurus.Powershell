@@ -5,6 +5,9 @@ function Test-HtmlEncodeLessThanBrackets {
         .SYNOPSIS
             Dummy module to ensure proper html encoding of platyPS escaped opening '<' angle brackets (except inside code blocks).
 
+        .DESCRIPTION
+            Required because PlatyPS will not generate help for commands using an .EXAMPLE without a .DESCRIPTION.
+
         .NOTES
             Invoke-DummyModule -Configuration \<PesterConfiguration\> [\<CommonParameters\>]
 

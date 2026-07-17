@@ -3,6 +3,9 @@ function Test-UnescapeInlineCode {
         .SYNOPSIS
             Dummy module to ensure proper unescaping of `<angle brackets>` inside inline code.
 
+        .DESCRIPTION
+            Required because PlatyPS will not generate help for commands using an .EXAMPLE without a .DESCRIPTION.
+
         .NOTES
             Replaces platyPS escaped `\<` and `\>` with `<` and `>`.
 

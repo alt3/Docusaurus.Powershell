@@ -1,0 +1,59 @@
+---
+id: Test-InlineCodeCurlyBrackets
+title: Test-InlineCodeCurlyBrackets
+hide_title: false
+hide_table_of_contents: false
+---
+
+## SYNOPSIS
+
+Dummy module to ensure curly brackets inside inline code are not escaped (https://github.com/alt3/Docusaurus.Powershell/issues/180).
+
+## SYNTAX
+
+```powershell
+Test-InlineCodeCurlyBrackets
+```
+
+## DESCRIPTION
+
+Curly brackets must be escaped for MDX except inside code, so:
+
+- raw \{curly\} brackets should be escaped
+- inline code like `@{ Splat = $true }` and `${variable}` should not be touched
+- code blocks should not be touched
+
+## EXAMPLES
+
+### EXAMPLE 1
+
+```powershell
+Invoke-Something -Splat `@{ Key = 'value' }`
+```
+
+The hashtable `@{ Path = $file; Recurse = $true }` should render without backslashes.
+
+This raw \{curly\} bracket should be escaped and so should \{\{ this double one \}\}.
+
+```
+$fenced = @{ Untouched = $true }
+```
+
+Trailing text with `{ inline }` and raw \{brackets\} on the same line.
+
+## PARAMETERS
+
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable,
+-InformationAction, -InformationVariable, -OutBuffer, -OutVariable, -PipelineVariable,
+-ProgressAction, -Verbose, -WarningAction, and -WarningVariable. For more information, see
+[about_CommonParameters](https://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+## NOTES
+
+## RELATED LINKS

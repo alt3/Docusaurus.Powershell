@@ -1,0 +1,66 @@
+---
+id: contributing
+title: Contributing
+---
+
+This module is compiled using source files found in this
+[Source](https://github.com/alt3/Docusaurus.Powershell/tree/main/Source)
+folder.
+
+## Pull Requests
+
+When providing pull requests, please make sure to include an appropriate
+[Pester test](https://github.com/alt3/Docusaurus.Powershell/tree/main/Tests).
+
+## Installation
+
+Install the Powershell modules required to compile the module (once):
+
+```powershell
+.\Dev\Install-RequiredModules.ps1 -Confirm
+```
+
+## Workflow
+
+After code changes, compile and import the updated module (as found in the `Output` folder):
+
+```powershell
+.\build-module.ps1
+```
+
+To run all Pester tests using the newly built module:
+
+```powershell
+.\build-module.ps1 -Test
+```
+
+To run a single Pester tests using the newly built module:
+
+```powershell
+.\build-module.ps1 -Test -Path .\Tests\Unit\Private\GetCustomEditUrl.Tests.ps1
+```
+
+:::tip
+
+Supports the Pester `-Output` parameter for more testing details.
+
+:::
+
+## Example
+
+Imagine developing the Alt3-module and testing it against the
+[Pester documentation website](https://pester.dev/) to see the effect
+of your code changes.
+
+The below steps would:
+
+1. Build a fresh version of the Alt3-module containing your code changes
+2. Import your version of the Alt3-module into your current session
+3. Use your in-session Alt3-module to generate the Pester Docusaurus command pages
+
+```
+cd Alt3.Docusaurus.Powershell
+.\build-module.ps1
+cd ..\pester-docs\
+.\generate-command-reference.ps1 -SkipModuleImport
+```
