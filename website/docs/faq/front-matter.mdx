@@ -1,0 +1,66 @@
+---
+id: front-matter
+title: Custom Front Matter
+description: Enrich the Docusaurus front matter of your Get-Help pages using PlatyPS CommandHelp metadata.
+---
+
+Every generated `.mdx` page starts with
+[Docusaurus front matter](https://docusaurus.io/docs/markdown-features#front-matter)
+that is constructed using the `New-DocusaurusHelp` parameters:
+
+```yml
+---
+id: Get-SomeCommand
+title: Get-SomeCommand
+description: Set with the -MetaDescription parameter
+keywords:
+  - Set with the -MetaKeywords parameter
+hide_title: false
+hide_table_of_contents: false
+custom_edit_url: https://github.com/your/module/edit/main/Source/Public/Get-SomeCommand.ps1
+---
+```
+
+## Custom Keys
+
+If you need additional (or different) front matter variables you can add them yourself
+by enriching the `Metadata` property of PlatyPS `CommandHelp` objects before passing
+them to `New-DocusaurusHelp`:
+
+```powershell
+$commandHelp = New-CommandHelp -CommandInfo (Get-Command -Module MyModule)
+
+$commandHelp[0].Metadata['description'] = 'My custom SEO description'
+$commandHelp[0].Metadata['image'] = 'https://example.com/social-card.png'
+
+New-DocusaurusHelp -CommandHelp $commandHelp
+```
+
+Which will render:
+
+```yml
+---
+id: Get-SomeCommand
+title: Get-SomeCommand
+description: My custom SEO description
+hide_title: false
+hide_table_of_contents: false
+image: https://example.com/social-card.png
+---
+```
+
+## Precedence
+
+Your keys always win:
+
+- keys found in the front matter are preserved as-is and are never overwritten by
+  the generated variables (e.g. `-MetaDescription` will not touch an existing
+  `description` key)
+- only the PlatyPS-native keys are replaced (`document type`, `external help file`,
+  `HelpUri`, `Locale`, `Module Name`, `ms.date`, `PlatyPS schema version` and the
+  default `title`)
+
+## Additional Information
+
+- Get-Help documentation for the [-CommandHelp](../commands/New-DocusaurusHelp#-commandhelp) parameter
+- [PlatyPS CommandHelp documentation](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.platyps/new-commandhelp)
