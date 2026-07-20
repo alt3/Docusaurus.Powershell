@@ -45,7 +45,7 @@ module.exports = {
     },
     algolia: {
       appId: 'J6HI8PLPVO',
-      apiKey: '7da5313674c5bdc00c7af45eda989ae2',
+      apiKey: 'b1baf2f5bd3100899c26cc1aba20adfb',
       indexName: 'docusaurus-powershell',
       contextualSearch: true, // prefer search results for the active docs version
       algoliaOptions: {}, // Optional, if provided by Algolia
