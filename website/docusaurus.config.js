@@ -43,6 +43,8 @@ module.exports = {
     prism: {
       additionalLanguages: ['powershell'],
     },
+    // Please note that the Algolia DocSearch crawler only runs once every 24 hours.
+    // Configuration options below described at https://docusaurus.io/docs/search.
     algolia: {
       appId: 'J6HI8PLPVO',
       apiKey: 'b1baf2f5bd3100899c26cc1aba20adfb',
