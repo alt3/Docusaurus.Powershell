@@ -47,7 +47,7 @@ module.exports = {
     // Configuration options below described at https://docusaurus.io/docs/search.
     algolia: {
       appId: 'J6HI8PLPVO',
-      apiKey: 'b1baf2f5bd3100899c26cc1aba20adfb',
+      apiKey: 'deda94eef62231a7fea2708d9beae5ea',
       indexName: 'docusaurus-powershell',
       contextualSearch: true, // prefer search results for the active docs version
     },
