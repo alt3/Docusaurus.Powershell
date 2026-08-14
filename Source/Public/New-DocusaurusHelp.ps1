@@ -343,7 +343,7 @@ function New-DocusaurusHelp() {
 
     # update all remaining mdx files to make them Docusaurus compatible
     Write-Verbose "Updating mdx files."
-    $mdxFiles = Get-ChildItem -Path $tempFolder -Filter *.mdx
+    $mdxFiles = Get-ChildItem -Path $tempFolder -Filter *.mdx | Sort-Object BaseName
 
     ForEach ($mdxFile in $mdxFiles) {
         Write-Verbose "Processing $($mdxFile.Name):"
