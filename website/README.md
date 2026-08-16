@@ -1,7 +1,11 @@
 # Website
 
-This folder holds the sources for the website, built using [Docusaurus 2](https://docusaurus.io/)
+This folder holds the sources for the website, built using [Docusaurus 3](https://docusaurus.io/)
 , a modern static website generator.
+
+## Requirements
+
+Node.js 24 (see `.nvmrc`), matching the Node.js version used by the Vercel deployment.
 
 ## Installation
 
